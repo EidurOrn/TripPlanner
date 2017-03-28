@@ -2,14 +2,14 @@ package is.hi.tripPlanner.dayTourPackage;
 
 import java.util.Date;
 
-public class SearchObject {
+public class SearchModel {
     String tripName;
     Date dateBegin;
     Date dateEnd;
     String location;
     int price;
 
-    public SearchObject(String tripName, Date dateBegin, Date dateEnd, String location, int price){
+    public SearchModel(String tripName, Date dateBegin, Date dateEnd, String location, int price){
         this.tripName = tripName;
         this.dateBegin = dateBegin;
         this.dateEnd = dateEnd;
