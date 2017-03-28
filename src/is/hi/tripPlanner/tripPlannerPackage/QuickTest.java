@@ -8,6 +8,7 @@ import java.util.Date;
 
 public class QuickTest {
     public static void main(String[] args){
+        // 
         MetaSearch m = new MetaSearch(new ThreeDayTourMock());
         SearchObject s = new SearchObject("Fun!",new Date(2017,3,25,14,30),new Date(2017,3,25,14,30),
             "Place",5000);
