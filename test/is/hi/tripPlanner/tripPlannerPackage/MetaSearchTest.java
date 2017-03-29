@@ -84,6 +84,7 @@ public class MetaSearchTest {
 
     @After
     public void tearDown() throws Exception {
+        searchTest = null;
 
     }
 
@@ -96,23 +97,28 @@ public class MetaSearchTest {
         searchResults = searchTest.getDayTourInfo(searchObject);
 
         assertEquals(searchResults, mockResults);
-
         // assert.equals (það sem kemur út úr leitinni og mock objectinn sem við harðkóðuðum)
+            // þarf kannski að sækja tilviksbreyturnar og bera þær saman?
 
 
-        // prófa hvort það sem kemur út úr leit sem hefur enga leitarútkomu sé tómur object
 
-        // prófa hvort það sé rétt gáð hvort price>=0 og begindate<enddate
     }
 
-    public void testGetDayTourInfoNoResults() {
 
+    /**
+     * tests
+     */
+    public void testGetDayTourInfoNoResults() {
+        searchTest = new MetaSearch(new NoDayTourMock());
+        SearchModel bullSearch = new SearchModel("x_x", new Date(2015,3,28,14,30), new Date(2015,3,28,15,30), "Zimbabve",1200);
+        assertEquals(searchTest.getDayTourInfo(bullSearch), new Trip[0]);
     }
 
     /**
-     * tests if baddly formed search entries (e.g. price as a negative number) return what they should
+     * tests if badly formed search entries (e.g. price as a negative number) return what they should
      */
     public void testBadSearchEntries(){
+        // prófa hvort það sé rétt gáð hvort price>=0 og begindate<enddate
 
     }
 }
