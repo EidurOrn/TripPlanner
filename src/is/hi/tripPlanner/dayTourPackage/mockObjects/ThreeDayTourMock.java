@@ -6,6 +6,7 @@ import is.hi.tripPlanner.dayTourPackage.Trip;
 import java.util.Date;
 
 public class ThreeDayTourMock implements DayTourFetching {
+
     public Trip[] findResults(SearchModel s){
         Trip t1 = new Trip();
         t1.setTripdId(1);
