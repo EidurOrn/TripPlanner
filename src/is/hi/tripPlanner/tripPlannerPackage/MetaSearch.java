@@ -12,6 +12,19 @@ public class MetaSearch{
     }
 
     public Trip[] getDayTourInfo(SearchModel s){
+        // Check if end date occurs before the start date.
+        if(s.getDateBegin() != null) {
+            if(s.getDateEnd() != null){
+                if (s.getDateEnd().before(s.getDateEnd())) {
+                    return new Trip[0];
+                }
+            }
+        }
+        // Check if the price is negative (user being payed).
+        if(s.getPrice() < 0){
+            return new Trip[0];
+        }
+
         return dayTourSearchObject.findResults(s);
     }
 
