@@ -121,7 +121,7 @@ public class MetaSearchTest {
     }
 
     @Test
-    // Test whether it works to search with a searchObject that has null in some of it's parameters (this is allowed).
+    // Test whether it works to search with a SearchModel that has null in some of it's parameters (this is allowed, gets given default values).
     public void testGetDayTourInfoWithSomeNullParam() {
         searchObject.setLocation(null);
         searchObject.setDateEnd(null);
@@ -140,7 +140,7 @@ public class MetaSearchTest {
     }
 
     @Test
-    // Test whether it works to search with a searchObject that has null all of it's parameters (this is allowed).
+    // Test whether it works to search with a SearchModel that has null all of it's parameters (this is allowed, gets given default values).
     public void testGetDayTourInfoWithAllNullParam() {
         searchObject.setTripName(null);
         searchObject.setLocation(null);
