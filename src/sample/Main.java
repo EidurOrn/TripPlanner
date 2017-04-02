@@ -1,5 +1,7 @@
 package sample;
 
+import is.hi.tripPlanner.dayTourPackage.mockObjects.ThreeDayTourMock;
+import is.hi.tripPlanner.tripPlannerPackage.MetaSearch;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
