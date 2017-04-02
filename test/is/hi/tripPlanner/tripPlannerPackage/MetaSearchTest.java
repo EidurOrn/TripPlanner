@@ -96,18 +96,8 @@ public class MetaSearchTest {
 
         searchResults = searchTest.getDayTourInfo(searchObject);
 
-        for(int i = 0; i < searchResults.length; i++){
-            assertEquals(searchResults[i].getTripdId(),mockResults[i].getTripdId());
-            assertEquals(searchResults[i].getTripName(),mockResults[i].getTripName());
-            assertEquals(searchResults[i].getDateBegin(),mockResults[i].getDateBegin());
-            assertEquals(searchResults[i].getDateEnd(),mockResults[i].getDateEnd());
-            assertEquals(searchResults[i].getLocation(),mockResults[i].getLocation());
-            assertEquals(searchResults[i].getMinPeople(),mockResults[i].getMinPeople());
-            assertEquals(searchResults[i].getMaxPeople(),mockResults[i].getMaxPeople());
-            assertEquals(searchResults[i].getPrice(),mockResults[i].getPrice());
-        }
+        compareTwoTripArrays(searchResults,mockResults);
     }
-
 
     /**
      * tests
@@ -127,16 +117,7 @@ public class MetaSearchTest {
         searchObject.setDateEnd(null);
         searchResults = searchTest.getDayTourInfo(searchObject);
 
-        for(int i = 0; i < searchResults.length; i++){
-            assertEquals(searchResults[i].getTripdId(),mockResults[i].getTripdId());
-            assertEquals(searchResults[i].getTripName(),mockResults[i].getTripName());
-            assertEquals(searchResults[i].getDateBegin(),mockResults[i].getDateBegin());
-            assertEquals(searchResults[i].getDateEnd(),mockResults[i].getDateEnd());
-            assertEquals(searchResults[i].getLocation(),mockResults[i].getLocation());
-            assertEquals(searchResults[i].getMinPeople(),mockResults[i].getMinPeople());
-            assertEquals(searchResults[i].getMaxPeople(),mockResults[i].getMaxPeople());
-            assertEquals(searchResults[i].getPrice(),mockResults[i].getPrice());
-        }
+        compareTwoTripArrays(searchResults,mockResults);
     }
 
     @Test
@@ -150,16 +131,7 @@ public class MetaSearchTest {
 
         searchResults = searchTest.getDayTourInfo(searchObject);
 
-        for(int i = 0; i < searchResults.length; i++){
-            assertEquals(searchResults[i].getTripdId(),mockResults[i].getTripdId());
-            assertEquals(searchResults[i].getTripName(),mockResults[i].getTripName());
-            assertEquals(searchResults[i].getDateBegin(),mockResults[i].getDateBegin());
-            assertEquals(searchResults[i].getDateEnd(),mockResults[i].getDateEnd());
-            assertEquals(searchResults[i].getLocation(),mockResults[i].getLocation());
-            assertEquals(searchResults[i].getMinPeople(),mockResults[i].getMinPeople());
-            assertEquals(searchResults[i].getMaxPeople(),mockResults[i].getMaxPeople());
-            assertEquals(searchResults[i].getPrice(),mockResults[i].getPrice());
-        }
+        compareTwoTripArrays(searchResults,mockResults);
     }
 
     /**
@@ -181,5 +153,19 @@ public class MetaSearchTest {
         Trip[] t = searchTest.getDayTourInfo(searchObject);
 
         assertEquals(searchTest.getDayTourInfo(searchObject), new Trip[0]);
+    }
+
+    // Checks whether all of the paramaters from the trips are the same in both arrays.
+    private void compareTwoTripArrays(Trip[] s, Trip[] m){
+        for(int i = 0; i < s.length; i++){
+            assertEquals(s[i].getTripdId(),m[i].getTripdId());
+            assertEquals(s[i].getTripName(),m[i].getTripName());
+            assertEquals(s[i].getDateBegin(),m[i].getDateBegin());
+            assertEquals(s[i].getDateEnd(),m[i].getDateEnd());
+            assertEquals(s[i].getLocation(),m[i].getLocation());
+            assertEquals(s[i].getMinPeople(),m[i].getMinPeople());
+            assertEquals(s[i].getMaxPeople(),m[i].getMaxPeople());
+            assertEquals(s[i].getPrice(),m[i].getPrice());
+        }
     }
 }
