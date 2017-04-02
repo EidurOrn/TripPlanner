@@ -106,9 +106,6 @@ public class MetaSearchTest {
             assertEquals(searchResults[i].getMaxPeople(),mockResults[i].getMaxPeople());
             assertEquals(searchResults[i].getPrice(),mockResults[i].getPrice());
         }
-        //assertEquals(searchResults, mockResults);
-        // assert.equals (það sem kemur út úr leitinni og mock objectinn sem við harðkóðuðum)
-            // þarf kannski að sækja tilviksbreyturnar og bera þær saman?
     }
 
 
@@ -140,9 +137,6 @@ public class MetaSearchTest {
         searchObject.setDateEnd(tmp);
 
         Trip[] t = searchTest.getDayTourInfo(searchObject);
-        for(int i = 0; i < t.length; i++){
-            t[i].getTripName();
-        }
 
         assertEquals(searchTest.getDayTourInfo(searchObject), new Trip[0]);
     }
