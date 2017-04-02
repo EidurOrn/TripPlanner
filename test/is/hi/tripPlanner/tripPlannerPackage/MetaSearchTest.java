@@ -120,6 +120,48 @@ public class MetaSearchTest {
         assertEquals(searchTest.getDayTourInfo(bullSearch), new Trip[0]);
     }
 
+    @Test
+    // Test whether it works to search with a searchObject that has null in some of it's parameters (this is allowed).
+    public void testGetDayTourInfoWithSomeNullParam() {
+        searchObject.setLocation(null);
+        searchObject.setDateEnd(null);
+        searchResults = searchTest.getDayTourInfo(searchObject);
+
+        for(int i = 0; i < searchResults.length; i++){
+            assertEquals(searchResults[i].getTripdId(),mockResults[i].getTripdId());
+            assertEquals(searchResults[i].getTripName(),mockResults[i].getTripName());
+            assertEquals(searchResults[i].getDateBegin(),mockResults[i].getDateBegin());
+            assertEquals(searchResults[i].getDateEnd(),mockResults[i].getDateEnd());
+            assertEquals(searchResults[i].getLocation(),mockResults[i].getLocation());
+            assertEquals(searchResults[i].getMinPeople(),mockResults[i].getMinPeople());
+            assertEquals(searchResults[i].getMaxPeople(),mockResults[i].getMaxPeople());
+            assertEquals(searchResults[i].getPrice(),mockResults[i].getPrice());
+        }
+    }
+
+    @Test
+    // Test whether it works to search with a searchObject that has null all of it's parameters (this is allowed).
+    public void testGetDayTourInfoWithAllNullParam() {
+        searchObject.setTripName(null);
+        searchObject.setLocation(null);
+        searchObject.setDateBegin(null);
+        searchObject.setDateEnd(null);
+        searchObject.setPrice(0); // int can't be null thus it has to be given a different value.
+
+        searchResults = searchTest.getDayTourInfo(searchObject);
+
+        for(int i = 0; i < searchResults.length; i++){
+            assertEquals(searchResults[i].getTripdId(),mockResults[i].getTripdId());
+            assertEquals(searchResults[i].getTripName(),mockResults[i].getTripName());
+            assertEquals(searchResults[i].getDateBegin(),mockResults[i].getDateBegin());
+            assertEquals(searchResults[i].getDateEnd(),mockResults[i].getDateEnd());
+            assertEquals(searchResults[i].getLocation(),mockResults[i].getLocation());
+            assertEquals(searchResults[i].getMinPeople(),mockResults[i].getMinPeople());
+            assertEquals(searchResults[i].getMaxPeople(),mockResults[i].getMaxPeople());
+            assertEquals(searchResults[i].getPrice(),mockResults[i].getPrice());
+        }
+    }
+
     /**
      * tests if badly formed search entries (e.g. price as a negative number) return what they should
      */
