@@ -116,6 +116,7 @@ public class MetaSearchTest {
      * tests
      */
     @Test
+    // Test whether a weird search is handled correctly.
     public void testGetDayTourInfoNoResults() {
         searchTest = new MetaSearch(new NoDayTourMock());
         SearchModel bullSearch = new SearchModel("x_x", new Date(2015,3,28,14,30), new Date(2015,3,28,15,30), "Zimbabve",1200);
@@ -125,13 +126,14 @@ public class MetaSearchTest {
     /**
      * tests if badly formed search entries (e.g. price as a negative number) return what they should
      */
-    //@Test
+    @Test
+    // Test whether price is < 0 is handled correctly.
     public void testBadSearchEntriesForPrice(){
-        // prófa hvort það sé rétt gáð hvort price>=0 og begindate<enddate
         searchObject.setPrice(-10);
         assertEquals(searchTest.getDayTourInfo(searchObject), new Trip[0]);
     }
     @Test
+    // Test reversed dates (endDate happens before beginDate) and whether it's handled correctly.
     public void testBadSearchEntriesForReverseDate(){
         Date tmp = searchObject.getDateBegin();
         searchObject.setDateBegin(searchObject.getDateEnd());
@@ -141,9 +143,6 @@ public class MetaSearchTest {
         for(int i = 0; i < t.length; i++){
             t[i].getTripName();
         }
-        System.out.println(searchObject.getDateBegin());
-        System.out.println(searchObject.getDateEnd());
-        System.out.println(t.length);
 
         assertEquals(searchTest.getDayTourInfo(searchObject), new Trip[0]);
     }

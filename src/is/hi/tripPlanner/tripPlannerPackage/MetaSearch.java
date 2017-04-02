@@ -15,7 +15,7 @@ public class MetaSearch{
         // Check if end date occurs before the start date.
         if(s.getDateBegin() != null) {
             if(s.getDateEnd() != null){
-                if (s.getDateEnd().before(s.getDateEnd())) {
+                if (s.getDateEnd().before(s.getDateBegin())) {
                     return new Trip[0];
                 }
             }
