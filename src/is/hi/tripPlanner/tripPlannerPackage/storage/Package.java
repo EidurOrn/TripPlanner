@@ -60,8 +60,15 @@ public class Package {
         this.purchaser = purchaser;
     }
 
+    // Books the entire package (unfinished)
     public boolean bookPackage(){
         Book b = new Book(this);
-        return b.bookPackage();
+        // This needs to be handled differently to alert the user what has failed
+        // could simply return the boolean array where each index represents:
+        // [flight,hotel,trip] and handle it there or handle it differently here.
+        for(boolean result : b.bookPackage()){
+            if(!result) return false;
+        }
+        return true;
     }
 }
