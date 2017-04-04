@@ -6,4 +6,5 @@ package is.hi.tripPlanner.flightPackage;
  */
 public class Search {
     // okkur vantar upplýsingar frá flug hópnum!
+    // !!!
 }
