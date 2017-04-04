@@ -5,4 +5,5 @@ package is.hi.tripPlanner.flightPackage;
  * the search object from flight group. Based on domain model from assignment 2a,  maybe needs to be updated
  */
 public class Search {
+    // okkur vantar upplýsingar frá flug hópnum!
 }
