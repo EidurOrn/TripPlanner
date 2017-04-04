@@ -5,4 +5,6 @@ package is.hi.tripPlanner.hotelPackage;
  * Search object from Hotel group
  */
 public class SearchEngine {
+
+    // okkur vantar upplýsingar frá hótel hópnum!
 }
