@@ -17,7 +17,11 @@ public class Book {
         this.flightBookingNr = p.getBookedFlight().getFlightId();
         this.hotelBookingNr = p.getBookedHotel().getHotelId();
         this.tripBookingNr = p.getBookedTrip().getTripdId();
+        bookingNr++;
     }
+
+    // Incase of having to cancel booking.
+    public Book() {}
 
     // Package booking, connect to other groups and book on their system. If everything
     // was successful then put this booking order in our db.
@@ -25,6 +29,12 @@ public class Book {
     // [flight,hotel,dayTour]
     public boolean[] bookPackage(){
         // Code to be made
+
+        // Incase for some odd reason this function is being called when empty
+        // constructor was used (which is only supposed to be used when cancelling
+        // the booking of a package.
+        if(packageToBeBooked == null) return new boolean[]{false,false,false};
+
         boolean[] bookingSuccess = new boolean[]{
             bookFlight(packageToBeBooked.getBookedFlight()),
             bookHotel(packageToBeBooked.getBookedHotel()),
@@ -54,6 +64,34 @@ public class Book {
 
     // Connects to the day tour group and attempts to book, returns true if successful
     private boolean bookDayTour(Trip trip){
+        // Code to be made
+        return true;
+    }
+
+    // Cancels the booking of a package that has been booked before.
+    public boolean[] cancelBooking(int bNr){
+        // Connect to our db to get the id's of booked flight, hotel and day tour.
+        // Should also check whether this package is "ongoing" or already finished,
+        // (as in date/time wise) don't want the system to be cheated.
+
+        // success rate of cancelling booking for [flight,hotel,dayTour].
+        return new boolean[]{true,true,true};
+    }
+
+    // Connects to the flight group and attempts to cancel given booking, returns true if successful
+    private boolean cancelFlight(int fNr){
+        // Code to be made
+        return true;
+    }
+
+    // Connects to the hotel group and attempts to book, returns true if successful
+    private boolean cancelHotel(int hNr){
+        // Code to be made
+        return true;
+    }
+
+    // Connects to the day tour group and attempts to book, returns true if successful
+    private boolean cancelDayTour(int tNr){
         // Code to be made
         return true;
     }
