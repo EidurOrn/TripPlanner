@@ -1,8 +1,12 @@
 package is.hi.tripPlanner.tripPlannerPackage.controller;
 
-import is.hi.tripPlanner.dayTourPackage.mockObjects.DayTourFetching;
+
 import is.hi.tripPlanner.dayTourPackage.SearchModel;
 import is.hi.tripPlanner.dayTourPackage.Trip;
+import is.hi.tripPlanner.dayTourPackage.mockObjects.DayTourFetching;
+import is.hi.tripPlanner.flightPackage.*;
+import is.hi.tripPlanner.hotelPackage.*;
+import java.util.ArrayList;
 
 public class MetaSearch{
     private DayTourFetching dayTourSearchObject;
@@ -35,6 +39,8 @@ public class MetaSearch{
      */
     public ArrayList<Hotel> getHotelInfo(SearchEngine searchHotel){
         // tilviksbreytan availableHotelList í SearchEngine geymir líklega  leitarniðurstöðurnar
+        return new ArrayList();
+
     }
 
 
@@ -45,6 +51,7 @@ public class MetaSearch{
      */
     public Flight[] getFlightInfo(Search searchFlight){
         // skv. domain modelinu er hjá 7F virðist tilviksbreytan availableFlightList geyma leitarniðurstöðurnar
+        return new Flight[0];
     }
 
 
