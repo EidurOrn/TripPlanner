@@ -28,4 +28,24 @@ public class MetaSearch{
         return dayTourSearchObject.findResults(s);
     }
 
+    /**
+     * called from HotelUI,  fetches a list of hotels that fit search conditions from hotel program
+     * @param searchHotel search object from hotel program,  gets hotel search results from their db
+     * @return
+     */
+    public ArrayList<Hotel> getHotelInfo(SearchEngine searchHotel){
+        // tilviksbreytan availableHotelList í SearchEngine geymir líklega  leitarniðurstöðurnar
+    }
+
+
+    /**
+     *
+     * @param searchFlight  search object from flight program
+     * @return
+     */
+    public Flight[] getFlightInfo(Search searchFlight){
+        // skv. domain modelinu er hjá 7F virðist tilviksbreytan availableFlightList geyma leitarniðurstöðurnar
+    }
+
+
 }
