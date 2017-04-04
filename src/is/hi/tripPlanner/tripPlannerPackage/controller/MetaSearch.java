@@ -1,4 +1,4 @@
-package is.hi.tripPlanner.tripPlannerPackage;
+package is.hi.tripPlanner.tripPlannerPackage.controller;
 
 import is.hi.tripPlanner.dayTourPackage.mockObjects.DayTourFetching;
 import is.hi.tripPlanner.dayTourPackage.SearchModel;

@@ -3,6 +3,7 @@ package is.hi.tripPlanner.tripPlannerPackage;
 import is.hi.tripPlanner.dayTourPackage.SearchModel;
 import is.hi.tripPlanner.dayTourPackage.Trip;
 import is.hi.tripPlanner.dayTourPackage.mockObjects.*;
+import is.hi.tripPlanner.tripPlannerPackage.controller.MetaSearch;
 
 import java.util.Date;
 

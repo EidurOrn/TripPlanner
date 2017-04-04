@@ -13,6 +13,21 @@ public class Trip {
     private int price;
     private int tripdId;
 
+    public Trip(String tripName, Date dateBegin, Date dateEnd, String description, int maxPeople, int minPeople, String location, int price, int tripdId) {
+        this.tripName = tripName;
+        this.dateBegin = dateBegin;
+        this.dateEnd = dateEnd;
+        this.description = description;
+        this.maxPeople = maxPeople;
+        this.minPeople = minPeople;
+        this.location = location;
+        this.price = price;
+        this.tripdId = tripdId;
+    }
+
+    public Trip() {
+    }
+
     public String getTripName() {
         return tripName;
     }

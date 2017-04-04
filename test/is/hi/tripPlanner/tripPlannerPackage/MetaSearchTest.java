@@ -4,6 +4,7 @@ import is.hi.tripPlanner.dayTourPackage.Trip;
 import is.hi.tripPlanner.dayTourPackage.SearchModel;
 import is.hi.tripPlanner.dayTourPackage.mockObjects.*;
 
+import is.hi.tripPlanner.tripPlannerPackage.controller.MetaSearch;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
