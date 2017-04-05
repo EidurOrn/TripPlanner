@@ -64,6 +64,7 @@ public class Book {
 
     // Connects to the day tour group and attempts to book, returns true if successful
     private boolean bookDayTour(Trip trip){
+        // We call bookTrip(String[] s) where s contains: [tripId,bookerEmail, NrOfPeople, bookerSSN]
         // Code to be made
         return true;
     }
