@@ -4,11 +4,15 @@ import is.hi.tripPlanner.dayTourPackage.SearchModel;
 import is.hi.tripPlanner.dayTourPackage.Trip;
 import is.hi.tripPlanner.dayTourPackage.mockObjects.*;
 import is.hi.tripPlanner.tripPlannerPackage.controller.MetaSearch;
+import is.hi.tripPlanner.tripPlannerPackage.controller.Database.*;
 
 import java.util.Date;
 
+import static is.hi.tripPlanner.tripPlannerPackage.controller.Database.insertBooking;
+
+
 public class QuickTest {
-    public static void main(String[] args){
+    public static void main(String[] args) throws Exception{
         //
         // auka comment
         // 
@@ -19,5 +23,8 @@ public class QuickTest {
         for (Trip trip : a) {
             System.out.println(trip.getTripName());
         }
+        insertBooking("A678","H098","F999","D943");
     }
+
+
 }
