@@ -4,11 +4,13 @@ public class Purchaser {
     private String name;
     private String email;
     private String phone;
+    private String ssn;
 
-    public Purchaser(String name, String email, String phone) {
+    public Purchaser(String name, String email, String phone, String ssn) {
         this.name = name;
         this.email = email;
         this.phone = phone;
+        this.ssn = ssn;
     }
 
     public String getName() {
