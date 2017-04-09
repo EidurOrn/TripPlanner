@@ -1,7 +1,7 @@
 package is.hi.tripPlanner.tripPlannerPackage.controller;
 
 import java.sql.*;
-
+//
 public class Database {
     public static void insertPurchaser(String email, String name, String phone) throws ClassNotFoundException {
         try {
