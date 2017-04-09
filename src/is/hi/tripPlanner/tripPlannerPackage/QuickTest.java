@@ -8,9 +8,7 @@ import is.hi.tripPlanner.tripPlannerPackage.controller.Database.*;
 
 import java.util.Date;
 
-import static is.hi.tripPlanner.tripPlannerPackage.controller.Database.getBookings;
-import static is.hi.tripPlanner.tripPlannerPackage.controller.Database.insertBooking;
-import static is.hi.tripPlanner.tripPlannerPackage.controller.Database.removeBooking;
+import static is.hi.tripPlanner.tripPlannerPackage.controller.Database.*;
 
 
 public class QuickTest {
@@ -25,12 +23,16 @@ public class QuickTest {
         for (Trip trip : a) {
             System.out.println(trip.getTripName());
         }
-        insertBooking("A678","H098","F999","D943");
-        insertBooking("A111","H323","F323","D232");
+        insertPurchaser("froskur@gmail.com", "Friki", "6969699");
+        insertPurchaser("kuntakinte@gmail.com", "Tobias", "6969699");
+        insertBooking("A678","H098","F999","D943", "froskur@gmail.com");
+        insertBooking("A111","H323","F323","D232", "kuntakinte@gmail.com");
+        insertBooking("A120","H109","F919","D333", "mummi@visir.is");
         getBookings();
         removeBooking("A678");
         removeBooking("A111");
-        System.out.println("Some bookings removed...");
+        removeBooking("A120");
+        System.out.println("\nSome bookings removed...");
         getBookings();
     }
 
