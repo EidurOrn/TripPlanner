@@ -30,22 +30,30 @@ public class Book {
     public boolean[] bookPackage(){
         // Code to be made
 
-        // Incase for some odd reason this function is being called when empty
+        // In case for some odd reason this function is being called when empty
         // constructor was used (which is only supposed to be used when cancelling
         // the booking of a package.
         if(packageToBeBooked == null) return new boolean[]{false,false,false};
 
+        // Attempt to book the package content.
         boolean[] bookingSuccess = new boolean[]{
             bookFlight(packageToBeBooked.getBookedFlight()),
             bookHotel(packageToBeBooked.getBookedHotel()),
             bookDayTour(packageToBeBooked.getBookedTrip())
         };
 
-        // Check whether every booking succeeded
+        // Check whether every booking succeeded.
         for(boolean r : bookingSuccess)
             if(!r) return bookingSuccess;
 
         // Connect to our db and insert the package order.
+        Database d = new Database();
+        try{
+            d.insertBooking(Integer.toString(bookingNr),Integer.toString(hotelBookingNr),Integer.toString(flightBookingNr),
+                    Integer.toString(tripBookingNr),packageToBeBooked.getPurchaser().getEmail());
+        }catch (ClassNotFoundException e){
+            // What to do if it fails to book into our DB.
+        }
 
         return bookingSuccess;
     }
