@@ -20,6 +20,8 @@ public class QuickTest {
         SearchModel s = new SearchModel("Fun!",new Date(2017,3,25,14,30),new Date(2017,3,25,14,30),
             "Place",5000);
         Trip[] a = m.getDayTourInfo(s);
+        //a = m.sortByDate_Trip(a,true);
+        a = m.sortByPrice_Trip(a,true);
         for (Trip trip : a) {
             System.out.println(trip.getTripName());
         }
