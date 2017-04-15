@@ -88,6 +88,17 @@ public class HotelRoom {
         return hotelMatches && priceMatches && locationMatches && typeMatches && themeMatches && qualityMatches && fromToMatches;
               
     }
+
+    // Modifications by T group.
+    @Override
+    public boolean equals(Object object) {
+        if (object == null || object.getClass() != getClass()) {
+            return false;
+        } else {
+            HotelRoom hR = (HotelRoom) object;
+            return this.id == hR.getId();
+        }
+    }
 }
 
 

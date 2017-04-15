@@ -4,8 +4,11 @@ package is.hi.tripPlanner.tripPlannerPackage.controller;
 import is.hi.tripPlanner.dayTourPackage.SearchModel;
 import is.hi.tripPlanner.dayTourPackage.Trip;
 import is.hi.tripPlanner.dayTourPackage.mockObjects.DayTourFetching;
-import is.hi.tripPlanner.flightPackage.*;
+import is.hi.tripPlanner.flightPackage.Flight;
 import is.hi.tripPlanner.hotelPackage.*;
+import is.hi.tripPlanner.hotelPackage.JFrames.Search;
+import is.hi.tripPlanner.hotelPackage.Models.HotelRoom;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,9 +16,11 @@ import java.util.Comparator;
 
 public class MetaSearch{
     private DayTourFetching dayTourSearchObject;
+    private Search hotelSearchObject;
 
-    public MetaSearch(DayTourFetching d){
+    public MetaSearch(DayTourFetching d, Search h){
         dayTourSearchObject = d;
+        hotelSearchObject = h;
     }
 
     public Trip[] getDayTourInfo(SearchModel s){
@@ -37,13 +42,61 @@ public class MetaSearch{
 
     /**
      * called from HotelUI,  fetches a list of hotels that fit search conditions from hotel program
-     * @param searchHotel search object from hotel program,  gets hotel search results from their db
+     * @param hotelName name of hotel to be searched for, if "" then this param is not used.
+     * @param location location to be searched for, if "" then this param is not used.
+     * @param fromAvailability when the hotel has an available room search condition, if "" then this param is not used.
+     * @param toAvailability when the user has to check out of the hotel, if "" then this param is not used.
+     * @param type type of hotel, if "" then this param is not used.
+     * @param theme theme of the hotel, if "" then this param is not used.
+     * @param quality quality of the hotel, if "" then this param is not used.
      * @return
      */
-    public ArrayList<Hotel> getHotelInfo(SearchEngine searchHotel){
-        // tilviksbreytan availableHotelList í SearchEngine geymir líklega  leitarniðurstöðurnar
-        return new ArrayList();
+    public ArrayList<HotelRoom> getHotelInfo(String hotelName, String location, String fromAvailability,
+                                             String toAvailability, String type, String theme, String quality){
+        ArrayList<HotelRoom> l = new ArrayList<HotelRoom>();
 
+        if(!hotelName.equals("")) {
+            l = hotelSearchObject.HotelSearch(hotelName); // Makes a list with the first search results.
+            if(l.isEmpty()) return l; // There was a search attempt but it turned up empty, no other condition can change that.
+        }
+        if(!location.equals("")) {
+            if(l.isEmpty()) l = hotelSearchObject.LocationSearch(location); // Makes a list with the first search results.
+                                                                            // (If no prev result has been given, empty is a result).
+            else l.retainAll(hotelSearchObject.LocationSearch(location)); // Retains only the same list elements between the two lists.
+
+            if(l.isEmpty()) return l;
+        }
+        if(!fromAvailability.equals("")) {
+            if(l.isEmpty()) l = hotelSearchObject.FromAvailabilitySearch(fromAvailability);
+            else l.retainAll(hotelSearchObject.FromAvailabilitySearch(fromAvailability));
+
+            if(l.isEmpty()) return l;
+        }
+        if(!toAvailability.equals("")) {
+            if(l.isEmpty()) l = hotelSearchObject.ToAvailabilitySearch(toAvailability);
+            else l.retainAll(hotelSearchObject.ToAvailabilitySearch(toAvailability));
+
+            if(l.isEmpty()) return l;
+        }
+        if(!type.equals("")) {
+            if(l.isEmpty()) l = hotelSearchObject.TypeSearch(type);
+            else l.retainAll(hotelSearchObject.TypeSearch(type));
+
+            if(l.isEmpty()) return l;
+        }
+        if(!theme.equals("")) {
+            if(l.isEmpty()) l = hotelSearchObject.ThemeSearch(theme);
+            else l.retainAll(hotelSearchObject.ThemeSearch(theme));
+
+            if(l.isEmpty()) return l;
+        }
+        if(!quality.equals("")) {
+            if(l.isEmpty()) l = hotelSearchObject.QualitySearch(quality);
+            else l.retainAll(hotelSearchObject.QualitySearch(quality));
+
+            if(l.isEmpty()) return l;
+        }
+        return l;
     }
 
 
@@ -208,14 +261,37 @@ public class MetaSearch{
         return f;
     }
 
-    // ======================   Hotel    =======================
-    // These functions are based off of the UML diagram which is already obsolete, highly likely this will have to be modified.
+    // ======================   HotelRoom    =======================
+
+    // Sorts list h by theme in descending order if desc = true, otherwise in ascending.
+    public ArrayList<HotelRoom> sortByHotelName_Hotel(ArrayList<HotelRoom> h, boolean desc){
+        if(desc){
+            Collections.sort(h, new Comparator<HotelRoom>() {
+                public int compare(HotelRoom h1, HotelRoom h2) {
+                    if (h1.getHotelName() == null || h2.getHotelName() == null)
+                        return 0;
+                    return h1.getHotelName().compareTo(h2.getHotelName());
+                }
+            }.reversed());
+        }
+        else{
+            Collections.sort(h, new Comparator<HotelRoom>() {
+                public int compare(HotelRoom h1, HotelRoom h2) {
+                    if (h1.getHotelName() == null || h2.getHotelName() == null)
+                        return 0;
+                    return h1.getHotelName().compareTo(h2.getHotelName());
+                }
+            });
+        }
+
+        return h;
+    }
 
     // Sorts list h by location in descending order if desc = true, otherwise in ascending.
-    public ArrayList<Hotel> sortByLocation_Hotel(ArrayList<Hotel> h, boolean desc){
+    public ArrayList<HotelRoom> sortByLocation_Hotel(ArrayList<HotelRoom> h, boolean desc){
         if(desc){
-            Collections.sort(h, new Comparator<Hotel>() {
-                public int compare(Hotel h1, Hotel h2) {
+            Collections.sort(h, new Comparator<HotelRoom>() {
+                public int compare(HotelRoom h1, HotelRoom h2) {
                     if (h1.getLocation() == null || h2.getLocation() == null)
                         return 0;
                     return h1.getLocation().compareTo(h2.getLocation());
@@ -223,8 +299,8 @@ public class MetaSearch{
             }.reversed());
         }
         else{
-            Collections.sort(h, new Comparator<Hotel>() {
-                public int compare(Hotel h1, Hotel h2) {
+            Collections.sort(h, new Comparator<HotelRoom>() {
+                public int compare(HotelRoom h1, HotelRoom h2) {
                     if (h1.getLocation() == null || h2.getLocation() == null)
                         return 0;
                     return h1.getLocation().compareTo(h2.getLocation());
@@ -236,10 +312,10 @@ public class MetaSearch{
     }
 
     // Sorts list h by quality in descending order if desc = true, otherwise in ascending.
-    public ArrayList<Hotel> sortByQuality_Hotel(ArrayList<Hotel> h, boolean desc){
+    public ArrayList<HotelRoom> sortByQuality_Hotel(ArrayList<HotelRoom> h, boolean desc){
         if(desc){
-            Collections.sort(h, new Comparator<Hotel>() {
-                public int compare(Hotel h1, Hotel h2) {
+            Collections.sort(h, new Comparator<HotelRoom>() {
+                public int compare(HotelRoom h1, HotelRoom h2) {
                     if (h1.getQuality() == h2.getQuality())
                         return 0;
                     return h1.getQuality() < h2.getQuality() ? -1 : 1;
@@ -247,8 +323,8 @@ public class MetaSearch{
             }.reversed());
         }
         else{
-            Collections.sort(h, new Comparator<Hotel>() {
-                public int compare(Hotel h1, Hotel h2) {
+            Collections.sort(h, new Comparator<HotelRoom>() {
+                public int compare(HotelRoom h1, HotelRoom h2) {
                     if (h1.getQuality() == h2.getQuality())
                         return 0;
                     return h1.getQuality() < h2.getQuality() ? -1 : 1;
@@ -259,23 +335,95 @@ public class MetaSearch{
         return h;
     }
 
-    // Sorts list h by popularity in descending order if desc = true, otherwise in ascending.
-    public ArrayList<Hotel> sortByPopularity_Hotel(ArrayList<Hotel> h, boolean desc){
+    // Sorts list h by fromAvailability in descending order if desc = true, otherwise in ascending.
+    public ArrayList<HotelRoom> sortByFromAvailability_Hotel(ArrayList<HotelRoom> h, boolean desc){
         if(desc){
-            Collections.sort(h, new Comparator<Hotel>() {
-                public int compare(Hotel h1, Hotel h2) {
-                    if (h1.getPopularity() == h2.getPopularity())
+            Collections.sort(h, new Comparator<HotelRoom>() {
+                public int compare(HotelRoom h1, HotelRoom h2) {
+                    if (h1.getFromAvailability() == null || h2.getFromAvailability() == null)
                         return 0;
-                    return h1.getPopularity() < h2.getPopularity() ? -1 : 1;
+                    return h1.getFromAvailability().compareTo(h2.getFromAvailability());
                 }
             }.reversed());
         }
         else{
-            Collections.sort(h, new Comparator<Hotel>() {
-                public int compare(Hotel h1, Hotel h2) {
-                    if (h1.getPopularity() == h2.getPopularity())
+            Collections.sort(h, new Comparator<HotelRoom>() {
+                public int compare(HotelRoom h1, HotelRoom h2) {
+                    if (h1.getFromAvailability() == null || h2.getFromAvailability() == null)
                         return 0;
-                    return h1.getPopularity() < h2.getPopularity() ? -1 : 1;
+                    return h1.getFromAvailability().compareTo(h2.getFromAvailability());
+                }
+            });
+        }
+
+        return h;
+    }
+
+    // Sorts list h by toAvailability in descending order if desc = true, otherwise in ascending.
+    public ArrayList<HotelRoom> sortByToAvailability_Hotel(ArrayList<HotelRoom> h, boolean desc){
+        if(desc){
+            Collections.sort(h, new Comparator<HotelRoom>() {
+                public int compare(HotelRoom h1, HotelRoom h2) {
+                    if (h1.getToAvailability() == null || h2.getToAvailability() == null)
+                        return 0;
+                    return h1.getToAvailability().compareTo(h2.getToAvailability());
+                }
+            }.reversed());
+        }
+        else{
+            Collections.sort(h, new Comparator<HotelRoom>() {
+                public int compare(HotelRoom h1, HotelRoom h2) {
+                    if (h1.getToAvailability() == null || h2.getToAvailability() == null)
+                        return 0;
+                    return h1.getToAvailability().compareTo(h2.getToAvailability());
+                }
+            });
+        }
+
+        return h;
+    }
+
+    // Sorts list h by theme in descending order if desc = true, otherwise in ascending.
+    public ArrayList<HotelRoom> sortByTheme_Hotel(ArrayList<HotelRoom> h, boolean desc){
+        if(desc){
+            Collections.sort(h, new Comparator<HotelRoom>() {
+                public int compare(HotelRoom h1, HotelRoom h2) {
+                    if (h1.getTheme() == null || h2.getTheme() == null)
+                        return 0;
+                    return h1.getTheme().compareTo(h2.getTheme());
+                }
+            }.reversed());
+        }
+        else{
+            Collections.sort(h, new Comparator<HotelRoom>() {
+                public int compare(HotelRoom h1, HotelRoom h2) {
+                    if (h1.getTheme() == null || h2.getTheme() == null)
+                        return 0;
+                    return h1.getTheme().compareTo(h2.getTheme());
+                }
+            });
+        }
+
+        return h;
+    }
+
+    // Sorts list h by theme in descending order if desc = true, otherwise in ascending.
+    public ArrayList<HotelRoom> sortByType_Hotel(ArrayList<HotelRoom> h, boolean desc){
+        if(desc){
+            Collections.sort(h, new Comparator<HotelRoom>() {
+                public int compare(HotelRoom h1, HotelRoom h2) {
+                    if (h1.getType() == null || h2.getType() == null)
+                        return 0;
+                    return h1.getType().compareTo(h2.getType());
+                }
+            }.reversed());
+        }
+        else{
+            Collections.sort(h, new Comparator<HotelRoom>() {
+                public int compare(HotelRoom h1, HotelRoom h2) {
+                    if (h1.getType() == null || h2.getType() == null)
+                        return 0;
+                    return h1.getType().compareTo(h2.getType());
                 }
             });
         }
@@ -284,10 +432,10 @@ public class MetaSearch{
     }
 
     // Sorts list h by price in descending order if desc = true, otherwise in ascending.
-    public ArrayList<Hotel> sortByPrice_Hotel(ArrayList<Hotel> h, boolean desc){
+    public ArrayList<HotelRoom> sortByPrice_Hotel(ArrayList<HotelRoom> h, boolean desc){
         if(desc){
-            Collections.sort(h, new Comparator<Hotel>() {
-                public int compare(Hotel h1, Hotel h2) {
+            Collections.sort(h, new Comparator<HotelRoom>() {
+                public int compare(HotelRoom h1, HotelRoom h2) {
                     if (h1.getPrice() == h2.getPrice())
                         return 0;
                     return h1.getPrice() < h2.getPrice() ? -1 : 1;
@@ -295,8 +443,8 @@ public class MetaSearch{
             }.reversed());
         }
         else{
-            Collections.sort(h, new Comparator<Hotel>() {
-                public int compare(Hotel h1, Hotel h2) {
+            Collections.sort(h, new Comparator<HotelRoom>() {
+                public int compare(HotelRoom h1, HotelRoom h2) {
                     if (h1.getPrice() == h2.getPrice())
                         return 0;
                     return h1.getPrice() < h2.getPrice() ? -1 : 1;

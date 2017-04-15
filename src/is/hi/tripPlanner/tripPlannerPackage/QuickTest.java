@@ -3,9 +3,12 @@ package is.hi.tripPlanner.tripPlannerPackage;
 import is.hi.tripPlanner.dayTourPackage.SearchModel;
 import is.hi.tripPlanner.dayTourPackage.Trip;
 import is.hi.tripPlanner.dayTourPackage.mockObjects.*;
+import is.hi.tripPlanner.hotelPackage.JFrames.Search;
+import is.hi.tripPlanner.hotelPackage.Models.HotelRoom;
 import is.hi.tripPlanner.tripPlannerPackage.controller.MetaSearch;
 import is.hi.tripPlanner.tripPlannerPackage.controller.Database.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import static is.hi.tripPlanner.tripPlannerPackage.controller.Database.*;
@@ -16,14 +19,18 @@ public class QuickTest {
         //
         // auka comment
         // 
-        MetaSearch m = new MetaSearch(new ThreeDayTourMock());
+        MetaSearch m = new MetaSearch(new ThreeDayTourMock(), new Search());
         SearchModel s = new SearchModel("Fun!",new Date(2017,3,25,14,30),new Date(2017,3,25,14,30),
             "Place",5000);
         Trip[] a = m.getDayTourInfo(s);
         //a = m.sortByDate_Trip(a,true);
-        a = m.sortByPrice_Trip(a,true);
+        /*a = m.sortByPrice_Trip(a,true);
         for (Trip trip : a) {
             System.out.println(trip.getTripName());
+        }*/
+        ArrayList<HotelRoom> hl = m.getHotelInfo("","Sudurland","","","suite","","");
+        for(HotelRoom h : hl){
+            System.out.println(h.getHotelName());
         }
         insertPurchaser("froskur@gmail.com", "Friki", "6969699");
         insertPurchaser("kuntakinte@gmail.com", "Tobias", "6969699");

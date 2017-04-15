@@ -4,6 +4,7 @@ import is.hi.tripPlanner.dayTourPackage.Trip;
 import is.hi.tripPlanner.dayTourPackage.SearchModel;
 import is.hi.tripPlanner.dayTourPackage.mockObjects.*;
 
+import is.hi.tripPlanner.hotelPackage.JFrames.Search;
 import is.hi.tripPlanner.tripPlannerPackage.controller.MetaSearch;
 import org.junit.After;
 import org.junit.Before;
@@ -39,7 +40,7 @@ public class MetaSearchTest {
 
     @Before
     public void setUp() throws Exception {
-        searchTest = new MetaSearch(new ThreeDayTourMock());
+        searchTest = new MetaSearch(new ThreeDayTourMock(), new Search());
 
         // create mock data for the mock object
         Trip t1 = new Trip();
@@ -106,7 +107,7 @@ public class MetaSearchTest {
     @Test
     // Test whether a weird search is handled correctly.
     public void testGetDayTourInfoNoResults() {
-        searchTest = new MetaSearch(new NoDayTourMock());
+        searchTest = new MetaSearch(new NoDayTourMock(), new Search());
         SearchModel bullSearch = new SearchModel("x_x", new Date(2015,3,28,14,30), new Date(2015,3,28,15,30), "Zimbabve",1200);
         assertEquals(searchTest.getDayTourInfo(bullSearch), new Trip[0]);
     }

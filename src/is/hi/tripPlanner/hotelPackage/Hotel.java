@@ -1,5 +1,14 @@
 package is.hi.tripPlanner.hotelPackage;
-
+// TODO DELETE the Hotel class when we're certain it's no longer needed at all. (It's replaced by HotelRoom).
+/* ================================================================================ */
+/*                                                                                  */
+/*                                                                                  */
+/*                                                                                  */
+/*                                   OBSOLETE                                       */
+/*                                                                                  */
+/*                                                                                  */
+/*                                                                                  */
+/* ================================================================================ */
 public class Hotel {
     private int hotelId;
     private String language;

@@ -2,7 +2,7 @@ package is.hi.tripPlanner.tripPlannerPackage.controller;
 
 import is.hi.tripPlanner.dayTourPackage.Trip;
 import is.hi.tripPlanner.flightPackage.Flight;
-import is.hi.tripPlanner.hotelPackage.Hotel;
+import is.hi.tripPlanner.hotelPackage.Models.HotelRoom;
 import is.hi.tripPlanner.tripPlannerPackage.storage.Package;
 
 public class Book {
@@ -15,7 +15,7 @@ public class Book {
     public Book(Package p) {
         this.packageToBeBooked = p;
         this.flightBookingNr = p.getBookedFlight().getFlightId();
-        this.hotelBookingNr = p.getBookedHotel().getHotelId();
+        this.hotelBookingNr = p.getBookedHotel().getId();
         this.tripBookingNr = p.getBookedTrip().getTripdId();
         bookingNr++;
     }
@@ -28,7 +28,7 @@ public class Book {
     // This returns a boolean array representing the success of each booking:
     // [flight,hotel,dayTour]
     public boolean[] bookPackage(){
-        // Code to be made
+        // TODO Finish the function to book package.
 
         // In case for some odd reason this function is being called when empty
         // constructor was used (which is only supposed to be used when cancelling
@@ -60,24 +60,24 @@ public class Book {
 
     // Connects to the flight group and attempts to book, returns true if successful
     private boolean bookFlight(Flight flight){
-        // Code to be made
+        // TODO Implement flight booking when they have given us their assignment.
         return true;
     }
 
     // Connects to the hotel group and attempts to book, returns true if successful
-    private boolean bookHotel(Hotel hotel){
-        // Code to be made
+    private boolean bookHotel(HotelRoom hotel){
+        // TODO Implement hotel booking when they have completed their booking.
         return true;
     }
 
     // Connects to the day tour group and attempts to book, returns true if successful
     private boolean bookDayTour(Trip trip){
+        // TODO Implement trip booking with our project.
         // We call bookTrip(String[] s) where s contains: [tripId,bookerEmail, NrOfPeople, bookerSSN]
-        // Code to be made
         return true;
     }
 
-    // Cancels the booking of a package that has been booked before.
+    // Cancels the booking of a package that has been booked before (Doesn't seem to be implemented with other groups, obsolete).
     public boolean[] cancelBooking(int bNr){
         // Connect to our db to get the id's of booked flight, hotel and day tour.
         // Should also check whether this package is "ongoing" or already finished,
