@@ -25,15 +25,16 @@ public class QuickTest {
 
     public static void main(String[] args) throws Exception{
 
+// þarf að setja upp gagnagrunninn fyrir hótelin áður en forritið er keyrt í fyrsta skipti:
+        is.hi.tripPlanner.hotelPackage.HotelBookings.Main.setUpDatabase();
+// ! bara einu sinni
 
         Package pakki = new Package(); //
 
         String searchParam[] = {"", "", "", "", "8000"};
         SearchModel dayTourSearchTest  = new SearchModel(searchParam);
 
-// þarf að setja upp gagnagrunninn fyrir hótelin áður en forritið er keyrt í fyrsta skipti:
-        is.hi.tripPlanner.hotelPackage.HotelBookings.Main.setUpDatabase();
-// ! bara einu sinni
+
         MetaSearch m = new MetaSearch(dayTourSearchTest, new Search());
 
 
