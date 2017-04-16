@@ -52,7 +52,7 @@ public class Book {
             d.insertBooking(Integer.toString(bookingNr),Integer.toString(hotelBookingNr),Integer.toString(flightBookingNr),
                     Integer.toString(tripBookingNr),packageToBeBooked.getPurchaser().getEmail());
         }catch (ClassNotFoundException e){
-            // What to do if it fails to book into our DB.
+            // TODO What to do if it fails to book into our DB.
         }
 
         return bookingSuccess;
@@ -66,7 +66,9 @@ public class Book {
 
     // Connects to the hotel group and attempts to book, returns true if successful
     private boolean bookHotel(HotelRoom hotel){
-        // TODO Implement hotel booking when they have completed their booking.
+        // Their implementation only keeps hold of the user (in a list) so it isn't even kept after the program closes. We already handle and
+        // store user information in our db. The booking part also just keeps hold of that one hotel that was chosen as a single element in a list
+        // which disappears when the program is closed or someone else decides to book a hotel.
         return true;
     }
 
