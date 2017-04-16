@@ -1,9 +1,11 @@
 package is.hi.tripPlanner.tripPlannerPackage.controller;
 
 
-import is.hi.tripPlanner.dayTourPackage.SearchModel;
-import is.hi.tripPlanner.dayTourPackage.Trip;
-import is.hi.tripPlanner.dayTourPackage.mockObjects.DayTourFetching;
+import is.hi.tripPlanner.dayTourPackage.model.SearchModel;
+import is.hi.tripPlanner.dayTourPackage.model.Trip;
+import is.hi.tripPlanner.dayTourPackage.controller.SearchController;
+import is.hi.tripPlanner.dayTourPackage.controller.DatabaseRetrival;
+//import is.hi.tripPlanner.dayTourPackage.mockObjects.DayTourFetching;
 import is.hi.tripPlanner.flightPackage.Flight;
 import is.hi.tripPlanner.hotelPackage.*;
 import is.hi.tripPlanner.hotelPackage.JFrames.Search;
@@ -15,10 +17,12 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class MetaSearch{
-    private DayTourFetching dayTourSearchObject;
+    private SearchModel dayTourSearchObject;
     private Search hotelSearchObject;
 
-    public MetaSearch(DayTourFetching d, Search h){
+    DatabaseRetrival dayTourDBRetrieval = new DatabaseRetrival();
+
+    public MetaSearch(SearchModel d, Search h){
         dayTourSearchObject = d;
         hotelSearchObject = h;
     }
@@ -37,7 +41,7 @@ public class MetaSearch{
             return new Trip[0];
         }
 
-        return dayTourSearchObject.findResults(s);
+        return dayTourDBRetrieval.queryTrip(s);
     }
 
     /**

@@ -1,6 +1,6 @@
 package is.hi.tripPlanner.tripPlannerPackage.controller;
 
-import is.hi.tripPlanner.dayTourPackage.Trip;
+import is.hi.tripPlanner.dayTourPackage.model.Trip;
 import is.hi.tripPlanner.flightPackage.Flight;
 import is.hi.tripPlanner.hotelPackage.Models.HotelRoom;
 import is.hi.tripPlanner.tripPlannerPackage.storage.Package;
@@ -16,7 +16,7 @@ public class Book {
         this.packageToBeBooked = p;
         this.flightBookingNr = p.getBookedFlight().getFlightId();
         this.hotelBookingNr = p.getBookedHotel().getId();
-        this.tripBookingNr = p.getBookedTrip().getTripdId();
+        this.tripBookingNr = p.getBookedTrip().getTripId();
         bookingNr++;
     }
 

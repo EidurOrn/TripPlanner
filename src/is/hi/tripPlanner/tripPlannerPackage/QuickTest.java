@@ -1,12 +1,19 @@
 package is.hi.tripPlanner.tripPlannerPackage;
 
-import is.hi.tripPlanner.dayTourPackage.SearchModel;
-import is.hi.tripPlanner.dayTourPackage.Trip;
-import is.hi.tripPlanner.dayTourPackage.mockObjects.*;
+import is.hi.tripPlanner.dayTourPackage.model.SearchModel;
+import is.hi.tripPlanner.dayTourPackage.model.Trip;
+import is.hi.tripPlanner.dayTourPackage.model.BookingModel;
+import is.hi.tripPlanner.dayTourPackage.controller.BookingController;
+
+//import is.hi.tripPlanner.hotelPackage.HotelBookings.Main;
 import is.hi.tripPlanner.hotelPackage.JFrames.Search;
 import is.hi.tripPlanner.hotelPackage.Models.HotelRoom;
+import is.hi.tripPlanner.hotelPackage.HotelBookings.Main;
+
 import is.hi.tripPlanner.tripPlannerPackage.controller.MetaSearch;
 import is.hi.tripPlanner.tripPlannerPackage.controller.Database.*;
+import is.hi.tripPlanner.tripPlannerPackage.storage.Package;
+import is.hi.tripPlanner.tripPlannerPackage.storage.Purchaser;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,22 +22,62 @@ import static is.hi.tripPlanner.tripPlannerPackage.controller.Database.*;
 
 
 public class QuickTest {
+
     public static void main(String[] args) throws Exception{
-        //
-        // auka comment
-        // 
-        MetaSearch m = new MetaSearch(new ThreeDayTourMock(), new Search());
-        SearchModel s = new SearchModel("Fun!",new Date(2017,3,25,14,30),new Date(2017,3,25,14,30),
-            "Place",5000);
-        Trip[] a = m.getDayTourInfo(s);
+
+
+        Package pakki = new Package(); //
+
+        String searchParam[] = {"", "", "", "", "8000"};
+        SearchModel dayTourSearchTest  = new SearchModel(searchParam);
+
+// þarf að setja upp gagnagrunninn fyrir hótelin áður en forritið er keyrt í fyrsta skipti:
+        is.hi.tripPlanner.hotelPackage.HotelBookings.Main.setUpDatabase();
+// ! bara einu sinni
+        MetaSearch m = new MetaSearch(dayTourSearchTest, new Search());
+
+
+        // user info:
+        String email = "vae111@hi.is";
+        String ssn = "0908922319";
+        Purchaser buyer = new Purchaser("Vladek", email, "7744270",ssn);
+
+
+
+        //// day tours:
+
+
+        // search for trips :
+        Trip[] trips = m.getDayTourInfo(dayTourSearchTest);
         //a = m.sortByDate_Trip(a,true);
-        /*a = m.sortByPrice_Trip(a,true);
-        for (Trip trip : a) {
-            System.out.println(trip.getTripName());
-        }*/
+        trips = m.sortByPrice_Trip(trips,true);
+        int ferdirBokadar = 0; // bókum bara eina dagsferð í alpha útgáfu forritsins
+
+        for (Trip trip : trips) {
+            System.out.println("trip name " + trip.getTripName());
+            // book:
+                // in dayTour
+            String[] bookingString =  { ""+trip.getTripId(), email, "3", ssn };
+            String ferdBokud =  BookingController.bookTrip(bookingString);
+
+                // in tripPlanner
+            if(ferdBokud.equals("Booking successful") && ferdirBokadar<1){
+                pakki.setBookedTrip(trip);
+                ferdirBokadar++;
+            }
+        }
+
+        System.out.println("Bókuð í trip plannerinn: + " + pakki.getBookedTrip().getTripName());
+
+
+
+
+
+
+        //// hotels:
         ArrayList<HotelRoom> hl = m.getHotelInfo("","Sudurland","","","suite","","");
         for(HotelRoom h : hl){
-            System.out.println(h.getHotelName());
+            System.out.println("hotel name + " + h.getHotelName());
         }
         insertPurchaser("froskur@gmail.com", "Friki", "6969699");
         insertPurchaser("kuntakinte@gmail.com", "Tobias", "6969699");

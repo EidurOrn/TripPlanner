@@ -20,5 +20,8 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="sqlite-jdbc-3.8.7" level="project" />
+    <orderEntry type="library" name="postgresql-9.2-1002.jdbc4" level="project" />
+    <orderEntry type="library" name="activation" level="project" />
+    <orderEntry type="library" name="javax.mail" level="project" />
   </component>
 </module>

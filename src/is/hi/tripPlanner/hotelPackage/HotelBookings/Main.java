@@ -18,8 +18,8 @@ public class Main {
         SQLiteJDBC.createHotelRooms();
         SQLiteJDBC.insertIntoHotelRooms(1, "Hotel Bifrost","2017-01-01","2017-12-31",28000 , "double", "Family", 2, "Sudurland");
         SQLiteJDBC.insertIntoHotelRooms(2, "Hotel Ísafjordur","2017-04-04","2017-08-21",34000 , "double", "Family", 3, "Vesturland");
-        SQLiteJDBC.insertIntoHotelRooms(3, "Hotel Snæfell","2017-03-04","2017-09-04",21000 , "single", "Family", 2, "Austurlandi");
-        SQLiteJDBC.insertIntoHotelRooms(4, "Hotel Snæfell","2017-03-04","2017-12-31",40000 , "double", "Family", 2, "Austurlandi");
+        SQLiteJDBC.insertIntoHotelRooms(3, "Hotel Snæfell","2017-03-04","2017-09-04",21000 , "single", "Family", 2, "Austurland");
+        SQLiteJDBC.insertIntoHotelRooms(4, "Hotel Snæfell","2017-03-04","2017-12-31",40000 , "double", "Family", 2, "Austurland");
         SQLiteJDBC.insertIntoHotelRooms(5, "Hotel Holt","2017-03-04","2017-08-07",90000 , "suite", "Family", 4, "Sudurland");
         SQLiteJDBC.insertIntoHotelRooms(6, "Hotel Holt","2017-03-04","2017-08-30",60000 , "double", "Family", 4, "Sudurland");
         SQLiteJDBC.insertIntoHotelRooms(7, "Hotel Holt","2017-03-04","2017-12-31",40000 , "single", "Family", 4, "Sudurland");

@@ -1,6 +1,6 @@
 package is.hi.tripPlanner.tripPlannerPackage.storage;
 
-import is.hi.tripPlanner.dayTourPackage.Trip;
+import is.hi.tripPlanner.dayTourPackage.model.Trip;
 import is.hi.tripPlanner.flightPackage.Flight;
 import is.hi.tripPlanner.hotelPackage.Hotel;
 import is.hi.tripPlanner.hotelPackage.Models.HotelRoom;
