@@ -1,9 +1,11 @@
 package is.hi.tripPlanner.tripPlannerPackage.controller;
 
+import is.hi.tripPlanner.dayTourPackage.controller.BookingController;
 import is.hi.tripPlanner.dayTourPackage.model.Trip;
 import is.hi.tripPlanner.flightPackage.Flight;
 import is.hi.tripPlanner.hotelPackage.Models.HotelRoom;
 import is.hi.tripPlanner.tripPlannerPackage.storage.Package;
+import is.hi.tripPlanner.tripPlannerPackage.storage.Purchaser;
 
 public class Book {
     private Package packageToBeBooked;
@@ -12,7 +14,7 @@ public class Book {
     private int hotelBookingNr;
     private int tripBookingNr;
 
-    public Book(Package p) {
+    public Book(Package p ) {
         this.packageToBeBooked = p;
         this.flightBookingNr = p.getBookedFlight().getFlightId();
         this.hotelBookingNr = p.getBookedHotel().getId();
@@ -76,7 +78,17 @@ public class Book {
     private boolean bookDayTour(Trip trip){
         // TODO Implement trip booking with our project.
         // We call bookTrip(String[] s) where s contains: [tripId,bookerEmail, NrOfPeople, bookerSSN]
-        return true;
+        String[] bookingString =  { ""+trip.getTripId(), packageToBeBooked.getPurchaser().getEmail(), packageToBeBooked.getPurchaser().getTripNumPeople(), packageToBeBooked.getPurchaser().getSsn() };
+        String ferdBokud =  BookingController.bookTrip(bookingString);
+
+        // in tripPlanner
+        if(ferdBokud.equals("Booking successful")){
+            return true;
+        }else{
+            return false;
+        }
+
+
     }
 
     // Cancels the booking of a package that has been booked before (Doesn't seem to be implemented with other groups, obsolete).

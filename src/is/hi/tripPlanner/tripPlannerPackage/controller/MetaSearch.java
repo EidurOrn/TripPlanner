@@ -27,21 +27,26 @@ public class MetaSearch{
         hotelSearchObject = h;
     }
 
-    public Trip[] getDayTourInfo(SearchModel s){
+    /**
+     * called from dayTourUI, fetches a list of day tours that fit search conditions listed in s
+     * @param search search parameter object, contains tripName, dateBegin, dateEnd, location and price
+     * @return
+     */
+    public Trip[] getDayTourInfo(SearchModel search){
         // Check if end date occurs before the start date.
-        if(s.getDateBegin() != null) {
-            if(s.getDateEnd() != null){
-                if (s.getDateEnd().before(s.getDateBegin())) {
+        if(search.getDateBegin() != null) {
+            if(search.getDateEnd() != null){
+                if (search.getDateEnd().before(search.getDateBegin())) {
                     return new Trip[0];
                 }
             }
         }
         // Check if the price is negative (user being payed).
-        if(s.getPrice() < 0){
+        if(search.getPrice() < 0){
             return new Trip[0];
         }
 
-        return dayTourDBRetrieval.queryTrip(s);
+        return dayTourDBRetrieval.queryTrip(search);
     }
 
     /**

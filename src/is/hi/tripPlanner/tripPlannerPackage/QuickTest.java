@@ -42,6 +42,8 @@ public class QuickTest {
         String email = "vae111@hi.is";
         String ssn = "0908922319";
         Purchaser buyer = new Purchaser("Vladek", email, "7744270",ssn);
+        // Vladek ætlar að kaupa fyrir sig og barnabarnið sitt
+        buyer.setTripNumPeople("3");
 
 
 
@@ -58,7 +60,7 @@ public class QuickTest {
             System.out.println("trip name " + trip.getTripName());
             // book:
                 // in dayTour
-            String[] bookingString =  { ""+trip.getTripId(), email, "3", ssn };
+            String[] bookingString =  { ""+trip.getTripId(), email, buyer.getTripNumPeople() , ssn };
             String ferdBokud =  BookingController.bookTrip(bookingString);
 
                 // in tripPlanner
