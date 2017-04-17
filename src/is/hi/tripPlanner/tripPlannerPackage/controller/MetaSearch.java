@@ -7,6 +7,7 @@ import is.hi.tripPlanner.dayTourPackage.controller.SearchController;
 import is.hi.tripPlanner.dayTourPackage.controller.DatabaseRetrival;
 //import is.hi.tripPlanner.dayTourPackage.mockObjects.DayTourFetching;
 import is.hi.tripPlanner.flightPackage.Flight;
+import is.hi.tripPlanner.flightPackage.FSearch;
 import is.hi.tripPlanner.hotelPackage.*;
 import is.hi.tripPlanner.hotelPackage.JFrames.Search;
 import is.hi.tripPlanner.hotelPackage.Models.HotelRoom;
@@ -114,8 +115,11 @@ public class MetaSearch{
      * @param searchFlight  search object from flight program
      * @return
      */
-    public Flight[] getFlightInfo(Search searchFlight){
+    public Flight[] getFlightInfo(FSearch searchFlight){
         // skv. domain modelinu er hjá 7F virðist tilviksbreytan availableFlightList geyma leitarniðurstöðurnar
+
+
+
         return new Flight[0];
     }
 

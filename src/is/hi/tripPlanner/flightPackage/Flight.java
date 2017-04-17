@@ -12,6 +12,13 @@ public class Flight {
     private int numbPeople;
     private int price;
 
+    public Flight(String location, String destination, Date departure, Date arrival){
+        this.location = location;
+        this.departure = departure;
+        this.destination = destination;
+        this.arrival = arrival;
+    }
+
     public int getFlightId() {
         return flightId;
     }
