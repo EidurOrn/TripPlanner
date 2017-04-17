@@ -5,7 +5,6 @@ import is.hi.tripPlanner.dayTourPackage.model.Trip;
 import is.hi.tripPlanner.flightPackage.Flight;
 import is.hi.tripPlanner.hotelPackage.Models.HotelRoom;
 import is.hi.tripPlanner.tripPlannerPackage.storage.Package;
-import is.hi.tripPlanner.tripPlannerPackage.storage.Purchaser;
 
 public class Book {
     private Package packageToBeBooked;
@@ -18,7 +17,7 @@ public class Book {
         this.packageToBeBooked = p;
         this.flightBookingNr = p.getBookedFlight().getFlightId();
         this.hotelBookingNr = p.getBookedHotel().getId();
-        this.tripBookingNr = p.getBookedTrip().getTripId();
+        this.tripBookingNr = p.getBookedDayTour().getTripId();
         bookingNr++;
     }
 
@@ -41,7 +40,7 @@ public class Book {
         boolean[] bookingSuccess = new boolean[]{
             bookFlight(packageToBeBooked.getBookedFlight()),
             bookHotel(packageToBeBooked.getBookedHotel()),
-            bookDayTour(packageToBeBooked.getBookedTrip())
+            bookDayTour(packageToBeBooked.getBookedDayTour())
         };
 
         // Check whether every booking succeeded.

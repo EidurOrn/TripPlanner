@@ -23,8 +23,8 @@ public class MetaSearch{
     DatabaseRetrival dayTourDBRetrieval = new DatabaseRetrival();
 
     public MetaSearch(SearchModel d, HotelSearch h){
-        dayTourSearchObject = d;
-        hotelSearchObject = h;
+        setDayTourSearchObject(d);
+        setHotelSearchObject(h);
 
     }
 
@@ -66,43 +66,43 @@ public class MetaSearch{
         ArrayList<HotelRoom> l = new ArrayList<HotelRoom>();
 
         if(!hotelName.equals("")) {
-            l = hotelSearchObject.HotelSearch(hotelName); // Makes a list with the first search results.
+            l = getHotelSearchObject().HotelSearch(hotelName); // Makes a list with the first search results.
             if(l.isEmpty()) return l; // There was a search attempt but it turned up empty, no other condition can change that.
         }
         if(!location.equals("")) {
-            if(l.isEmpty()) l = hotelSearchObject.LocationSearch(location); // Makes a list with the first search results.
+            if(l.isEmpty()) l = getHotelSearchObject().LocationSearch(location); // Makes a list with the first search results.
                                                                             // (If no prev result has been given, empty is a result).
-            else l.retainAll(hotelSearchObject.LocationSearch(location)); // Retains only the same list elements between the two lists.
+            else l.retainAll(getHotelSearchObject().LocationSearch(location)); // Retains only the same list elements between the two lists.
 
             if(l.isEmpty()) return l;
         }
         if(!fromAvailability.equals("")) {
-            if(l.isEmpty()) l = hotelSearchObject.FromAvailabilitySearch(fromAvailability);
-            else l.retainAll(hotelSearchObject.FromAvailabilitySearch(fromAvailability));
+            if(l.isEmpty()) l = getHotelSearchObject().FromAvailabilitySearch(fromAvailability);
+            else l.retainAll(getHotelSearchObject().FromAvailabilitySearch(fromAvailability));
 
             if(l.isEmpty()) return l;
         }
         if(!toAvailability.equals("")) {
-            if(l.isEmpty()) l = hotelSearchObject.ToAvailabilitySearch(toAvailability);
-            else l.retainAll(hotelSearchObject.ToAvailabilitySearch(toAvailability));
+            if(l.isEmpty()) l = getHotelSearchObject().ToAvailabilitySearch(toAvailability);
+            else l.retainAll(getHotelSearchObject().ToAvailabilitySearch(toAvailability));
 
             if(l.isEmpty()) return l;
         }
         if(!type.equals("")) {
-            if(l.isEmpty()) l = hotelSearchObject.TypeSearch(type);
-            else l.retainAll(hotelSearchObject.TypeSearch(type));
+            if(l.isEmpty()) l = getHotelSearchObject().TypeSearch(type);
+            else l.retainAll(getHotelSearchObject().TypeSearch(type));
 
             if(l.isEmpty()) return l;
         }
         if(!theme.equals("")) {
-            if(l.isEmpty()) l = hotelSearchObject.ThemeSearch(theme);
-            else l.retainAll(hotelSearchObject.ThemeSearch(theme));
+            if(l.isEmpty()) l = getHotelSearchObject().ThemeSearch(theme);
+            else l.retainAll(getHotelSearchObject().ThemeSearch(theme));
 
             if(l.isEmpty()) return l;
         }
         if(!quality.equals("")) {
-            if(l.isEmpty()) l = hotelSearchObject.QualitySearch(quality);
-            else l.retainAll(hotelSearchObject.QualitySearch(quality));
+            if(l.isEmpty()) l = getHotelSearchObject().QualitySearch(quality);
+            else l.retainAll(getHotelSearchObject().QualitySearch(quality));
 
             if(l.isEmpty()) return l;
         }
@@ -612,5 +612,19 @@ public class MetaSearch{
     }
 
 
+    public SearchModel getDayTourSearchObject() {
+        return dayTourSearchObject;
+    }
 
+    public void setDayTourSearchObject(SearchModel dayTourSearchObject) {
+        this.dayTourSearchObject = dayTourSearchObject;
+    }
+
+    public HotelSearch getHotelSearchObject() {
+        return hotelSearchObject;
+    }
+
+    public void setHotelSearchObject(HotelSearch hotelSearchObject) {
+        this.hotelSearchObject = hotelSearchObject;
+    }
 }

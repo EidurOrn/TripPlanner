@@ -28,7 +28,7 @@ public class QuickTest {
         //is.hi.tripPlanner.hotelPackage.HotelBookings.Main.setUpDatabase();
 // ! bara einu sinni
 
-        Package pakki = new Package(); //
+      Package pakki = new Package(); //
 
         String searchParam[] = {"", "", "", "", "8000"};
         SearchModel dayTourSearchTest  = new SearchModel(searchParam);
@@ -64,12 +64,12 @@ public class QuickTest {
 
                 // in tripPlanner
             if(ferdBokud.equals("Booking successful") && ferdirBokadar<1){
-                pakki.setBookedTrip(trip);
+                pakki.setBookedDayTour(trip);
                 ferdirBokadar++;
             }
         }
 
-        System.out.println("Bókuð í trip plannerinn: + " + pakki.getBookedTrip().getTripName());
+        System.out.println("Bókuð í trip plannerinn: + " + pakki.getBookedDayTour().getTripName());
 
 
 

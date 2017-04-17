@@ -2,7 +2,6 @@ package is.hi.tripPlanner.tripPlannerPackage.storage;
 
 import is.hi.tripPlanner.dayTourPackage.model.Trip;
 import is.hi.tripPlanner.flightPackage.Flight;
-import is.hi.tripPlanner.hotelPackage.Hotel;
 import is.hi.tripPlanner.hotelPackage.Models.HotelRoom;
 import is.hi.tripPlanner.tripPlannerPackage.controller.Book;
 
@@ -10,13 +9,13 @@ public class Package {
     private static int packageId;
     private Flight bookedFlight;
     private HotelRoom bookedHotel;
-    private Trip bookedTrip;
+    private Trip bookedDayTour;
     private Purchaser purchaser;
 
-    public Package(Flight bookedFlight, HotelRoom bookedHotel, Trip bookedTrip, Purchaser purchaser) {
+    public Package(Flight bookedFlight, HotelRoom bookedHotel, Trip bookedDayTour, Purchaser purchaser) {
         this.bookedFlight = bookedFlight;
         this.bookedHotel = bookedHotel;
-        this.bookedTrip = bookedTrip;
+        this.bookedDayTour = bookedDayTour;
         this.purchaser = purchaser;
         packageId++;
     }
@@ -45,12 +44,12 @@ public class Package {
         this.bookedHotel = bookedHotel;
     }
 
-    public Trip getBookedTrip() {
-        return bookedTrip;
+    public Trip getBookedDayTour() {
+        return bookedDayTour;
     }
 
-    public void setBookedTrip(Trip bookedTrip) {
-        this.bookedTrip = bookedTrip;
+    public void setBookedDayTour(Trip bookedDayTour) {
+        this.bookedDayTour = bookedDayTour;
     }
 
     public Purchaser getPurchaser() {
