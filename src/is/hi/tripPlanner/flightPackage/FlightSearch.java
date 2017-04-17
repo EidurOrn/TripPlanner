@@ -18,7 +18,7 @@ import java.util.ArrayList;
 /**
  * Created by Alexander on 7.4.2017.
  */
-public class FSearch {
+public class FlightSearch {
 
 
     tengingVidGagnagrunn t = new tengingVidGagnagrunn();
@@ -31,7 +31,7 @@ public class FSearch {
     public static ArrayList<String> found1;
     public static ArrayList<String> found2;
 
-    public FSearch(){
+    public FlightSearch(){
 
     }
 

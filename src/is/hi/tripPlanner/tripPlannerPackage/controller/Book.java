@@ -63,6 +63,7 @@ public class Book {
     // Connects to the flight group and attempts to book, returns true if successful
     private boolean bookFlight(Flight flight){
         // TODO Implement flight booking when they have given us their assignment.
+        // as of 17/04 there's no booking in the flight program
         return true;
     }
 

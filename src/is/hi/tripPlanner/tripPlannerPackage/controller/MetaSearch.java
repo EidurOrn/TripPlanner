@@ -3,33 +3,33 @@ package is.hi.tripPlanner.tripPlannerPackage.controller;
 
 import is.hi.tripPlanner.dayTourPackage.model.SearchModel;
 import is.hi.tripPlanner.dayTourPackage.model.Trip;
-import is.hi.tripPlanner.dayTourPackage.controller.SearchController;
 import is.hi.tripPlanner.dayTourPackage.controller.DatabaseRetrival;
 //import is.hi.tripPlanner.dayTourPackage.mockObjects.DayTourFetching;
 import is.hi.tripPlanner.flightPackage.Flight;
-import is.hi.tripPlanner.flightPackage.FSearch;
-import is.hi.tripPlanner.hotelPackage.*;
-import is.hi.tripPlanner.hotelPackage.JFrames.Search;
+import is.hi.tripPlanner.flightPackage.FlightSearch;
+import is.hi.tripPlanner.hotelPackage.JFrames.HotelSearch;
 import is.hi.tripPlanner.hotelPackage.Models.HotelRoom;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class MetaSearch{
     private SearchModel dayTourSearchObject;
-    private Search hotelSearchObject;
+    private HotelSearch hotelSearchObject;
+
 
     DatabaseRetrival dayTourDBRetrieval = new DatabaseRetrival();
 
-    public MetaSearch(SearchModel d, Search h){
+    public MetaSearch(SearchModel d, HotelSearch h){
         dayTourSearchObject = d;
         hotelSearchObject = h;
+
     }
 
     /**
-     * called from dayTourUI, fetches a list of day tours that fit search conditions listed in s
+     * called from dayTourUI, fetches a list of day tours that fit search conditions listed in search
      * @param search search parameter object, contains tripName, dateBegin, dateEnd, location and price
      * @return
      */
@@ -112,15 +112,41 @@ public class MetaSearch{
 
     /**
      *
-     * @param searchFlight  search object from flight program
-     * @return
+     * @param location where you fly from
+     * @param destination where you fly to
+     * @param date when you fly, format "yyyy-MM-dd"
+     * @return returns list of Flight objects from the database that have the departure, arrival and date
      */
-    public Flight[] getFlightInfo(FSearch searchFlight){
+    public ArrayList<Flight> getFlightInfo(String location, String destination, String date){
         // skv. domain modelinu er hjá 7F virðist tilviksbreytan availableFlightList geyma leitarniðurstöðurnar
 
+        FlightSearch flightS = new FlightSearch();
+        ArrayList<Flight> f = new ArrayList<Flight>();
+
+        ArrayList<String> flightResults =  flightS.searchForFlight(location, destination, date);
+
+        // flug sem fara á sömu mínútu eru sömu flug
+        DateFormat format = new SimpleDateFormat("y-M-d HH:mm", Locale.ENGLISH);
+        Date departure;
+
+        // the elements of flightResults are strings "location destination departure-time"
+        // e.g. Keflavík Alicante 2017-04-16 21:58:37
+        for(String flight : flightResults){
+            System.out.println(flight);
+            try {
+                departure = format.parse(nthWord(flight, 3));
+                f.add(new Flight(location, destination, departure));
+            }
+            catch(ParseException ex){
+                //
+            }
 
 
-        return new Flight[0];
+        }
+
+
+        // fyrir return flight má kalla á flightS.searchForFlight(destination, location , returnDate)
+        return f;
     }
 
     /* --------------------------------------------------------- */
@@ -564,4 +590,27 @@ public class MetaSearch{
 
         return t;
     }
+
+    /**
+     * returns word number nr in the 3 word sentence sent
+     * 1 <= nr <= 3
+     * used to get data from flight results
+     */
+    public static String nthWord(String sent, int nr){
+        int fyrstaBil = sent.indexOf(' ');
+        if(nr == 1){
+            return sent.substring(0,fyrstaBil);
+        }
+
+        int annadBil = fyrstaBil + sent.substring(fyrstaBil+1).indexOf(' ');
+
+        if(nr==2) {
+            return sent.substring(fyrstaBil + 1, annadBil+1);
+        }
+
+        return  sent.substring(annadBil+2,sent.length());
+    }
+
+
+
 }

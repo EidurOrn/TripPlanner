@@ -38,7 +38,7 @@ public class AdalFrame extends JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jAFSearchButton.setText("Search");
+        jAFSearchButton.setText("HotelSearch");
         jAFSearchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jAFSearchButtonActionPerformed(evt);

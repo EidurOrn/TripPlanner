@@ -23,14 +23,14 @@ import java.util.HashMap;
  *
  * @author Lenovo
  */
-public class Search extends javax.swing.JPanel {
+public class HotelSearch extends javax.swing.JPanel {
 
 
     DefaultTableModel tableModel = new DefaultTableModel();
     HashMap idsInTable = new HashMap();
     
     HotelRoom hotelRoomQuery = new HotelRoom(0, "", -1, "", "", "", "", -1, "");
-    public Search() {
+    public HotelSearch() {
         initComponents();
         tableModel = new DefaultTableModel();
         tableModel.setColumnIdentifiers(new Object[]{"hotelName","price","fromAvailability", "toAvailability", "type", "theme", "quality", "location"});
@@ -687,7 +687,7 @@ public class Search extends javax.swing.JPanel {
         });
 
         jSearchButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        jSearchButton.setText("Search");
+        jSearchButton.setText("HotelSearch");
         jSearchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jSearchButtonActionPerformed(evt);

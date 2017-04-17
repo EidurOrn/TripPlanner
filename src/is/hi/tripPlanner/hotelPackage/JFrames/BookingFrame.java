@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-//import static JFrames.Search.selectFromTable;
+//import static JFrames.HotelSearch.selectFromTable;
 
 /**
  *
