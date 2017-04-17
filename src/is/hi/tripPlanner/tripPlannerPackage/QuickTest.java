@@ -1,27 +1,93 @@
 package is.hi.tripPlanner.tripPlannerPackage;
 
-import is.hi.tripPlanner.dayTourPackage.SearchModel;
-import is.hi.tripPlanner.dayTourPackage.Trip;
-import is.hi.tripPlanner.dayTourPackage.mockObjects.*;
+import is.hi.tripPlanner.dayTourPackage.model.SearchModel;
+import is.hi.tripPlanner.dayTourPackage.model.Trip;
+import is.hi.tripPlanner.dayTourPackage.model.BookingModel;
+import is.hi.tripPlanner.dayTourPackage.controller.BookingController;
+
+import is.hi.tripPlanner.flightPackage.FSearch;
+import is.hi.tripPlanner.flightPackage.Flight;
+
+//import is.hi.tripPlanner.hotelPackage.HotelBookings.Main;
+
+import is.hi.tripPlanner.hotelPackage.JFrames.Search;
+import is.hi.tripPlanner.hotelPackage.Models.HotelRoom;
+import is.hi.tripPlanner.hotelPackage.HotelBookings.Main;
+
 import is.hi.tripPlanner.tripPlannerPackage.controller.MetaSearch;
 import is.hi.tripPlanner.tripPlannerPackage.controller.Database.*;
+import is.hi.tripPlanner.tripPlannerPackage.storage.Package;
+import is.hi.tripPlanner.tripPlannerPackage.storage.Purchaser;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import static is.hi.tripPlanner.tripPlannerPackage.controller.Database.*;
 
 
 public class QuickTest {
+
     public static void main(String[] args) throws Exception{
-        //
-        // auka comment
-        // 
-        MetaSearch m = new MetaSearch(new ThreeDayTourMock());
-        SearchModel s = new SearchModel("Fun!",new Date(2017,3,25,14,30),new Date(2017,3,25,14,30),
-            "Place",5000);
-        Trip[] a = m.getDayTourInfo(s);
-        for (Trip trip : a) {
-            System.out.println(trip.getTripName());
+
+// þarf að setja upp gagnagrunninn fyrir hótelin áður en forritið er keyrt í fyrsta skipti:
+        //is.hi.tripPlanner.hotelPackage.HotelBookings.Main.setUpDatabase();
+// ! bara einu sinni
+
+        Package pakki = new Package(); //
+
+        String searchParam[] = {"", "", "", "", "8000"};
+        SearchModel dayTourSearchTest  = new SearchModel(searchParam);
+
+
+        MetaSearch m = new MetaSearch(dayTourSearchTest, new Search());
+
+
+        // user info:
+        String email = "vae111@hi.is";
+        String ssn = "0908922319";
+        Purchaser buyer = new Purchaser("Vladek", email, "7744270",ssn);
+        // Vladek ætlar að kaupa fyrir sig og barnabarnið sitt
+        buyer.setTripNumPeople("3");
+
+
+
+        //// day tours:
+
+
+        // search for trips :
+        Trip[] trips = m.getDayTourInfo(dayTourSearchTest);
+        //a = m.sortByDate_Trip(a,true);
+        trips = m.sortByPrice_Trip(trips,true);
+        int ferdirBokadar = 0; // bókum bara eina dagsferð í alpha útgáfu forritsins
+
+        for (Trip trip : trips) {
+            System.out.println("trip name " + trip.getTripName());
+            // book:
+                // in dayTour
+            String[] bookingString =  { ""+trip.getTripId(), email, buyer.getTripNumPeople() , ssn };
+            String ferdBokud =  BookingController.bookTrip(bookingString);
+
+                // in tripPlanner
+            if(ferdBokud.equals("Booking successful") && ferdirBokadar<1){
+                pakki.setBookedTrip(trip);
+                ferdirBokadar++;
+            }
+        }
+
+        System.out.println("Bókuð í trip plannerinn: + " + pakki.getBookedTrip().getTripName());
+
+
+
+
+
+
+        //// hotels:
+        ArrayList<HotelRoom> hl = m.getHotelInfo("","Sudurland","","","suite","","");
+        for(HotelRoom h : hl){
+            System.out.println("hotel name + " + h.getHotelName());
         }
         insertPurchaser("froskur@gmail.com", "Friki", "6969699");
         insertPurchaser("kuntakinte@gmail.com", "Tobias", "6969699");
@@ -34,7 +100,63 @@ public class QuickTest {
         removeBooking("A120");
         System.out.println("\nSome bookings removed...");
         getBookings();
+
+        // flights:
+
+        FSearch flightS = new FSearch();
+
+        // notandinn leitar að ferðum til og frá
+        ArrayList<String> flightResultsFara =  flightS.searchForFlight("Keflavík", "Alicante", "2017-04-16");
+
+        // velur eitthvað til
+        String chosenFlightFara = flightResultsFara.get(0);
+
+        String location = nthWord(chosenFlightFara,1);
+        String destination = nthWord(chosenFlightFara,2);
+
+        // leitar að flugum til baka
+        ArrayList<String> flightResultsKoma =  flightS.searchForFlight(destination,location, "2017-04-16");
+
+        // velur eitthvað til baka
+        String chosenFlightKoma = flightResultsKoma.get(0);
+
+
+        DateFormat format = new SimpleDateFormat("y-M-d HH:mm", Locale.ENGLISH);
+        Date departure = format.parse(nthWord(chosenFlightFara,3));
+        Date arrival = format.parse(nthWord(chosenFlightKoma,3));
+
+        Flight bokadFlug = new Flight(location, destination, departure, arrival);
+
+        pakki.setBookedFlight(bokadFlug);
+
+
+
+
+
+
+
+
+
     }
+    /**
+     * returns word number nr in the 3 word sentence sent
+     * 1 <= n <= 3
+     */
+    public static String nthWord(String sent, int nr){
+        int fyrstaBil = sent.indexOf(' ');
+        if(nr == 1){
+            return sent.substring(0,fyrstaBil);
+        }
+
+        int annadBil = fyrstaBil + sent.substring(fyrstaBil+1).indexOf(' ');
+
+        if(nr==2) {
+            return sent.substring(fyrstaBil + 1, annadBil+1);
+        }
+
+        return  sent.substring(annadBil+2,sent.length());
+    }
+
 
 
 }

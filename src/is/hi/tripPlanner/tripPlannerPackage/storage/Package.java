@@ -1,18 +1,19 @@
 package is.hi.tripPlanner.tripPlannerPackage.storage;
 
-import is.hi.tripPlanner.dayTourPackage.Trip;
+import is.hi.tripPlanner.dayTourPackage.model.Trip;
 import is.hi.tripPlanner.flightPackage.Flight;
 import is.hi.tripPlanner.hotelPackage.Hotel;
+import is.hi.tripPlanner.hotelPackage.Models.HotelRoom;
 import is.hi.tripPlanner.tripPlannerPackage.controller.Book;
 
 public class Package {
     private static int packageId;
     private Flight bookedFlight;
-    private Hotel bookedHotel;
+    private HotelRoom bookedHotel;
     private Trip bookedTrip;
     private Purchaser purchaser;
 
-    public Package(Flight bookedFlight, Hotel bookedHotel, Trip bookedTrip, Purchaser purchaser) {
+    public Package(Flight bookedFlight, HotelRoom bookedHotel, Trip bookedTrip, Purchaser purchaser) {
         this.bookedFlight = bookedFlight;
         this.bookedHotel = bookedHotel;
         this.bookedTrip = bookedTrip;
@@ -36,11 +37,11 @@ public class Package {
         this.bookedFlight = bookedFlight;
     }
 
-    public Hotel getBookedHotel() {
+    public HotelRoom getBookedHotel() {
         return bookedHotel;
     }
 
-    public void setBookedHotel(Hotel bookedHotel) {
+    public void setBookedHotel(HotelRoom bookedHotel) {
         this.bookedHotel = bookedHotel;
     }
 
@@ -62,6 +63,8 @@ public class Package {
 
     // Books the entire package (unfinished)
     public boolean bookPackage(){
+        // TODO Needs to be handled differently to notify user in GUI of which one failed.
+        // Should be simple once GUI is in place, (Just check which index has false).
         Book b = new Book(this);
         // This needs to be handled differently to alert the user what has failed
         // could simply return the boolean array where each index represents:
@@ -71,4 +74,5 @@ public class Package {
         }
         return true;
     }
+
 }

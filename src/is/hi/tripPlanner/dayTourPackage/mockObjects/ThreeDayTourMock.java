@@ -4,7 +4,6 @@ import is.hi.tripPlanner.dayTourPackage.SearchModel;
 import is.hi.tripPlanner.dayTourPackage.Trip;
 
 import java.util.Date;
-
 public class ThreeDayTourMock implements DayTourFetching {
 
     public Trip[] findResults(SearchModel s){
