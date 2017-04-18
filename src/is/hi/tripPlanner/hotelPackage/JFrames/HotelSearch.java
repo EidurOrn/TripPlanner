@@ -93,7 +93,7 @@ public class HotelSearch extends javax.swing.JPanel {
         try {
             c = getConnection();
             c.setAutoCommit(false);
-            System.out.println("Opened database successfully SEARCH FEATURE");
+ //           System.out.println("Opened database successfully SEARCH FEATURE");
 
             stmt = c.createStatement();
             String searchQuery = "SELECT * FROM `HotelRooms` WHERE hotelName LIKE '%"+ValToSearch+"%'";
@@ -135,7 +135,7 @@ public class HotelSearch extends javax.swing.JPanel {
         try {
             c = getConnection();
             c.setAutoCommit(false);
-            System.out.println("Opened database successfully SEARCH FEATURE");
+  //          System.out.println("Opened database successfully SEARCH FEATURE");
 
             stmt = c.createStatement();
             String searchQuery = "SELECT * FROM `HotelRooms` WHERE location LIKE '%"+ValToSearch+"%'";
@@ -177,7 +177,7 @@ public class HotelSearch extends javax.swing.JPanel {
         try {
             c = getConnection();
             c.setAutoCommit(false);
-            System.out.println("Opened database successfully SEARCH FEATURE");
+   //         System.out.println("Opened database successfully SEARCH FEATURE");
 
             stmt = c.createStatement();
             String searchQuery = "SELECT * FROM `HotelRooms` WHERE location LIKE '%"+ValToSearch+"%'";
@@ -219,7 +219,7 @@ public class HotelSearch extends javax.swing.JPanel {
         try {
             c = getConnection();
             c.setAutoCommit(false);
-            System.out.println("Opened database successfully SEARCH FEATURE");
+//            System.out.println("Opened database successfully SEARCH FEATURE");
 
             stmt = c.createStatement();
             String searchQuery = "SELECT * FROM `HotelRooms` WHERE location LIKE '%"+ValToSearch+"%'";
@@ -266,7 +266,7 @@ public class HotelSearch extends javax.swing.JPanel {
         try {
             c = getConnection();
             c.setAutoCommit(false);
-            System.out.println("Opened database successfully SEARCH FEATURE");
+ //           System.out.println("Opened database successfully SEARCH FEATURE");
 
             stmt = c.createStatement();
             String searchQuery = "SELECT * FROM `HotelRooms` WHERE type LIKE '%"+actualValueToSearch+"%'";
@@ -313,7 +313,7 @@ public class HotelSearch extends javax.swing.JPanel {
         try {
             c = getConnection();
             c.setAutoCommit(false);
-            System.out.println("Opened database successfully SEARCH FEATURE");
+  //          System.out.println("Opened database successfully SEARCH FEATURE");
 
             stmt = c.createStatement();
             String searchQuery = "SELECT * FROM `HotelRooms` WHERE theme LIKE '%"+actualValueToSearch+"%'";
@@ -360,7 +360,7 @@ public class HotelSearch extends javax.swing.JPanel {
         try {
             c = getConnection();
             c.setAutoCommit(false);
-            System.out.println("Opened database successfully SEARCH FEATURE");
+ //           System.out.println("Opened database successfully SEARCH FEATURE");
 
             stmt = c.createStatement();
             String searchQuery = "SELECT * FROM `HotelRooms` WHERE quality LIKE '%"+actualQuality+"%'";
@@ -436,7 +436,7 @@ public class HotelSearch extends javax.swing.JPanel {
             int id = location.get(i).id;
             
             if (idsInTable.containsKey(id) == false  && location.get(i).matchesQuery(hotelRoomQuery)) {
-                System.out.println("Adding id " + id);
+//                System.out.println("Adding id " + id);
                 tableModel.addRow(row);
                 idsInTable.put(id, true);
             }
@@ -462,7 +462,7 @@ public class HotelSearch extends javax.swing.JPanel {
             int id = fromAvailability.get(i).id;
             
             if (idsInTable.containsKey(id) == false  && fromAvailability.get(i).matchesQuery(hotelRoomQuery)) {
-                System.out.println("Adding id " + id);
+ //               System.out.println("Adding id " + id);
                 tableModel.addRow(row);
                 idsInTable.put(id, true);
             }
@@ -488,7 +488,7 @@ public class HotelSearch extends javax.swing.JPanel {
             int id = toAvailability.get(i).id;
             
             if (idsInTable.containsKey(id) == false  && toAvailability.get(i).matchesQuery(hotelRoomQuery)) {
-                System.out.println("Adding id " + id);
+//                System.out.println("Adding id " + id);
                 tableModel.addRow(row);
                 idsInTable.put(id, true);
             }
@@ -515,7 +515,7 @@ public class HotelSearch extends javax.swing.JPanel {
             row[7] = type.get(i).getLocation();
   
             int id = type.get(i).id;
-            System.out.println("Adding id " + id);
+ //           System.out.println("Adding id " + id);
             if (idsInTable.containsKey(id) == false && type.get(i).matchesQuery(hotelRoomQuery)) {
                 tableModel.addRow(row);
                 idsInTable.put(id, true);
@@ -541,7 +541,7 @@ public class HotelSearch extends javax.swing.JPanel {
             row[7] = theme.get(i).getLocation();
   
             int id = theme.get(i).id;
-            System.out.println("Adding id " + id);
+  //          System.out.println("Adding id " + id);
             if (idsInTable.containsKey(id) == false && theme.get(i).matchesQuery(hotelRoomQuery)) {
                 tableModel.addRow(row);
                 idsInTable.put(id, true);
@@ -570,7 +570,7 @@ public class HotelSearch extends javax.swing.JPanel {
             row[7] = quality.get(i).getLocation();
   
             int id = quality.get(i).id;
-            System.out.println("Adding id " + id);
+ //           System.out.println("Adding id " + id);
             if (idsInTable.containsKey(id) == false && quality.get(i).matchesQuery(hotelRoomQuery)) {
                 tableModel.addRow(row);
                 idsInTable.put(id, true);

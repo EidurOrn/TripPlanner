@@ -132,7 +132,6 @@ public class MetaSearch{
         // the elements of flightResults are strings "location destination departure-time"
         // e.g. Keflavík Alicante 2017-04-16 21:58:37
         for(String flight : flightResults){
-            System.out.println(flight);
             try {
                 departure = format.parse(nthWord(flight, 3));
                 f.add(new Flight(location, destination, departure));
