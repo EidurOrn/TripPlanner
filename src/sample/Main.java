@@ -47,9 +47,9 @@ public class Main extends Application {
 
 
         // Log in
-        String email = "vae111@hi.is";
+        String email = "ss111@hi.is";
         String ssn = "0908922319";
-        Purchaser buyer = new Purchaser("Vladek", email, "7744270",ssn);
+        Purchaser buyer = new Purchaser("Stanislav", email, "7744270",ssn);
         System.out.println(" User logs in with the info needed to book: ");
         System.out.println(buyer.getName());
         System.out.println(buyer.getEmail());
