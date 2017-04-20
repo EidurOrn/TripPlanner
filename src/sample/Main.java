@@ -3,6 +3,7 @@ package sample;
 import is.hi.tripPlanner.dayTourPackage.model.SearchModel;
 import is.hi.tripPlanner.dayTourPackage.model.Trip;
 import is.hi.tripPlanner.flightPackage.Flight;
+import is.hi.tripPlanner.flightPackage.FlightSearch;
 import is.hi.tripPlanner.hotelPackage.JFrames.HotelSearch;
 import is.hi.tripPlanner.hotelPackage.Models.HotelRoom;
 import is.hi.tripPlanner.tripPlannerPackage.controller.Book;
@@ -53,7 +54,7 @@ public class Main extends Application {
         // Initiate searching
         String searchParam[] = {"", "", "", "", ""};
         SearchModel dayTourSearchTest  = new SearchModel(searchParam);
-        MetaSearch m = new MetaSearch(dayTourSearchTest, new HotelSearch());
+        MetaSearch m = new MetaSearch(dayTourSearchTest, new HotelSearch(), new FlightSearch());
 
     ////  Search for flights ////
 
@@ -303,7 +304,7 @@ public class Main extends Application {
     private static ArrayList<HotelRoom> hotelByType(String type){
         String searchParam[] = {"", "", "", "", ""};
         SearchModel dayTourSearchTest  = new SearchModel(searchParam);
-        MetaSearch m = new MetaSearch(dayTourSearchTest, new HotelSearch());
+        MetaSearch m = new MetaSearch(dayTourSearchTest, new HotelSearch(), new FlightSearch());
 
         return m.getHotelInfo("","","","", type, "", "");
     }

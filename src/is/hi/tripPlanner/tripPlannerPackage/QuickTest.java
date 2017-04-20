@@ -8,6 +8,7 @@ import is.hi.tripPlanner.flightPackage.Flight;
 
 //import is.hi.tripPlanner.hotelPackage.HotelBookings.Main;
 
+import is.hi.tripPlanner.flightPackage.FlightSearch;
 import is.hi.tripPlanner.hotelPackage.JFrames.HotelSearch;
 import is.hi.tripPlanner.hotelPackage.Models.HotelRoom;
 
@@ -34,7 +35,7 @@ public class QuickTest {
         SearchModel dayTourSearchTest  = new SearchModel(searchParam);
 
 
-        MetaSearch m = new MetaSearch(dayTourSearchTest, new HotelSearch());
+        MetaSearch m = new MetaSearch(dayTourSearchTest, new HotelSearch(), new FlightSearch());
 
 
         // user info:
