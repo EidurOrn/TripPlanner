@@ -1,7 +1,7 @@
 package tripPlannerView;
 
 import javax.swing.*;
-import is.hi.tripPlanner.flightPackage.FSearch;
+
 
 import java.util.ArrayList;
 
@@ -16,8 +16,7 @@ public class GUI {
     private JComboBox comboBox1;
     private JComboBox comboBox2;
     private JComboBox comboBox3;
-//    FSearch leit = new FSearch();
- //   ArrayList<String> fra = leit
+    //ArrayList<String> fra = leit.
     private ArrayList<String> flightLocation;
 
 
@@ -28,8 +27,9 @@ public class GUI {
     private void initGui() {
     //    flightLocation = leit.searchForFlight("Keflavik", "Alicante", "2017-04-16");
         DefaultComboBoxModel locationCB;
-     //   locationCB = new javax.swing.DefaultComboBoxModel<>(flightLocation);
-     //   CBLocation.setModel(locationCB);
+        System.out.print(flightLocation.toString());
+        //locationCB = new DefaultComboBoxModel<String>(flightLocation.toArray());
+      // CBLocation.setModel(locationCB);
 
     }
 
