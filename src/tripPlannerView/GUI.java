@@ -1,7 +1,7 @@
 package tripPlannerView;
 
 import javax.swing.*;
-import is.hi.tripPlanner.flightPackage.FSearch;
+import is.hi.tripPlanner.flightPackage.FlightSearch;
 
 import java.util.ArrayList;
 

@@ -10,6 +10,12 @@ public class TPGUI {
     private JPanel panelMain;
     private JComboBox comboBox1;
     private JTextField textField1;
+    private JPanel purchaser;
+    private JPanel thePackage;
+    private JTextField yourPackage;
+    private JTextField customerInfo;
+    private JTextField yourFlight;
+    private JTextField textField2;
 
     public TPGUI(){
 

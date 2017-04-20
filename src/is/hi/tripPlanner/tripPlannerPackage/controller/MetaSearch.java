@@ -18,13 +18,14 @@ import java.util.*;
 public class MetaSearch{
     private SearchModel dayTourSearchObject;
     private HotelSearch hotelSearchObject;
-
+    private FlightSearch flightSearchObject;
 
     DatabaseRetrival dayTourDBRetrieval = new DatabaseRetrival();
 
-    public MetaSearch(SearchModel d, HotelSearch h){
+    public MetaSearch(SearchModel d, HotelSearch h, FlightSearch f){
         setDayTourSearchObject(d);
         setHotelSearchObject(h);
+        setFlightSearchObject(f);
 
     }
 
@@ -120,10 +121,10 @@ public class MetaSearch{
     public ArrayList<Flight> getFlightInfo(String location, String destination, String date){
         // skv. domain modelinu er hjá 7F virðist tilviksbreytan availableFlightList geyma leitarniðurstöðurnar
 
-        FlightSearch flightS = new FlightSearch();
+
         ArrayList<Flight> f = new ArrayList<Flight>();
 
-        ArrayList<String> flightResults =  flightS.searchForFlight(location, destination, date);
+        ArrayList<String> flightResults =  flightSearchObject.searchForFlight(location, destination, date);
 
         // flug sem fara á sömu mínútu eru sömu flug
         DateFormat format = new SimpleDateFormat("y-M-d HH:mm", Locale.ENGLISH);
@@ -625,5 +626,13 @@ public class MetaSearch{
 
     public void setHotelSearchObject(HotelSearch hotelSearchObject) {
         this.hotelSearchObject = hotelSearchObject;
+    }
+
+    public FlightSearch getFlightSearchObject() {
+        return flightSearchObject;
+    }
+
+    public void setFlightSearchObject(FlightSearch flightSearchObject) {
+        this.flightSearchObject = flightSearchObject;
     }
 }
