@@ -5,6 +5,7 @@ import is.hi.tripPlanner.dayTourPackage.model.Trip;
 import is.hi.tripPlanner.flightPackage.Flight;
 import is.hi.tripPlanner.hotelPackage.JFrames.HotelSearch;
 import is.hi.tripPlanner.hotelPackage.Models.HotelRoom;
+import is.hi.tripPlanner.tripPlannerPackage.controller.Book;
 import is.hi.tripPlanner.tripPlannerPackage.controller.MetaSearch;
 import is.hi.tripPlanner.tripPlannerPackage.storage.Package;
 import is.hi.tripPlanner.tripPlannerPackage.storage.Purchaser;
@@ -44,17 +45,9 @@ public class Main extends Application {
 
 
         Package pakki = new Package(); //
+        Purchaser buyer = new Purchaser("","","","");
 
 
-        // Log in
-        String email = "ss111@hi.is";
-        String ssn = "0908922319";
-        Purchaser buyer = new Purchaser("Stanislav", email, "7744270",ssn);
-        System.out.println(" User logs in with the info needed to book: ");
-        System.out.println(buyer.getName());
-        System.out.println(buyer.getEmail());
-        System.out.println(buyer.getPhone());
-        System.out.println(buyer.getSsn() + "\n");
 
 
         // Initiate searching
@@ -64,11 +57,13 @@ public class Main extends Application {
 
     ////  Search for flights ////
 
-        String departure = "2017-04-16";
+        String departure = "2017-04-11";
         ArrayList<Flight> flights = m.getFlightInfo("Alicante", "Keflavík", departure);
 
         System.out.println("The user searches for flights by date, location and destination");
-        System.out.println("and gets results:");
+        System.out.println("User input: ");
+        System.out.println("Location: Alicante \n Destination: Keflavík  \n  Date: 2017-04-11");
+        System.out.println("Search results:");
         for(Flight flight : flights){
             System.out.println(flight.getLocation() + "  " + flight.getDestination() + "  " + flight.getDeparture());
         }
@@ -77,7 +72,7 @@ public class Main extends Application {
             ArrayList<Flight> flightsBack  = m.getFlightInfo( "Keflavík", "Alicante", departureBack);
 
         // Choose flight
-        System.out.println("\nUser chooses a flight and adds it to the package.");
+        System.out.println("\nThe user chooses a flight and adds it to the package.\n");
         Flight chosenFlight = flights.get(0);
         pakki.setBookedFlight(chosenFlight);
 
@@ -106,14 +101,14 @@ public class Main extends Application {
         }
         // availableHotelRooms has all hotelrooms that are available for at least 1 week after the flight
 
-        System.out.println("The user then goes into the hotel tab and sees the hotel rooms that are available when he's on vacation\n");
+        System.out.println("The user then goes into the hotel tab and sees the hotel rooms that are available at the time\n");
 
         for(HotelRoom h : availableHotelRooms){
-            System.out.println(h.getHotelName() + "   " + h.getPrice() + " kr.   " + h.getLocation() + " " + h.getTheme());
+            System.out.println(h.getHotelName() + "   " + h.getPrice() + " kr.   " + h.getLocation() + "      " + h.getTheme());
         }
         System.out.println("\n");
 
-        System.out.println("The user searches for hotels that are romantic: ");
+        System.out.println("The user filters the hotels to see the ones that are romantic: \n");
         // "User" searches for a romantic hotel:
         ArrayList<HotelRoom> availableRomantic = new ArrayList<HotelRoom>();
         for(HotelRoom h : availableHotelRooms){
@@ -126,41 +121,43 @@ public class Main extends Application {
 
         // view them:
         for(HotelRoom h : availableRomantic){
-            System.out.println(h.getHotelName() + "   " + h.getPrice() + " kr.   " + h.getLocation() + " " + h.getTheme());
+            System.out.println(h.getHotelName() + "   " + h.getPrice() + " kr.   " + h.getLocation() + "      " + h.getTheme());
         }
 
         // The "user" chooses a hotel
-        System.out.println("\nThe user chooses a hotel room and adds it to the package");
+        System.out.println("\nThe user chooses a hotel room and adds it to the package:");
         HotelRoom chosenHotel = availableRomantic.get(0);
         pakki.setBookedHotel(chosenHotel);
-        System.out.println(chosenHotel.getHotelName());
+        System.out.println(chosenHotel.getHotelName() + "   " + chosenHotel.getPrice() + " kr.   " + chosenHotel.getLocation() + "      " + chosenHotel.getTheme());
+
 
     //// Search for daytours ////
 
         // the location has been determined
         String location = pakki.getBookedHotel().getLocation();
         System.out.println("\n");
-        System.out.println("The user goes to the daytour tab and sees the daytours with the same location as the hotel he booked");
+        System.out.println("The user goes to the daytour tab and sees the daytours with the same location as the hotelroom he booked \n");
         // view the daytours
         String[] searchLocation = {"", "", "", location, ""};
         Trip[] dayToursOnLocation = m.getDayTourInfo( new SearchModel(searchLocation));
         for(Trip t : dayToursOnLocation){
             System.out.println(t.getTripName());
+            //System.out.println(t.getDescription());
             System.out.println(t.getPrice());
         }
 
-        System.out.println("The user searches for daytours that cost less than 10000");
+        System.out.println("\nThe user filters the daytours to see what costs less than 10000");
         // "user" searches for daytours that cost less than 10.000
 
         String[] searchLocationCheap = {"", "", "", location, "10000"};
         Trip[] dayToursOnLocationCheap = m.getDayTourInfo( new SearchModel(searchLocationCheap));
-        System.out.println("\n Cheap trips \n");
+        System.out.println("\n");
         for(Trip t : dayToursOnLocationCheap){
-            System.out.println(t.getTripName());
-            System.out.println(t.getPrice());
+            System.out.println("name: " + t.getTripName());
+            System.out.println("price " + t.getPrice());
         }
 
-        System.out.println("\nThe user chooses a day tour and books it for 2");
+        System.out.println("\nThe user chooses a day tour and books it for 2 persons.");
         // "user" chooses the available daytour
         pakki.setBookedDayTour(dayToursOnLocationCheap[0]);
         // he books it for two:
@@ -169,8 +166,36 @@ public class Main extends Application {
 
         // a flight, a hotel and a daytour has been chosen
 
-        System.out.println("\n" + "The user goes into the Trip Order tab to confirm");
+        System.out.println("\n" + "The user finally goes into the Trip Order tab to order" + "\n");
 
+
+        // Print Trip contents
+        System.out.println("He sees what he has booked: \n");
+        System.out.println("Flight from " + pakki.getBookedFlight().getLocation() +  " to " + pakki.getBookedFlight().getDestination()
+                + " on " + departure);
+        System.out.println("Hotelroom at " + pakki.getBookedHotel().getHotelName() + " located in " + pakki.getBookedHotel().getLocation());
+        System.out.println("Day tour " + pakki.getBookedDayTour().getTripName() + " located in " + pakki.getBookedDayTour().getLocation() + " that costs " + pakki.getBookedDayTour().getPrice());
+        // Log in
+        String email = "ss111@hi.is";
+        String ssn = "0908922319";
+        buyer.setEmail(email);
+        buyer.setName("Stanislav");
+        buyer.setPhone("7744270");
+        buyer.setSsn(ssn);
+
+        System.out.println("\n The user enters the info needed to book: ");
+        System.out.println("Name " + buyer.getName());
+        System.out.println("Email " + buyer.getEmail());
+        System.out.println("Phone " + buyer.getPhone());
+        System.out.println("SSN " +buyer.getSsn() + "\n");
+
+        System.out.println("And books it (into the flight, hotel, daytour and trip databases).");
+
+        pakki.getBookedFlight().setFlightId(42); // fake flight id
+        Book bokun = new Book(pakki);
+
+
+        // hægt að nota þetta sem skema til að gera UIið út frá
 
 
         launch(args);

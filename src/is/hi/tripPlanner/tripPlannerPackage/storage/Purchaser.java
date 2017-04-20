@@ -8,10 +8,10 @@ public class Purchaser {
     private String tripNumPeople;
 
     public Purchaser(String name, String email, String phone, String ssn) {
-        this.name = name;
+        this.setName(name);
         this.email = email;
         this.phone = phone;
-        this.ssn = ssn;
+        this.setSsn(ssn);
     }
 
     public String getName() {
@@ -44,5 +44,13 @@ public class Purchaser {
 
     public void setTripNumPeople(String tripNumPeople) {
         this.tripNumPeople = tripNumPeople;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSsn(String ssn) {
+        this.ssn = ssn;
     }
 }
