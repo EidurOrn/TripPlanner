@@ -3,33 +3,33 @@ package is.hi.tripPlanner.tripPlannerPackage.controller;
 
 import is.hi.tripPlanner.dayTourPackage.model.SearchModel;
 import is.hi.tripPlanner.dayTourPackage.model.Trip;
-import is.hi.tripPlanner.dayTourPackage.controller.SearchController;
 import is.hi.tripPlanner.dayTourPackage.controller.DatabaseRetrival;
 //import is.hi.tripPlanner.dayTourPackage.mockObjects.DayTourFetching;
 import is.hi.tripPlanner.flightPackage.Flight;
-import is.hi.tripPlanner.flightPackage.FSearch;
-import is.hi.tripPlanner.hotelPackage.*;
-import is.hi.tripPlanner.hotelPackage.JFrames.Search;
+import is.hi.tripPlanner.flightPackage.FlightSearch;
+import is.hi.tripPlanner.hotelPackage.JFrames.HotelSearch;
 import is.hi.tripPlanner.hotelPackage.Models.HotelRoom;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class MetaSearch{
     private SearchModel dayTourSearchObject;
-    private Search hotelSearchObject;
+    private HotelSearch hotelSearchObject;
+
 
     DatabaseRetrival dayTourDBRetrieval = new DatabaseRetrival();
 
-    public MetaSearch(SearchModel d, Search h){
-        dayTourSearchObject = d;
-        hotelSearchObject = h;
+    public MetaSearch(SearchModel d, HotelSearch h){
+        setDayTourSearchObject(d);
+        setHotelSearchObject(h);
+
     }
 
     /**
-     * called from dayTourUI, fetches a list of day tours that fit search conditions listed in s
+     * called from dayTourUI, fetches a list of day tours that fit search conditions listed in search
      * @param search search parameter object, contains tripName, dateBegin, dateEnd, location and price
      * @return
      */
@@ -66,43 +66,43 @@ public class MetaSearch{
         ArrayList<HotelRoom> l = new ArrayList<HotelRoom>();
 
         if(!hotelName.equals("")) {
-            l = hotelSearchObject.HotelSearch(hotelName); // Makes a list with the first search results.
+            l = getHotelSearchObject().HotelSearch(hotelName); // Makes a list with the first search results.
             if(l.isEmpty()) return l; // There was a search attempt but it turned up empty, no other condition can change that.
         }
         if(!location.equals("")) {
-            if(l.isEmpty()) l = hotelSearchObject.LocationSearch(location); // Makes a list with the first search results.
+            if(l.isEmpty()) l = getHotelSearchObject().LocationSearch(location); // Makes a list with the first search results.
                                                                             // (If no prev result has been given, empty is a result).
-            else l.retainAll(hotelSearchObject.LocationSearch(location)); // Retains only the same list elements between the two lists.
+            else l.retainAll(getHotelSearchObject().LocationSearch(location)); // Retains only the same list elements between the two lists.
 
             if(l.isEmpty()) return l;
         }
         if(!fromAvailability.equals("")) {
-            if(l.isEmpty()) l = hotelSearchObject.FromAvailabilitySearch(fromAvailability);
-            else l.retainAll(hotelSearchObject.FromAvailabilitySearch(fromAvailability));
+            if(l.isEmpty()) l = getHotelSearchObject().FromAvailabilitySearch(fromAvailability);
+            else l.retainAll(getHotelSearchObject().FromAvailabilitySearch(fromAvailability));
 
             if(l.isEmpty()) return l;
         }
         if(!toAvailability.equals("")) {
-            if(l.isEmpty()) l = hotelSearchObject.ToAvailabilitySearch(toAvailability);
-            else l.retainAll(hotelSearchObject.ToAvailabilitySearch(toAvailability));
+            if(l.isEmpty()) l = getHotelSearchObject().ToAvailabilitySearch(toAvailability);
+            else l.retainAll(getHotelSearchObject().ToAvailabilitySearch(toAvailability));
 
             if(l.isEmpty()) return l;
         }
         if(!type.equals("")) {
-            if(l.isEmpty()) l = hotelSearchObject.TypeSearch(type);
-            else l.retainAll(hotelSearchObject.TypeSearch(type));
+            if(l.isEmpty()) l = getHotelSearchObject().TypeSearch(type);
+            else l.retainAll(getHotelSearchObject().TypeSearch(type));
 
             if(l.isEmpty()) return l;
         }
         if(!theme.equals("")) {
-            if(l.isEmpty()) l = hotelSearchObject.ThemeSearch(theme);
-            else l.retainAll(hotelSearchObject.ThemeSearch(theme));
+            if(l.isEmpty()) l = getHotelSearchObject().ThemeSearch(theme);
+            else l.retainAll(getHotelSearchObject().ThemeSearch(theme));
 
             if(l.isEmpty()) return l;
         }
         if(!quality.equals("")) {
-            if(l.isEmpty()) l = hotelSearchObject.QualitySearch(quality);
-            else l.retainAll(hotelSearchObject.QualitySearch(quality));
+            if(l.isEmpty()) l = getHotelSearchObject().QualitySearch(quality);
+            else l.retainAll(getHotelSearchObject().QualitySearch(quality));
 
             if(l.isEmpty()) return l;
         }
@@ -112,15 +112,40 @@ public class MetaSearch{
 
     /**
      *
-     * @param searchFlight  search object from flight program
-     * @return
+     * @param location where you fly from
+     * @param destination where you fly to
+     * @param date when you fly, format "yyyy-MM-dd"
+     * @return returns list of Flight objects from the database that have the departure, arrival and date
      */
-    public Flight[] getFlightInfo(FSearch searchFlight){
+    public ArrayList<Flight> getFlightInfo(String location, String destination, String date){
         // skv. domain modelinu er hjá 7F virðist tilviksbreytan availableFlightList geyma leitarniðurstöðurnar
 
+        FlightSearch flightS = new FlightSearch();
+        ArrayList<Flight> f = new ArrayList<Flight>();
+
+        ArrayList<String> flightResults =  flightS.searchForFlight(location, destination, date);
+
+        // flug sem fara á sömu mínútu eru sömu flug
+        DateFormat format = new SimpleDateFormat("y-M-d HH:mm", Locale.ENGLISH);
+        Date departure;
+
+        // the elements of flightResults are strings "location destination departure-time"
+        // e.g. Keflavík Alicante 2017-04-16 21:58:37
+        for(String flight : flightResults){
+            try {
+                departure = format.parse(nthWord(flight, 3));
+                f.add(new Flight(location, destination, departure));
+            }
+            catch(ParseException ex){
+                //
+            }
 
 
-        return new Flight[0];
+        }
+
+
+        // fyrir return flight má kalla á flightS.searchForFlight(destination, location , returnDate)
+        return f;
     }
 
     /* --------------------------------------------------------- */
@@ -563,5 +588,42 @@ public class MetaSearch{
         }
 
         return t;
+    }
+
+    /**
+     * returns word number nr in the 3 word sentence sent
+     * 1 <= nr <= 3
+     * used to get data from flight results
+     */
+    public static String nthWord(String sent, int nr){
+        int fyrstaBil = sent.indexOf(' ');
+        if(nr == 1){
+            return sent.substring(0,fyrstaBil);
+        }
+
+        int annadBil = fyrstaBil + sent.substring(fyrstaBil+1).indexOf(' ');
+
+        if(nr==2) {
+            return sent.substring(fyrstaBil + 1, annadBil+1);
+        }
+
+        return  sent.substring(annadBil+2,sent.length());
+    }
+
+
+    public SearchModel getDayTourSearchObject() {
+        return dayTourSearchObject;
+    }
+
+    public void setDayTourSearchObject(SearchModel dayTourSearchObject) {
+        this.dayTourSearchObject = dayTourSearchObject;
+    }
+
+    public HotelSearch getHotelSearchObject() {
+        return hotelSearchObject;
+    }
+
+    public void setHotelSearchObject(HotelSearch hotelSearchObject) {
+        this.hotelSearchObject = hotelSearchObject;
     }
 }

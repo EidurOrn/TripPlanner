@@ -6,9 +6,9 @@ public class BookingModel {
 	private int tripId;
 	private String bookerEmail;
 	private int numPeople;
-	private int bookerSSN;
+	private long bookerSSN;
 	
-	public BookingModel(int bookingId, int tripId, String bookerEmail, int numPeople, int bookerSSN) {
+	public BookingModel(int bookingId, int tripId, String bookerEmail, int numPeople, long bookerSSN) {
 		this.tripId = tripId;
 		this.bookerEmail = bookerEmail;
 		this.numPeople = numPeople;
@@ -31,7 +31,7 @@ public class BookingModel {
 		return numPeople;
 	}
 	
-	public int getBookerSSN() {
+	public long  getBookerSSN() {
 		return bookerSSN;
 	}
 }

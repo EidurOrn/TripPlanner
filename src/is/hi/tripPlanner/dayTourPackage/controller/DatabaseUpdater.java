@@ -11,49 +11,42 @@ public class DatabaseUpdater {
 	private String USER = "kuluser";
 	private String PASS = "kulpassword";
 	private DatabaseRetrival dbR = new DatabaseRetrival();
-	
+
 	public DatabaseUpdater() {
 
 		try {
-
 			Class.forName("org.postgresql.Driver");
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			return;
-
 		}
-		
+
 		try {
-
 			connection = DriverManager.getConnection(URL, USER, PASS);
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return;
-
 		}
 	}
-		
+
 	//Function that adds a booking to the table BOOKINGS
-	public int insertBooking(BookingModel booking) { // 0 t�knar b�kun t�kst, 1 t�knar ekki n�g pl�ss, 2 t�knar villa kom upp
+	public int insertBooking(BookingModel booking) { // 0 = booking successful, 1 = not enoguh seats available, 2 = an error has occured
 		String insertTableSQL = "INSERT INTO BOOKING"
 				+ "(tripId, bookerEmail, numPeople, bookerSSN) VALUES"
 				+ "(?,?,?,?)";
 		PreparedStatement preparedStatement;
 		try {
 			Trip[] tripList = dbR.queryTripInfo(booking.getTripId());
-			
+
 			if(booking.getNumPeople() + tripList[0].getNumBooking() <= tripList[0].getMaxPeople()) {
 				preparedStatement = connection.prepareStatement(insertTableSQL);
 				preparedStatement.setInt(1, booking.getTripId());
 				preparedStatement.setString(2, booking.getBookerEmail());
 				preparedStatement.setInt(3, booking.getNumPeople());
-				preparedStatement.setInt(4, booking.getBookerSSN());
-				//execute insert SQL statement
+				preparedStatement.setLong(4, booking.getBookerSSN());
 				preparedStatement.executeUpdate();
-				
-				
+
 				String updateTableSQL = "UPDATE TRIP SET numBooking = numBooking + ?";
 				preparedStatement = connection.prepareStatement(updateTableSQL);
 				preparedStatement.setInt(1, booking.getNumPeople());
@@ -69,7 +62,7 @@ public class DatabaseUpdater {
 			return 2;
 		}
 	}
-	
+
 	//Function that adds a booking to the table BOOKINGS
 	public void insertTrip(Trip trip) {
 		String insertTableSQL = "INSERT INTO TRIP"
@@ -93,7 +86,7 @@ public class DatabaseUpdater {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void insertAdmin(String username, byte[] password, byte[] salt){
 		String insertTableSQL = "INSERT INTO ADMIN"
 				+ "(adminId, adminPassword, salt) VALUES"
@@ -109,55 +102,6 @@ public class DatabaseUpdater {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-	}
-	
-	public void createTables() {
-		Statement stmt = null;
-		try{
-			stmt = connection.createStatement();
-			
-			String dropBooking = "DROP TABLE BOOKING";
-			stmt.executeUpdate(dropBooking);
-			
-			String dropTrip = "DROP TABLE TRIP";
-			stmt.executeUpdate(dropTrip);
-			
-			String dropAdmin = "DROP TABLE ADMIN";
-			stmt.executeUpdate(dropAdmin);
-			
-		    String createTrip = "CREATE TABLE TRIP " +
-		                   	"(tripId SERIAL PRIMARY KEY, " +
-		                   	" tripName VARCHAR(256) NOT NUll, " +
-		                   	" dateBegin DATE NOT NULL, " +
-		                   	" dateEnd DATE NOT NULL, " +
-		                   	" description VARCHAR(2000), " +
-		                   	" maxPeople INT NOT NULL, " +
-		                   	" minPeople INT NOT NULL, " +
-		                   	" location VARCHAR(256) NOT NULL, " +
-		                   	" price INT NOT NULL, " +
-		                   	" numBooking INT DEFAULT 0)";
-		                   
-		      stmt.executeUpdate(createTrip);
-		           
-		      String createBooking = "CREATE TABLE BOOKING " +
-		    		  		"(bookingId SERIAL PRIMARY KEY, " +
-		    		  		"tripId INT NOT NUll, " +
-		    		  		"bookerEmail VARCHAR(256) NOT NULL, " + 
-		    		  		"numPeople INT NOT NULL, " +
-		    		  		"bookerSSN INT NOT NULL);";
-		      
-		      stmt.executeUpdate(createBooking);
-		      
-		      String createAdmin = "CREATE TABLE ADMIN " +
-         		"(adminId VARCHAR(256) PRIMARY KEY, " +
-         		" adminPassword VARCHAR(256) NOT NUll, " +
-         		" salt VARCHAR(256) NOT NULL)";
-
-				stmt.executeUpdate(createAdmin);
-		      
-		   }catch(SQLException se){
-		      //Handle errors for JDBC
 		}
 	}
 }

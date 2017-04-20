@@ -2,28 +2,20 @@ package is.hi.tripPlanner.tripPlannerPackage;
 
 import is.hi.tripPlanner.dayTourPackage.model.SearchModel;
 import is.hi.tripPlanner.dayTourPackage.model.Trip;
-import is.hi.tripPlanner.dayTourPackage.model.BookingModel;
 import is.hi.tripPlanner.dayTourPackage.controller.BookingController;
 
-import is.hi.tripPlanner.flightPackage.FSearch;
 import is.hi.tripPlanner.flightPackage.Flight;
 
 //import is.hi.tripPlanner.hotelPackage.HotelBookings.Main;
 
-import is.hi.tripPlanner.hotelPackage.JFrames.Search;
+import is.hi.tripPlanner.hotelPackage.JFrames.HotelSearch;
 import is.hi.tripPlanner.hotelPackage.Models.HotelRoom;
-import is.hi.tripPlanner.hotelPackage.HotelBookings.Main;
 
 import is.hi.tripPlanner.tripPlannerPackage.controller.MetaSearch;
-import is.hi.tripPlanner.tripPlannerPackage.controller.Database.*;
 import is.hi.tripPlanner.tripPlannerPackage.storage.Package;
 import is.hi.tripPlanner.tripPlannerPackage.storage.Purchaser;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 import static is.hi.tripPlanner.tripPlannerPackage.controller.Database.*;
 
@@ -36,13 +28,13 @@ public class QuickTest {
         //is.hi.tripPlanner.hotelPackage.HotelBookings.Main.setUpDatabase();
 // ! bara einu sinni
 
-        Package pakki = new Package(); //
+      Package pakki = new Package(); //
 
         String searchParam[] = {"", "", "", "", "8000"};
         SearchModel dayTourSearchTest  = new SearchModel(searchParam);
 
 
-        MetaSearch m = new MetaSearch(dayTourSearchTest, new Search());
+        MetaSearch m = new MetaSearch(dayTourSearchTest, new HotelSearch());
 
 
         // user info:
@@ -72,12 +64,12 @@ public class QuickTest {
 
                 // in tripPlanner
             if(ferdBokud.equals("Booking successful") && ferdirBokadar<1){
-                pakki.setBookedTrip(trip);
+                pakki.setBookedDayTour(trip);
                 ferdirBokadar++;
             }
         }
 
-        System.out.println("Bókuð í trip plannerinn: + " + pakki.getBookedTrip().getTripName());
+        System.out.println("Bókuð í trip plannerinn: + " + pakki.getBookedDayTour().getTripName());
 
 
 
@@ -103,31 +95,17 @@ public class QuickTest {
 
         // flights:
 
-        FSearch flightS = new FSearch();
+        ArrayList<Flight> flights = m.getFlightInfo("Keflavík", "Alicante", "2017-04-16");
 
-        // notandinn leitar að ferðum til og frá
-        ArrayList<String> flightResultsFara =  flightS.searchForFlight("Keflavík", "Alicante", "2017-04-16");
+        for(Flight flight : m.sortByDeparture_Flight( flights.toArray(new Flight[0]),false)){
+            System.out.println(flight.getDeparture());
+        }
 
-        // velur eitthvað til
-        String chosenFlightFara = flightResultsFara.get(0);
-
-        String location = nthWord(chosenFlightFara,1);
-        String destination = nthWord(chosenFlightFara,2);
-
-        // leitar að flugum til baka
-        ArrayList<String> flightResultsKoma =  flightS.searchForFlight(destination,location, "2017-04-16");
-
-        // velur eitthvað til baka
-        String chosenFlightKoma = flightResultsKoma.get(0);
+        Flight chosenFlight = flights.get(0);
+        pakki.setBookedFlight(chosenFlight);
+        // raðar ekki
 
 
-        DateFormat format = new SimpleDateFormat("y-M-d HH:mm", Locale.ENGLISH);
-        Date departure = format.parse(nthWord(chosenFlightFara,3));
-        Date arrival = format.parse(nthWord(chosenFlightKoma,3));
-
-        Flight bokadFlug = new Flight(location, destination, departure, arrival);
-
-        pakki.setBookedFlight(bokadFlug);
 
 
 

@@ -55,7 +55,7 @@ public class MetaSearchTest {
         String searchParam[] = {"", "", "", "", "8000"};
         is.hi.tripPlanner.dayTourPackage.model.SearchModel dayTourSearchTest  = new is.hi.tripPlanner.dayTourPackage.model.SearchModel(searchParam);
 
-        MetaSearch searchTest = new MetaSearch(dayTourSearchTest, new Search());
+        MetaSearch searchTest = new MetaSearch(dayTourSearchTest, new HotelSearch());
 
 
         // create mock data for the mock object
@@ -127,7 +127,7 @@ public class MetaSearchTest {
     @Test
     // Test whether a weird search is handled correctly.
     public void testGetDayTourInfoNoResults() {
-//        searchTest = new MetaSearch(new NoDayTourMock(), new Search());
+//        searchTest = new MetaSearch(new NoDayTourMock(), new HotelSearch());
 //        SearchModel bullSearch = new SearchModel("x_x", new Date(2015,3,28,14,30), new Date(2015,3,28,15,30), "Zimbabve",1200);
 //        assertEquals(searchTest.getDayTourInfo(bullSearch), new Trip[0]);
     }
