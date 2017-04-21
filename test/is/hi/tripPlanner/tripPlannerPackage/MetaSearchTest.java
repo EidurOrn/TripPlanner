@@ -34,7 +34,7 @@ public class MetaSearchTest {
      * SearchParameters; What goes into getDayTourInfo(), the search object from the DayTour program
      *//*
 
-    SearchModel searchObject;
+    DayTourSearch searchObject;
 
     */
 /**
@@ -53,7 +53,7 @@ public class MetaSearchTest {
     public void setUp() throws Exception {
 
         String searchParam[] = {"", "", "", "", "8000"};
-        is.hi.tripPlanner.dayTourPackage.model.SearchModel dayTourSearchTest  = new is.hi.tripPlanner.dayTourPackage.model.SearchModel(searchParam);
+        is.hi.tripPlanner.dayTourPackage.model.DayTourSearch dayTourSearchTest  = new is.hi.tripPlanner.dayTourPackage.model.DayTourSearch(searchParam);
 
         MetaSearch searchTest = new MetaSearch(dayTourSearchTest, new HotelSearch());
 
@@ -95,7 +95,7 @@ public class MetaSearchTest {
         mockResults = new Trip[] {t1, t2,t3};
 
         // create search parameters object that searches for day tour t1
-        searchObject = new SearchModel(new String[] {t1.getTripName(), t1.getDateBegin(), t1.getDateEnd(), t1.getLocation(),t1.getPrice()});
+        searchObject = new DayTourSearch(new String[] {t1.getTripName(), t1.getDateBegin(), t1.getDateEnd(), t1.getLocation(),t1.getPrice()});
 
     }
 
@@ -128,12 +128,12 @@ public class MetaSearchTest {
     // Test whether a weird search is handled correctly.
     public void testGetDayTourInfoNoResults() {
 //        searchTest = new MetaSearch(new NoDayTourMock(), new HotelSearch());
-//        SearchModel bullSearch = new SearchModel("x_x", new Date(2015,3,28,14,30), new Date(2015,3,28,15,30), "Zimbabve",1200);
+//        DayTourSearch bullSearch = new DayTourSearch("x_x", new Date(2015,3,28,14,30), new Date(2015,3,28,15,30), "Zimbabve",1200);
 //        assertEquals(searchTest.getDayTourInfo(bullSearch), new Trip[0]);
     }
 
     @Test
-    // Test whether it works to search with a SearchModel that has null in some of it's parameters (this is allowed, gets given default values).
+    // Test whether it works to search with a DayTourSearch that has null in some of it's parameters (this is allowed, gets given default values).
     public void testGetDayTourInfoWithSomeNullParam() {
         searchObject.setLocation(null);
         searchObject.setDateEnd(null);
@@ -143,7 +143,7 @@ public class MetaSearchTest {
     }
 
     @Test
-    // Test whether it works to search with a SearchModel that has null all of it's parameters (this is allowed, gets given default values).
+    // Test whether it works to search with a DayTourSearch that has null all of it's parameters (this is allowed, gets given default values).
     public void testGetDayTourInfoWithAllNullParam() {
         searchObject.setTripName(null);
         searchObject.setLocation(null);

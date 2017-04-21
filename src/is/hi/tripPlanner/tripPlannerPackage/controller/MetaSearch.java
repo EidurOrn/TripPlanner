@@ -1,7 +1,7 @@
 package is.hi.tripPlanner.tripPlannerPackage.controller;
 
 
-import is.hi.tripPlanner.dayTourPackage.model.SearchModel;
+import is.hi.tripPlanner.dayTourPackage.model.DayTourSearch;
 import is.hi.tripPlanner.dayTourPackage.model.Trip;
 import is.hi.tripPlanner.dayTourPackage.controller.DatabaseRetrival;
 //import is.hi.tripPlanner.dayTourPackage.mockObjects.DayTourFetching;
@@ -16,13 +16,13 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class MetaSearch{
-    private SearchModel dayTourSearchObject;
+    private DayTourSearch dayTourSearchObject; // leitarskilyrðin eru sett í þennan object, dayTourSearchObject.setLocation("")
     private HotelSearch hotelSearchObject;
     private FlightSearch flightSearchObject;
 
     DatabaseRetrival dayTourDBRetrieval = new DatabaseRetrival();
 
-    public MetaSearch(SearchModel d, HotelSearch h, FlightSearch f){
+    public MetaSearch(DayTourSearch d, HotelSearch h, FlightSearch f){
         setDayTourSearchObject(d);
         setHotelSearchObject(h);
         setFlightSearchObject(f);
@@ -34,7 +34,7 @@ public class MetaSearch{
      * @param search search parameter object, contains tripName, dateBegin, dateEnd, location and price
      * @return
      */
-    public Trip[] getDayTourInfo(SearchModel search){
+    public Trip[] getDayTourInfo(DayTourSearch search){
         // Check if end date occurs before the start date.
         if(search.getDateBegin() != null) {
             if(search.getDateEnd() != null){
@@ -612,11 +612,11 @@ public class MetaSearch{
     }
 
 
-    public SearchModel getDayTourSearchObject() {
+    public DayTourSearch getDayTourSearchObject() {
         return dayTourSearchObject;
     }
 
-    public void setDayTourSearchObject(SearchModel dayTourSearchObject) {
+    public void setDayTourSearchObject(DayTourSearch dayTourSearchObject) {
         this.dayTourSearchObject = dayTourSearchObject;
     }
 

@@ -1,7 +1,7 @@
 package is.hi.tripPlanner.dayTourPackage.controller;
 
 import is.hi.tripPlanner.dayTourPackage.model.BookingModel;
-import is.hi.tripPlanner.dayTourPackage.model.SearchModel;
+import is.hi.tripPlanner.dayTourPackage.model.DayTourSearch;
 import is.hi.tripPlanner.dayTourPackage.model.Trip;
 
 import java.sql.*;
@@ -46,7 +46,7 @@ public class DatabaseRetrival {
 	}
 	
 	//Querying the TRIP table
-	public Trip[] queryTrip(SearchModel search) {
+	public Trip[] queryTrip(DayTourSearch search) {
 		Trip [] tripList;
 		
 		try{		

@@ -1,6 +1,6 @@
 package is.hi.tripPlanner.tripPlannerPackage;
 
-import is.hi.tripPlanner.dayTourPackage.model.SearchModel;
+import is.hi.tripPlanner.dayTourPackage.model.DayTourSearch;
 import is.hi.tripPlanner.dayTourPackage.model.Trip;
 import is.hi.tripPlanner.dayTourPackage.controller.BookingController;
 
@@ -32,7 +32,7 @@ public class QuickTest {
       Package pakki = new Package(); //
 
         String searchParam[] = {"", "", "", "", "8000"};
-        SearchModel dayTourSearchTest  = new SearchModel(searchParam);
+        DayTourSearch dayTourSearchTest  = new DayTourSearch(searchParam);
 
 
         MetaSearch m = new MetaSearch(dayTourSearchTest, new HotelSearch(), new FlightSearch());

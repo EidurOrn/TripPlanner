@@ -2,7 +2,7 @@ package is.hi.tripPlanner.dayTourPackage.model;
 
 import java.sql.Date;
 
-public class SearchModel {
+public class DayTourSearch {
 	
 	private String tripName;
 	private Date dateBegin;
@@ -10,7 +10,7 @@ public class SearchModel {
 	private String location;
 	private int price;
 	
-	public SearchModel(String[] searchParam) {
+	public DayTourSearch(String[] searchParam) {
 		String tripName;
 		Date dateBegin;
 		Date dateEnd;
@@ -54,7 +54,7 @@ public class SearchModel {
 		this.tripName = tripName;
 		this.dateBegin = dateBegin;
 		this.dateEnd = dateEnd;
-		this.location = location;
+		this.setLocation(location);
 		this.price = price;		
 	}
 
@@ -83,9 +83,13 @@ public class SearchModel {
 		print = "Tripname: " + tripName 
 				+ "\nDate Begin: " + dateBegin 
 				+ "\nDate End: " + dateEnd 
-				+ "\nLocation: " + location
+				+ "\nLocation: " + getLocation()
 				+ "\nPrice: " + price;
 		
 		return print;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 }

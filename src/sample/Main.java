@@ -1,6 +1,6 @@
 package sample;
 
-import is.hi.tripPlanner.dayTourPackage.model.SearchModel;
+import is.hi.tripPlanner.dayTourPackage.model.DayTourSearch;
 import is.hi.tripPlanner.dayTourPackage.model.Trip;
 import is.hi.tripPlanner.flightPackage.Flight;
 import is.hi.tripPlanner.flightPackage.FlightSearch;
@@ -53,7 +53,7 @@ public class Main extends Application {
 
         // Initiate searching
         String searchParam[] = {"", "", "", "", ""};
-        SearchModel dayTourSearchTest  = new SearchModel(searchParam);
+        DayTourSearch dayTourSearchTest  = new DayTourSearch(searchParam);
         MetaSearch m = new MetaSearch(dayTourSearchTest, new HotelSearch(), new FlightSearch());
 
     ////  Search for flights ////
@@ -140,7 +140,7 @@ public class Main extends Application {
         System.out.println("The user goes to the daytour tab and sees the daytours with the same location as the hotelroom he booked \n");
         // view the daytours
         String[] searchLocation = {"", "", "", location, ""};
-        Trip[] dayToursOnLocation = m.getDayTourInfo( new SearchModel(searchLocation));
+        Trip[] dayToursOnLocation = m.getDayTourInfo( new DayTourSearch(searchLocation));
         for(Trip t : dayToursOnLocation){
             System.out.println(t.getTripName());
             //System.out.println(t.getDescription());
@@ -151,7 +151,7 @@ public class Main extends Application {
         // "user" searches for daytours that cost less than 10.000
 
         String[] searchLocationCheap = {"", "", "", location, "10000"};
-        Trip[] dayToursOnLocationCheap = m.getDayTourInfo( new SearchModel(searchLocationCheap));
+        Trip[] dayToursOnLocationCheap = m.getDayTourInfo( new DayTourSearch(searchLocationCheap));
         System.out.println("\n");
         for(Trip t : dayToursOnLocationCheap){
             System.out.println("name: " + t.getTripName());
@@ -196,9 +196,11 @@ public class Main extends Application {
         Book bokun = new Book(pakki);
 
 
+        System.out.println(m.getHotelInfo("","","","", "","Romantic","").get(0).getHotelName());
         // hægt að nota þetta sem skema til að gera UIið út frá
+        System.out.println(new HotelSearch().LocationSearch("").size());
 
-
+        System.out.println(availableRooms(6, pakki.getBookedFlight().getDeparture()).size());
         launch(args);
 
 
@@ -208,10 +210,25 @@ public class Main extends Application {
 
     /**
      * returns a list of the HotelRooms that are available for at least numDays days after fromDate
-     * @param fromDate "2016-05-30"
+     * @param fromDate "2016-05-30"  used with pakki.getBookedFlight().getDeparture()
+     * @param numDays number of days
      */
-    private static ArrayList<HotelRoom> availableRooms(int numDays, String fromDate){
-        return new ArrayList<HotelRoom>();
+    private static ArrayList<HotelRoom> availableRooms(int numDays, Date fromDate){
+
+
+
+        ArrayList<HotelRoom> allHotelRooms = new HotelSearch().LocationSearch("");
+
+        ArrayList<HotelRoom> availableHotelRooms = new ArrayList<HotelRoom>();
+        for(HotelRoom h : allHotelRooms){
+            String availableFrom =  h.getFromAvailability();
+            String availableTo =  h.getToAvailability();
+            if(earlier(availableFrom,fromDate) && earlier(fromDate, daysLater(availableTo,numDays))){
+                availableHotelRooms.add(h);
+            }
+        }
+
+        return availableHotelRooms;
     }
     /**
      * true if s1 is before s2
@@ -303,7 +320,7 @@ public class Main extends Application {
 
     private static ArrayList<HotelRoom> hotelByType(String type){
         String searchParam[] = {"", "", "", "", ""};
-        SearchModel dayTourSearchTest  = new SearchModel(searchParam);
+        DayTourSearch dayTourSearchTest  = new DayTourSearch(searchParam);
         MetaSearch m = new MetaSearch(dayTourSearchTest, new HotelSearch(), new FlightSearch());
 
         return m.getHotelInfo("","","","", type, "", "");
