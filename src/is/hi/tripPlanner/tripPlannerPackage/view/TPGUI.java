@@ -13,6 +13,8 @@ import is.hi.tripPlanner.tripPlannerPackage.storage.Package;
 
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
@@ -21,10 +23,12 @@ import java.util.Date;
  * Created by Notandi on 20-Apr-17.
  */
 public class TPGUI {
+
     private JTabbedPane tabbedPane2;
     private JPanel panelMain;
-    private JComboBox comboBox1;
     private JTextField textField1;
+
+// Booking tab
     private JPanel purchaser;
     private JPanel thePackage;
     private JTextField yourPackage;
@@ -43,16 +47,65 @@ public class TPGUI {
     private JButton bookPackage;
     private JButton confirmInfo;
 
+
+// Flight and hotel tabs
+    private JComboBox comboBox2;
+    private JTable flightTable;
+    private JList list1;
+    private JButton searchButton;
+    private JButton bookButton;
+    private JButton cancelButton;
+    private JComboBox hotelNameCB;
+    private JComboBox hotelLocationCB;
+    private JTable hotelTable;
+    private JButton hotelSearchBtn;
+    private JButton hotelCancelBtn;
+    private JButton hotelBookBtn;
+    private JTextField hotelAvailableFrom;
+    private JComboBox hotelNrNightCB;
+    private JComboBox hoteStarsCB;
+    private JComboBox hotelTypeCB;
+
+
+
     //// non-GUI objects
+
 
     private Package pakki;
     Purchaser buyer ;
-    String[] searchParam;
+
 
     MetaSearch m;
 
+
+    DefaultTableModel flightModel = new DefaultTableModel();
+    DefaultTableModel hotelModel = new DefaultTableModel();
+
     public TPGUI(){
 
+// GUI
+        flightTable.setAutoCreateRowSorter(true);
+        flightTable.setFillsViewportHeight(true);
+        flightTable.setPreferredScrollableViewportSize(new Dimension(550, 200));
+        flightModel.addColumn("Location");
+        flightModel.addColumn("Destination");
+        flightModel.addColumn("Date");
+        flightModel.addColumn("Price");
+        flightTable.setModel(flightModel);
+
+        hotelTable.setAutoCreateRowSorter(true);
+        hotelTable.setFillsViewportHeight(true);
+        hotelTable.setPreferredScrollableViewportSize(new Dimension(550, 200));
+        hotelModel.addColumn("Name");
+        hotelModel.addColumn("Location");
+        hotelModel.addColumn("Price");
+        hotelModel.addColumn("Quality");
+        hotelModel.addColumn("Type");
+        hotelModel.addColumn("Theme");
+        hotelTable.setModel(hotelModel);
+
+
+//// non-GUI
         buyer = new Purchaser("","","","");
         // package with empty flight, hotel and daytour, not used  // pakki = new Package(new Flight("","",new Date()) ,  new HotelRoom(0, "",0,"","","","",0,""), new Trip("", new Date(), new Date(), "", 0, 0, "", 0,0,0) , buyer);
         pakki = new Package();
@@ -60,6 +113,8 @@ public class TPGUI {
 
         m = new MetaSearch(new DayTourSearch(searchParam), new HotelSearch(), new FlightSearch());
 
+
+//// Listeners
         /**
          * button pressed to view package contents
          */
