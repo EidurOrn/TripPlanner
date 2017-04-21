@@ -26,7 +26,8 @@ public class TPGUI {
     private JButton hotelBookBtn;
     private JTextField hotelAvailableFrom;
     private JComboBox hotelNrNightCB;
-    private JComboBox comboBox3;
+    private JComboBox hoteStarsCB;
+    private JComboBox hotelTypeCB;
     DefaultTableModel flightModel = new DefaultTableModel();
     DefaultTableModel hotelModel = new DefaultTableModel();
 
