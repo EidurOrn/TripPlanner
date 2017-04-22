@@ -24,6 +24,7 @@ import java.util.Set;
  */
 public class TPGUI {
 
+
     private JTabbedPane tabbedPane2;
     private JPanel panelMain;
     private JTextField enterDate;
@@ -75,9 +76,27 @@ public class TPGUI {
     private JComboBox hoteStarsCB;
     private JComboBox hotelTypeCB;
 
+
+
     DefaultTableModel hotelTableModel = new DefaultTableModel();
 
+    // Day trip tab
+    private JTable DTTable;
+    private JPanel DTTablePanel;
+    private JComboBox DTTripCb;
+    private JComboBox DTLocationCB;
+    private JTextField DTTripStartTxtField;
+    private JTextField DTTripEndTxtField;
+    private JComboBox DTTypeCB;
+    private JComboBox DTNrPeoplCB;
+    private JPanel DTValuePanel;
+    private JButton DTCancelBtn;
+    private JButton DTBookBtn;
+    private JButton DTSrcBtn;
+    private JPanel flightPanelValue;
+    private JPanel flightPanelTable;
 
+    DefaultTableModel DayTRipTableModel = new DefaultTableModel();
 
     //// non-GUI objects
 
@@ -101,8 +120,13 @@ public class TPGUI {
         String[] searchParam = {"", "", "", "", ""};
         m = new MetaSearch(new DayTourSearch(searchParam), new HotelSearch(), new FlightSearch());
 // GUI
-
+        panelMain.setPreferredSize(new Dimension(750, 800));
+        //revalidate();
         // Flight
+        flightPanelValue.setMinimumSize(new Dimension(-1, 20));
+        flightPanelValue.setMaximumSize(new Dimension(-1,60));
+        flightPanelTable.setMinimumSize(new Dimension(-1, 400));
+        flightPanelTable.setMaximumSize(new Dimension(-1,600));
         flightTable.setAutoCreateRowSorter(true);
         flightTable.setFillsViewportHeight(true);
         flightTable.setPreferredScrollableViewportSize(new Dimension(550, 200));
@@ -143,6 +167,19 @@ public class TPGUI {
         hotelTableModel.addColumn("Type");
         hotelTableModel.addColumn("Theme");
         hotelTable.setModel(hotelTableModel);
+
+        DTTable.setAutoCreateRowSorter(true);
+        DTTable.setFillsViewportHeight(true);
+        DTTable.setPreferredScrollableViewportSize(new Dimension(550, 200));
+        DayTRipTableModel.addColumn("Name");
+        DayTRipTableModel.addColumn("Location");
+        DayTRipTableModel.addColumn("Starting Date");
+        DayTRipTableModel.addColumn("Ending Date");
+        DayTRipTableModel.addColumn("MinPeople");
+        DayTRipTableModel.addColumn("MaxPeople");
+        DayTRipTableModel.addColumn("Description");
+        DayTRipTableModel.addColumn("Price");
+        DTTable.setModel(DayTRipTableModel);
 
 
 
