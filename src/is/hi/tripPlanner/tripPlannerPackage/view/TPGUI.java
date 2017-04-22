@@ -1,11 +1,9 @@
 package is.hi.tripPlanner.tripPlannerPackage.view;
 
 import is.hi.tripPlanner.dayTourPackage.model.DayTourSearch;
-import is.hi.tripPlanner.dayTourPackage.model.Trip;
 import is.hi.tripPlanner.flightPackage.Flight;
 import is.hi.tripPlanner.flightPackage.FlightSearch;
 import is.hi.tripPlanner.hotelPackage.JFrames.HotelSearch;
-import is.hi.tripPlanner.hotelPackage.Models.HotelRoom;
 import is.hi.tripPlanner.tripPlannerPackage.controller.Book;
 import is.hi.tripPlanner.tripPlannerPackage.controller.MetaSearch;
 import is.hi.tripPlanner.tripPlannerPackage.storage.Purchaser;
@@ -17,7 +15,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Notandi on 20-Apr-17.
@@ -26,7 +26,7 @@ public class TPGUI {
 
     private JTabbedPane tabbedPane2;
     private JPanel panelMain;
-    private JTextField textField1;
+    private JTextField enterDate;
 
 // Booking tab
     private JPanel purchaser;
@@ -48,13 +48,22 @@ public class TPGUI {
     private JButton confirmInfo;
 
 
-// Flight and hotel tabs
-    private JComboBox comboBox2;
+// Flight tab
+    private JComboBox cbLocation;
+    private JComboBox cbDestination;
     private JTable flightTable;
     private JList list1;
     private JButton searchButton;
     private JButton bookButton;
     private JButton cancelButton;
+    String chosenLocation;
+    String chosenDestination;
+    private ArrayList<Flight> flightResults;
+    private Flight chosenFlight;
+
+    DefaultTableModel flightTableModel = new DefaultTableModel();
+
+    // hotel tab
     private JComboBox hotelNameCB;
     private JComboBox hotelLocationCB;
     private JTable hotelTable;
@@ -66,6 +75,8 @@ public class TPGUI {
     private JComboBox hoteStarsCB;
     private JComboBox hotelTypeCB;
 
+    DefaultTableModel hotelTableModel = new DefaultTableModel();
+
 
 
     //// non-GUI objects
@@ -73,45 +84,67 @@ public class TPGUI {
 
     private Package pakki;
     Purchaser buyer ;
-
-
     MetaSearch m;
 
 
-    DefaultTableModel flightModel = new DefaultTableModel();
-    DefaultTableModel hotelModel = new DefaultTableModel();
+
+
+
 
     public TPGUI(){
 
-// GUI
-        flightTable.setAutoCreateRowSorter(true);
-        flightTable.setFillsViewportHeight(true);
-        flightTable.setPreferredScrollableViewportSize(new Dimension(550, 200));
-        flightModel.addColumn("Location");
-        flightModel.addColumn("Destination");
-        flightModel.addColumn("Date");
-        flightModel.addColumn("Price");
-        flightTable.setModel(flightModel);
-
-        hotelTable.setAutoCreateRowSorter(true);
-        hotelTable.setFillsViewportHeight(true);
-        hotelTable.setPreferredScrollableViewportSize(new Dimension(550, 200));
-        hotelModel.addColumn("Name");
-        hotelModel.addColumn("Location");
-        hotelModel.addColumn("Price");
-        hotelModel.addColumn("Quality");
-        hotelModel.addColumn("Type");
-        hotelModel.addColumn("Theme");
-        hotelTable.setModel(hotelModel);
-
-
 //// non-GUI
+        // set up search, package and purchaser to use and add to
         buyer = new Purchaser("","","","");
         // package with empty flight, hotel and daytour, not used  // pakki = new Package(new Flight("","",new Date()) ,  new HotelRoom(0, "",0,"","","","",0,""), new Trip("", new Date(), new Date(), "", 0, 0, "", 0,0,0) , buyer);
         pakki = new Package();
         String[] searchParam = {"", "", "", "", ""};
-
         m = new MetaSearch(new DayTourSearch(searchParam), new HotelSearch(), new FlightSearch());
+// GUI
+
+        // Flight
+        flightTable.setAutoCreateRowSorter(true);
+        flightTable.setFillsViewportHeight(true);
+        flightTable.setPreferredScrollableViewportSize(new Dimension(550, 200));
+        flightTableModel.addColumn("Location");
+        flightTableModel.addColumn("Destination");
+        flightTableModel.addColumn("Date");
+        flightTableModel.addColumn("Price");
+        flightTable.setModel(flightTableModel);
+        flightTable.getSelectionModel().addListSelectionListener(new TableListener(this));
+
+        Set<String> allLocations =  new HashSet<>();
+        allLocations.addAll( m.getFlightSearchObject().getFra());
+        System.out.println(allLocations.toString());
+        allLocations.remove("test");
+        cbDestination.setModel(new DefaultComboBoxModel(allLocations.toArray()));
+
+
+        Set<String> allDestinations =  new HashSet<>();
+        allDestinations.addAll( m.getFlightSearchObject().getTil());
+        System.out.println(allLocations.toString());
+        allDestinations.remove("test");
+        cbLocation.setModel(new DefaultComboBoxModel(allDestinations.toArray()));
+
+
+
+        // comboboxes have been set up
+
+
+
+
+        hotelTable.setAutoCreateRowSorter(true);
+        hotelTable.setFillsViewportHeight(true);
+        hotelTable.setPreferredScrollableViewportSize(new Dimension(550, 200));
+        hotelTableModel.addColumn("Name");
+        hotelTableModel.addColumn("Location");
+        hotelTableModel.addColumn("Price");
+        hotelTableModel.addColumn("Quality");
+        hotelTableModel.addColumn("Type");
+        hotelTableModel.addColumn("Theme");
+        hotelTable.setModel(hotelTableModel);
+
+
 
 
 //// Listeners
@@ -161,6 +194,9 @@ public class TPGUI {
                 }
             }
         });
+        /**
+         * puts the customer info written into Purchaser
+         */
         confirmInfo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -169,6 +205,68 @@ public class TPGUI {
                 buyer.setName(name.getText());
                 buyer.setPhone(phoneNumber.getText());
 
+            }
+        });
+        /** Combobox that selects location
+         *
+         */
+        cbLocation.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JComboBox cb = (JComboBox)actionEvent.getSource();
+                chosenLocation = (String)cb.getSelectedItem();
+            }
+        });
+        cbLocation.setSelectedIndex(0);
+
+        cbDestination.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JComboBox cb = (JComboBox)actionEvent.getSource();
+                chosenDestination = (String)cb.getSelectedItem();
+            }
+        });
+        cbDestination.setSelectedIndex(0);
+
+        /** button that gets available flights and puts into flightTable
+         *
+         */
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                // empty flightTable
+                flightTableModel.setRowCount(0);
+                // get flights
+                 setFlightResults(m.getFlightInfo(chosenLocation, chosenDestination, enterDate.getText()));
+
+                // add to flightTable
+                for(Flight flight : getFlightResults()){
+
+                    String[] flightInfo = {flight.getLocation(), flight.getDestination(), flight.getDeparture().toString().substring(0,16)};
+                    flightTableModel.addRow(flightInfo);
+                }
+
+            }
+        });
+        /**
+         * books flight which is selected in flightTable to package
+         */
+        bookButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if(chosenFlight != null) {
+                    pakki.setBookedFlight(chosenFlight);
+                }
+            }
+        });
+
+        /** removes flight booking
+         *
+         */
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                pakki.setBookedFlight(null);
             }
         });
     }
@@ -185,5 +283,21 @@ public class TPGUI {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
+    }
+
+    public ArrayList<Flight> getFlightResults() {
+        return flightResults;
+    }
+
+    public void setFlightResults(ArrayList<Flight> flightResults) {
+        this.flightResults = flightResults;
+    }
+
+    public Flight getChosenFlight() {
+        return chosenFlight;
+    }
+
+    public void setChosenFlight(Flight chosenFlight) {
+        this.chosenFlight = chosenFlight;
     }
 }
