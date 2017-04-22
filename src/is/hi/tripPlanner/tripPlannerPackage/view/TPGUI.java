@@ -24,6 +24,7 @@ import java.util.Set;
  */
 public class TPGUI {
 
+
     private JTabbedPane tabbedPane2;
     private JPanel panelMain;
     private JTextField enterDate;
@@ -56,6 +57,7 @@ public class TPGUI {
     private JButton searchButton;
     private JButton bookButton;
     private JButton cancelButton;
+
     String chosenLocation;
     String chosenDestination;
     private ArrayList<Flight> flightResults;
@@ -75,9 +77,34 @@ public class TPGUI {
     private JComboBox hoteStarsCB;
     private JComboBox hotelTypeCB;
 
+    String chosenHotelName;
+    String chosenHotelLocation;
+    String chosenHotelDate;
+    int nrOfNights;
+    String chosenType;
+    String chosenStars;
+
+
+
     DefaultTableModel hotelTableModel = new DefaultTableModel();
 
+    // Day trip tab
+    private JTable DTTable;
+    private JPanel DTTablePanel;
+    private JComboBox DTTripCb;
+    private JComboBox DTLocationCB;
+    private JTextField DTTripStartTxtField;
+    private JTextField DTTripEndTxtField;
+    private JComboBox DTTypeCB;
+    private JComboBox DTNrPeoplCB;
+    private JPanel DTValuePanel;
+    private JButton DTCancelBtn;
+    private JButton DTBookBtn;
+    private JButton DTSrcBtn;
+    private JPanel flightPanelValue;
+    private JPanel flightPanelTable;
 
+    DefaultTableModel DayTRipTableModel = new DefaultTableModel();
 
     //// non-GUI objects
 
@@ -101,8 +128,13 @@ public class TPGUI {
         String[] searchParam = {"", "", "", "", ""};
         m = new MetaSearch(new DayTourSearch(searchParam), new HotelSearch(), new FlightSearch());
 // GUI
-
+        panelMain.setPreferredSize(new Dimension(750, 800));
+        //revalidate();
         // Flight
+        flightPanelValue.setMinimumSize(new Dimension(-1, 20));
+        flightPanelValue.setMaximumSize(new Dimension(-1,60));
+        flightPanelTable.setMinimumSize(new Dimension(-1, 400));
+        flightPanelTable.setMaximumSize(new Dimension(-1,600));
         flightTable.setAutoCreateRowSorter(true);
         flightTable.setFillsViewportHeight(true);
         flightTable.setPreferredScrollableViewportSize(new Dimension(550, 200));
@@ -111,7 +143,7 @@ public class TPGUI {
         flightTableModel.addColumn("Date");
         flightTableModel.addColumn("Price");
         flightTable.setModel(flightTableModel);
-        flightTable.getSelectionModel().addListSelectionListener(new TableListener(this, 1));
+        flightTable.getSelectionModel().addListSelectionListener(new TableListener(this));
 
         Set<String> allLocations =  new HashSet<>();
         allLocations.addAll( m.getFlightSearchObject().getFra());
@@ -144,25 +176,30 @@ public class TPGUI {
         hotelTableModel.addColumn("Theme");
         hotelTable.setModel(hotelTableModel);
 
-        String chosenHotelName;
-        String chosenHotelLocation;
-        String chosenHotelDate;
-        int nrOfNights;
-        String chosenType;
-        String chosenStars;
-
         Set<String> allHotels =  new HashSet<>();
         //allHotels.addAll( m.getHotelSearchObject().HotelSearch(""));
         System.out.println(allLocations.toString());
-        //allLocations.remove("test");
-        //cbDestination.setModel(new DefaultComboBoxModel(allLocations.toArray()));
+        allLocations.remove("test");
+        cbDestination.setModel(new DefaultComboBoxModel(allLocations.toArray()));
+
+        // DayTour tab
+        DTTable.setAutoCreateRowSorter(true);
+        DTTable.setFillsViewportHeight(true);
+        DTTable.setPreferredScrollableViewportSize(new Dimension(550, 200));
+        DayTRipTableModel.addColumn("Name");
+        DayTRipTableModel.addColumn("Location");
+        DayTRipTableModel.addColumn("Starting Date");
+        DayTRipTableModel.addColumn("Ending Date");
+        DayTRipTableModel.addColumn("MinPeople");
+        DayTRipTableModel.addColumn("MaxPeople");
+        DayTRipTableModel.addColumn("Description");
+        DayTRipTableModel.addColumn("Price");
+        DTTable.setModel(DayTRipTableModel);
 
 
 
 
 //// Listeners
-
-    // Booking tab
         /**
          * button pressed to view package contents
          */
@@ -194,6 +231,8 @@ public class TPGUI {
 
 
 
+
+
         /**
          * books the package into the Trip Planner database and the day tour database (the hotel and daytour programs don't book into the db)
          */
@@ -220,8 +259,6 @@ public class TPGUI {
 
             }
         });
-
-    // Flight tab
         /** Combobox that selects location
          *
          */
@@ -284,11 +321,6 @@ public class TPGUI {
                 pakki.setBookedFlight(null);
             }
         });
-
-
-    // Hotel tab
-
-
     }
 
 

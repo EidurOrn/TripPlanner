@@ -58,15 +58,15 @@ public class HotelSearch extends javax.swing.JPanel {
     }
     
     private void setHotelRoomQuery() {
-        hotelRoomQuery.type = ((String) jComboBoxType.getSelectedItem()).toLowerCase().contains("select") ? "" : (String) jComboBoxType.getSelectedItem();
+        hotelRoomQuery.setType(((String) jComboBoxType.getSelectedItem()).toLowerCase().contains("select") ? "" : (String) jComboBoxType.getSelectedItem());
         int radix = 10;
-        hotelRoomQuery.price = isInteger(jSearchByPrice.getText().replace(" ", ""), radix) ? Integer.parseInt(jSearchByPrice.getText(), radix) :-1;
-        hotelRoomQuery.location = jSearchByLocation.getText();
-        hotelRoomQuery.hotelName = jSearchByHotelName.getText();
-        hotelRoomQuery.fromAvailability = jSearchByFromAvailability.getText();
-        hotelRoomQuery.toAvailability = jSearchByToAvailability.getText();
-        hotelRoomQuery.quality = ((String) jComboBoxQuality.getSelectedItem()).toLowerCase().contains("select") ? -1 : Integer.parseInt(((String) jComboBoxQuality.getSelectedItem()));
-        hotelRoomQuery.theme = ((String) jComboBoxTheme.getSelectedItem()).toLowerCase().contains("select") ? "" : ((String) jComboBoxTheme.getSelectedItem());
+        hotelRoomQuery.setPrice(isInteger(jSearchByPrice.getText().replace(" ", ""), radix) ? Integer.parseInt(jSearchByPrice.getText(), radix) :-1);
+        hotelRoomQuery.setLocation(jSearchByLocation.getText());
+        hotelRoomQuery.setHotelName(jSearchByHotelName.getText());
+        hotelRoomQuery.setFromAvailability(jSearchByFromAvailability.getText());
+        hotelRoomQuery.setToAvailability(jSearchByToAvailability.getText());
+        hotelRoomQuery.setQuality(((String) jComboBoxQuality.getSelectedItem()).toLowerCase().contains("select") ? -1 : Integer.parseInt(((String) jComboBoxQuality.getSelectedItem())));
+        hotelRoomQuery.setTheme(((String) jComboBoxTheme.getSelectedItem()).toLowerCase().contains("select") ? "" : ((String) jComboBoxTheme.getSelectedItem()));
     }
     
     private static Connection getConnection() {
@@ -408,7 +408,7 @@ public class HotelSearch extends javax.swing.JPanel {
             row[5] = users.get(i).getTheme();
             row[6] = users.get(i).getQuality();
             row[7] = users.get(i).getLocation();
-            int id = users.get(i).id;
+            int id = users.get(i).getId();
             
             if (idsInTable.containsKey(id) == false && users.get(i).matchesQuery(hotelRoomQuery)) {
                 tableModel.addRow(row);
@@ -433,7 +433,7 @@ public class HotelSearch extends javax.swing.JPanel {
             row[6] = location.get(i).getQuality();
             row[7] = location.get(i).getLocation();
   
-            int id = location.get(i).id;
+            int id = location.get(i).getId();
             
             if (idsInTable.containsKey(id) == false  && location.get(i).matchesQuery(hotelRoomQuery)) {
 //                System.out.println("Adding id " + id);
@@ -459,7 +459,7 @@ public class HotelSearch extends javax.swing.JPanel {
             row[6] = fromAvailability.get(i).getQuality();
             row[7] = fromAvailability.get(i).getLocation();
   
-            int id = fromAvailability.get(i).id;
+            int id = fromAvailability.get(i).getId();
             
             if (idsInTable.containsKey(id) == false  && fromAvailability.get(i).matchesQuery(hotelRoomQuery)) {
  //               System.out.println("Adding id " + id);
@@ -485,7 +485,7 @@ public class HotelSearch extends javax.swing.JPanel {
             row[6] = toAvailability.get(i).getQuality();
             row[7] = toAvailability.get(i).getLocation();
   
-            int id = toAvailability.get(i).id;
+            int id = toAvailability.get(i).getId();
             
             if (idsInTable.containsKey(id) == false  && toAvailability.get(i).matchesQuery(hotelRoomQuery)) {
 //                System.out.println("Adding id " + id);
@@ -514,7 +514,7 @@ public class HotelSearch extends javax.swing.JPanel {
             row[6] = type.get(i).getQuality();
             row[7] = type.get(i).getLocation();
   
-            int id = type.get(i).id;
+            int id = type.get(i).getId();
  //           System.out.println("Adding id " + id);
             if (idsInTable.containsKey(id) == false && type.get(i).matchesQuery(hotelRoomQuery)) {
                 tableModel.addRow(row);
@@ -540,7 +540,7 @@ public class HotelSearch extends javax.swing.JPanel {
             row[6] = theme.get(i).getQuality();
             row[7] = theme.get(i).getLocation();
   
-            int id = theme.get(i).id;
+            int id = theme.get(i).getId();
   //          System.out.println("Adding id " + id);
             if (idsInTable.containsKey(id) == false && theme.get(i).matchesQuery(hotelRoomQuery)) {
                 tableModel.addRow(row);
@@ -569,7 +569,7 @@ public class HotelSearch extends javax.swing.JPanel {
             row[6] = quality.get(i).getQuality();
             row[7] = quality.get(i).getLocation();
   
-            int id = quality.get(i).id;
+            int id = quality.get(i).getId();
  //           System.out.println("Adding id " + id);
             if (idsInTable.containsKey(id) == false && quality.get(i).matchesQuery(hotelRoomQuery)) {
                 tableModel.addRow(row);

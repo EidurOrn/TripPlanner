@@ -6,12 +6,15 @@ import is.hi.tripPlanner.flightPackage.Flight;
 import is.hi.tripPlanner.hotelPackage.Models.HotelRoom;
 import is.hi.tripPlanner.tripPlannerPackage.storage.Package;
 
+import java.util.ArrayList;
+
 public class Book {
     private Package packageToBeBooked;
     private static int bookingNr;
     private int flightBookingNr;
     private int hotelBookingNr;
     private int tripBookingNr;
+    private ArrayList<HotelRoom> bookedHotels;
 
     public Book(Package p ) {
         this.packageToBeBooked = p;
@@ -21,13 +24,9 @@ public class Book {
         bookingNr++;
     }
 
-    // Incase of having to cancel booking.
-    public Book() {}
-
     // Package booking, connect to other groups and book on their system. If everything
-    // was successful then put this booking order in our db.
-    // This returns a boolean array representing the success of each booking:
-    // [flight,hotel,dayTour]
+    // was successful then put this booking order in our db. This returns a boolean
+    // array representing the success of each booking: [flight,hotel,dayTour]
     public boolean[] bookPackage(){
         // TODO Finish the function to book package.
 
@@ -71,12 +70,14 @@ public class Book {
         // Their implementation only keeps hold of the user (in a list) so it isn't even kept after the program closes. We already handle and
         // store user information in our db. The booking part also just keeps hold of that one hotel that was chosen as a single element in a list
         // which disappears when the program is closed or someone else decides to book a hotel.
+
+        // Due to reasons above a list of booked hotels is added to this class.
+        bookedHotels.add(hotel);
         return true;
     }
 
     // Connects to the day tour group and attempts to book, returns true if successful
     private boolean bookDayTour(Trip trip){
-        // TODO Implement trip booking with our project.
         // We call bookTrip(String[] s) where s contains: [tripId,bookerEmail, NrOfPeople, bookerSSN]
         String[] bookingString =  { ""+trip.getTripId(), packageToBeBooked.getPurchaser().getEmail(), packageToBeBooked.getPurchaser().getTripNumPeople(), packageToBeBooked.getPurchaser().getSsn() };
         String ferdBokud =  BookingController.bookTrip(bookingString);
@@ -87,11 +88,19 @@ public class Book {
         }else{
             return false;
         }
-
-
     }
 
-    // Cancels the booking of a package that has been booked before (Doesn't seem to be implemented with other groups, obsolete).
+    public ArrayList<HotelRoom> getBookedHotels() {
+        return bookedHotels;
+    }
+
+    /* ================================================================================ */
+    /*                                                                                  */
+    /*                                   OBSOLETE                                       */
+    /*                                                                                  */
+    /* ================================================================================ */
+
+    // Was not implemented by all other groups thus cancelling of booking can't be done.
     public boolean[] cancelBooking(int bNr){
         // Connect to our db to get the id's of booked flight, hotel and day tour.
         // Should also check whether this package is "ongoing" or already finished,

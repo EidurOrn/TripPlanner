@@ -10,26 +10,26 @@ package is.hi.tripPlanner.hotelPackage.Models;
  * @author drifasoley
  */
 public class HotelRoom {
-    public int id;
-    public String hotelName;
-    public int price;
-    public String fromAvailability;
-    public String toAvailability;
-    public String type;
-    public String theme;
-    public int quality;
-    public String location;
+    private int id;
+    private String hotelName;
+    private int price;
+    private String fromAvailability;
+    private String toAvailability;
+    private String type;
+    private String theme;
+    private int quality;
+    private String location;
     
     public HotelRoom(int id, String hotelName, int price, String fromAvailability, String toAvailability, String type, String theme, int quality, String location) {
-        this.id = id;
-        this.hotelName = hotelName;
-        this.price = price;
-        this.fromAvailability = fromAvailability;
-        this.toAvailability = toAvailability;
-        this.type = type;
-        this.theme = theme;
-        this.quality = quality;
-        this.location = location;
+        this.setId(id);
+        this.setHotelName(hotelName);
+        this.setPrice(price);
+        this.setFromAvailability(fromAvailability);
+        this.setToAvailability(toAvailability);
+        this.setType(type);
+        this.setTheme(theme);
+        this.setQuality(quality);
+        this.setLocation(location);
     }
 
     public HotelRoom() {
@@ -37,15 +37,15 @@ public class HotelRoom {
     }
     
     public void dump() {
-        System.out.println("id: " + this.id);
-        System.out.println("hotelName: " + this.hotelName);
-        System.out.println("price: " + this.price);
-        System.out.println("availability from: " + this.fromAvailability);
-        System.out.println("availability to: " + this.toAvailability);
-        System.out.println("type: " + this.type);
-        System.out.println("theme: " + this.theme);
-        System.out.println("quality: " + this.quality);
-        System.out.println("location: " + this.location);
+        System.out.println("id: " + this.getId());
+        System.out.println("hotelName: " + this.getHotelName());
+        System.out.println("price: " + this.getPrice());
+        System.out.println("availability from: " + this.getFromAvailability());
+        System.out.println("availability to: " + this.getToAvailability());
+        System.out.println("type: " + this.getType());
+        System.out.println("theme: " + this.getTheme());
+        System.out.println("quality: " + this.getQuality());
+        System.out.println("location: " + this.getLocation());
         
     }
     public int getId() {
@@ -77,13 +77,13 @@ public class HotelRoom {
     }
     
     public boolean matchesQuery(HotelRoom query) {
-        boolean hotelMatches = this.hotelName.contains(query.hotelName);
-        boolean priceMatches = (this.price == query.price || query.price == -1);
-        boolean locationMatches = this.location.contains(query.location);
-        boolean typeMatches = this.type.contains(query.type);
-        boolean themeMatches = this.theme.contains(query.theme);
-        boolean qualityMatches = this.quality == query.quality || query.quality == -1;
-        boolean fromToMatches = this.fromAvailability.contains(query.fromAvailability) && this.toAvailability.contains(query.toAvailability);
+        boolean hotelMatches = this.getHotelName().contains(query.getHotelName());
+        boolean priceMatches = (this.getPrice() == query.getPrice() || query.getPrice() == -1);
+        boolean locationMatches = this.getLocation().contains(query.getLocation());
+        boolean typeMatches = this.getType().contains(query.getType());
+        boolean themeMatches = this.getTheme().contains(query.getTheme());
+        boolean qualityMatches = this.getQuality() == query.getQuality() || query.getQuality() == -1;
+        boolean fromToMatches = this.getFromAvailability().contains(query.getFromAvailability()) && this.getToAvailability().contains(query.getToAvailability());
 
         return hotelMatches && priceMatches && locationMatches && typeMatches && themeMatches && qualityMatches && fromToMatches;
               
@@ -96,8 +96,44 @@ public class HotelRoom {
             return false;
         } else {
             HotelRoom hR = (HotelRoom) object;
-            return this.id == hR.getId();
+            return this.getId() == hR.getId();
         }
+    }
+
+    public void setHotelName(String hotelName) {
+        this.hotelName = hotelName;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public void setFromAvailability(String fromAvailability) {
+        this.fromAvailability = fromAvailability;
+    }
+
+    public void setToAvailability(String toAvailability) {
+        this.toAvailability = toAvailability;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
+
+    public void setQuality(int quality) {
+        this.quality = quality;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }
 
