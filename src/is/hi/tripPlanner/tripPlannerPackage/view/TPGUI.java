@@ -57,6 +57,7 @@ public class TPGUI {
     private JButton searchButton;
     private JButton bookButton;
     private JButton cancelButton;
+
     String chosenLocation;
     String chosenDestination;
     private ArrayList<Flight> flightResults;
@@ -75,6 +76,13 @@ public class TPGUI {
     private JComboBox hotelNrNightCB;
     private JComboBox hoteStarsCB;
     private JComboBox hotelTypeCB;
+
+    String chosenHotelName;
+    String chosenHotelLocation;
+    String chosenHotelDate;
+    int nrOfNights;
+    String chosenType;
+    String chosenStars;
 
 
 
@@ -168,6 +176,13 @@ public class TPGUI {
         hotelTableModel.addColumn("Theme");
         hotelTable.setModel(hotelTableModel);
 
+        Set<String> allHotels =  new HashSet<>();
+        //allHotels.addAll( m.getHotelSearchObject().HotelSearch(""));
+        System.out.println(allLocations.toString());
+        allLocations.remove("test");
+        cbDestination.setModel(new DefaultComboBoxModel(allLocations.toArray()));
+
+        // DayTour tab
         DTTable.setAutoCreateRowSorter(true);
         DTTable.setFillsViewportHeight(true);
         DTTable.setPreferredScrollableViewportSize(new Dimension(550, 200));
