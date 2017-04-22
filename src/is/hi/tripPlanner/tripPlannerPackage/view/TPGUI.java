@@ -4,6 +4,7 @@ import is.hi.tripPlanner.dayTourPackage.model.DayTourSearch;
 import is.hi.tripPlanner.flightPackage.Flight;
 import is.hi.tripPlanner.flightPackage.FlightSearch;
 import is.hi.tripPlanner.hotelPackage.JFrames.HotelSearch;
+import is.hi.tripPlanner.hotelPackage.Models.HotelRoom;
 import is.hi.tripPlanner.tripPlannerPackage.controller.Book;
 import is.hi.tripPlanner.tripPlannerPackage.controller.MetaSearch;
 import is.hi.tripPlanner.tripPlannerPackage.storage.Purchaser;
@@ -73,8 +74,7 @@ public class TPGUI {
     private JButton hotelCancelBtn;
     private JButton hotelBookBtn;
     private JTextField hotelAvailableFrom;
-    private JComboBox hotelNrNightCB;
-    private JComboBox hoteStarsCB;
+    private JComboBox hotelStarsCB;
     private JComboBox hotelTypeCB;
 
     String chosenHotelName;
@@ -103,6 +103,7 @@ public class TPGUI {
     private JButton DTSrcBtn;
     private JPanel flightPanelValue;
     private JPanel flightPanelTable;
+    private JTextField nrNightsText;
 
     DefaultTableModel DayTRipTableModel = new DefaultTableModel();
 
@@ -143,7 +144,7 @@ public class TPGUI {
         flightTableModel.addColumn("Date");
         flightTableModel.addColumn("Price");
         flightTable.setModel(flightTableModel);
-        flightTable.getSelectionModel().addListSelectionListener(new TableListener(this));
+        flightTable.getSelectionModel().addListSelectionListener(new TableListener(this,1));
 
         Set<String> allLocations =  new HashSet<>();
         allLocations.addAll( m.getFlightSearchObject().getFra());
@@ -157,8 +158,6 @@ public class TPGUI {
         System.out.println(allLocations.toString());
         allDestinations.remove("test");
         cbLocation.setModel(new DefaultComboBoxModel(allDestinations.toArray()));
-
-
 
         // comboboxes have been set up
 
@@ -176,11 +175,27 @@ public class TPGUI {
         hotelTableModel.addColumn("Theme");
         hotelTable.setModel(hotelTableModel);
 
-        Set<String> allHotels =  new HashSet<>();
-        //allHotels.addAll( m.getHotelSearchObject().HotelSearch(""));
-        System.out.println(allLocations.toString());
-        allLocations.remove("test");
-        cbDestination.setModel(new DefaultComboBoxModel(allLocations.toArray()));
+        ArrayList<HotelRoom> allHotelRooms = m.getHotelSearchObject().HotelSearch("");
+        Set<String> allHotelNames =  new HashSet<>();
+        Set<String> allHotelLocations =  new HashSet<>();
+        Set<String> allHotelStars =  new HashSet<>();
+        Set<String> allHotelTypes =  new HashSet<>();
+
+        for(HotelRoom hotel : allHotelRooms){
+            allHotelNames.add(hotel.getHotelName());
+            allHotelLocations.add(hotel.getLocation());
+            allHotelStars.add("" + hotel.getQuality());
+            allHotelTypes.add(hotel.getType());
+        }
+
+        hotelNameCB.setModel(new DefaultComboBoxModel(allHotelNames.toArray()));
+        hotelLocationCB.setModel(new DefaultComboBoxModel(allHotelLocations.toArray()));
+        hotelStarsCB.setModel(new DefaultComboBoxModel(allHotelStars.toArray()));
+        hotelTypeCB.setModel(new DefaultComboBoxModel(allHotelTypes.toArray()));
+
+
+
+
 
         // DayTour tab
         DTTable.setAutoCreateRowSorter(true);
