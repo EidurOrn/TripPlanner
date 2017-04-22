@@ -1,18 +1,5 @@
 package is.hi.tripPlanner.flightPackage;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -22,10 +9,10 @@ public class FlightSearch {
 
 
     tengingVidGagnagrunn t = new tengingVidGagnagrunn();
-    ArrayList<String> fra = t.getFrom();
-    ArrayList<String> til = t.getTo();
-    ArrayList<String> data = t.getDate();
-    ArrayList<String> time = t.getTime();
+    private ArrayList<String> fra = t.getFrom();
+    private ArrayList<String> til = t.getTo();
+    private ArrayList<String> dates = t.getDate();
+    private ArrayList<String> time = t.getTime();
     Boolean timi1Valin = false;
     public  static Boolean timi2Valin = false;
     public static ArrayList<String> found1;
@@ -39,12 +26,17 @@ public class FlightSearch {
         //prufa verður að hafa try og catch fyrir SQLite tengniguna
         // fer í gegn um arry-ana
         ArrayList<String> fraTil = new ArrayList<>();
-        for(int i = 0; i<fra.size();i++){
-            String Str = time.get(0).substring(0,2);
+        for(int i = 0; i< getFra().size(); i++){
+            String Str = getTime().get(0).substring(0,2);
             int tim = Integer.parseInt(Str);
-            if ((fra.get(i)).equalsIgnoreCase(departure)&& (til.get(i)).equalsIgnoreCase(arrival)
-                    && (data.get(i)).equals(date)){
-                fraTil.add(departure +" "+ arrival + " " + data.get(i) + " " + time.get(i));
+            if ((getFra().get(i)).equalsIgnoreCase(departure)&& (getTil().get(i)).equalsIgnoreCase(arrival)
+                    && (dates.get(i)).equals(date)){
+                String nyrLidur = departure +" "+ arrival + " " + dates.get(i) + " " + getTime().get(i);
+                nyrLidur = nyrLidur.substring(0,nyrLidur.length()-2);
+
+                if(! fraTil.contains(nyrLidur)){
+                    fraTil.add(nyrLidur);
+                }
             }
         }
         return fraTil;
@@ -58,4 +50,35 @@ public class FlightSearch {
         return found2;
     }
 
+    public ArrayList<String> getFra() {
+        return fra;
+    }
+
+    public void setFra(ArrayList<String> fra) {
+        this.fra = fra;
+    }
+
+    public ArrayList<String> getTil() {
+        return til;
+    }
+
+    public void setTil(ArrayList<String> til) {
+        this.til = til;
+    }
+
+    public ArrayList<String> getDates() {
+        return dates;
+    }
+
+    public void setDates(ArrayList<String> dates) {
+        this.dates = dates;
+    }
+
+    public ArrayList<String> getTime() {
+        return time;
+    }
+
+    public void setTime(ArrayList<String> time) {
+        this.time = time;
+    }
 }
