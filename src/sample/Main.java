@@ -230,6 +230,7 @@ public class Main extends Application {
 
         return availableHotelRooms;
     }
+
     /**
      * true if s1 is before s2
      * @param s1 string representing date, on format "2014-05-22"

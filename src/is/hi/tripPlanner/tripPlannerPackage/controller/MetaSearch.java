@@ -66,6 +66,10 @@ public class MetaSearch{
                                              String toAvailability, String type, String theme, String quality){
         ArrayList<HotelRoom> l = new ArrayList<HotelRoom>();
 
+        if(hotelName.equals("") && location.equals("") && fromAvailability.equals("") && toAvailability.equals("") && type.equals("") && theme.equals("") && quality.equals("") ){
+            // all searchParams are empty string, not used
+            return getHotelSearchObject().HotelSearch("");
+        }
         if(!hotelName.equals("")) {
             l = getHotelSearchObject().HotelSearch(hotelName); // Makes a list with the first search results.
             if(l.isEmpty()) return l; // There was a search attempt but it turned up empty, no other condition can change that.
