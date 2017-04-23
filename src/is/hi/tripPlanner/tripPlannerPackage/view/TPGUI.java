@@ -141,6 +141,14 @@ public class TPGUI {
     private JTextField tripMaxPrice;
     private JLabel tripPrice;
     private JButton dtShowAll;
+    private JLabel enterName;
+    private JLabel enterSSN;
+    private JLabel enterPhone;
+    private JLabel enterEmail;
+    private JLabel flight;
+    private JLabel hotel;
+    private JLabel daytour;
+    private JLabel totalPrice;
 
     Trip[] allTrips;
     private ArrayList<Trip> dayTourResults;
@@ -222,17 +230,17 @@ public class TPGUI {
 
 
     // Hotel
-        hotelTable.setAutoCreateRowSorter(true);
-        hotelTable.setFillsViewportHeight(true);
-        hotelTable.setPreferredScrollableViewportSize(new Dimension(550, 200));
+        getHotelTable().setAutoCreateRowSorter(true);
+        getHotelTable().setFillsViewportHeight(true);
+        getHotelTable().setPreferredScrollableViewportSize(new Dimension(550, 200));
         hotelTableModel.addColumn("Name");
         hotelTableModel.addColumn("Location");
         hotelTableModel.addColumn("Price");
         hotelTableModel.addColumn("Quality");
         hotelTableModel.addColumn("Type");
         hotelTableModel.addColumn("Theme");
-        hotelTable.setModel(hotelTableModel);
-        hotelTable.getSelectionModel().addListSelectionListener(new TableListener(this,2));
+        getHotelTable().setModel(hotelTableModel);
+        getHotelTable().getSelectionModel().addListSelectionListener(new TableListener(this,2));
 
 
 
@@ -269,9 +277,9 @@ public class TPGUI {
 
 
     // DayTour tab
-        dtTable.setAutoCreateRowSorter(true);
-        dtTable.setFillsViewportHeight(true);
-        dtTable.setPreferredScrollableViewportSize(new Dimension(550, 200));
+        getDtTable().setAutoCreateRowSorter(true);
+        getDtTable().setFillsViewportHeight(true);
+        getDtTable().setPreferredScrollableViewportSize(new Dimension(550, 200));
         dayTripTableModel.addColumn("Name");
         dayTripTableModel.addColumn("Location");
         dayTripTableModel.addColumn("Starting Date");
@@ -279,8 +287,8 @@ public class TPGUI {
         dayTripTableModel.addColumn("MinPeople");
         dayTripTableModel.addColumn("MaxPeople");
         dayTripTableModel.addColumn("Price");
-        dtTable.setModel(dayTripTableModel);
-        dtTable.getSelectionModel().addListSelectionListener(new TableListener(this,3));
+        getDtTable().setModel(dayTripTableModel);
+        getDtTable().getSelectionModel().addListSelectionListener(new TableListener(this,3));
 
         // Comboboxes:
 
@@ -295,9 +303,7 @@ public class TPGUI {
         allDayTourLocations.add("");
         int maxNrOfPeople = 0;
         for(Trip trip : allTrips){
-            System.out.println(trip.getTripName());
-            System.out.println(trip.getDateBegin().toString());
-            System.out.println(trip.getDateEnd().toString());
+
             allDayTourNames.add(trip.getTripName());
             allDayTourLocations.add(trip.getLocation());
 
@@ -348,7 +354,7 @@ public class TPGUI {
 
                             DTLocationCB.setSelectedItem(hotelLocation);
                             // only show those trips that are in chosenDTLocation
-                            System.out.println(chosenDTLocation);
+
                             // for trips in allTrips,  if tripName is in DTTripCB, if tripLocation is chosenDTLocation, add to model
 
                             showTripsOnLocation();;
@@ -379,16 +385,16 @@ public class TPGUI {
                 if( pakki.getBookedFlight() != null) {
                     // assume that if a flight is booked, then it has a location, destination and departure
                      flightText = "Flight from " + pakki.getBookedFlight().getLocation() + " to " + pakki.getBookedFlight().getDestination()
-                            + " on " + pakki.getBookedFlight().getDeparture() + " that costs " + pakki.getBookedFlight().getPrice();
+                            + " on " + pakki.getBookedFlight().getDeparture() + " that costs " + pakki.getBookedFlight().getPrice() + "kr.";
                      totalPrice += pakki.getBookedFlight().getPrice();
 
                 }
                 if( pakki.getBookedHotel() != null){
-                    hotelText = "Hotelroom at " + pakki.getBookedHotel().getHotelName() + " located in " + pakki.getBookedHotel().getLocation() + " that costs " + pakki.getBookedHotel().getPrice();
+                    hotelText = "Hotelroom at " + pakki.getBookedHotel().getHotelName() + " located in " + pakki.getBookedHotel().getLocation() + " that costs " + pakki.getBookedHotel().getPrice() + "kr.";
                     totalPrice+=pakki.getBookedHotel().getPrice();
                 }
                 if( pakki.getBookedDayTour() != null) {
-                    dayTourText = "Day tour " + pakki.getBookedDayTour().getTripName() + " located in " + pakki.getBookedDayTour().getLocation() + " that costs " + pakki.getBookedDayTour().getPrice();
+                    dayTourText = "Day tour " + pakki.getBookedDayTour().getTripName() + " located in " + pakki.getBookedDayTour().getLocation() + " that costs " + pakki.getBookedDayTour().getPrice() + "kr.";
                     totalPrice += pakki.getBookedDayTour().getPrice();
                 }
 
@@ -396,7 +402,7 @@ public class TPGUI {
                 yourFlight.setText(flightText);
                 yourHotel.setText(hotelText);
                 yourDayTour.setText(dayTourText);
-                packagePrice.setText("" + totalPrice);
+                packagePrice.setText("" + totalPrice + "kr.");
             }
         });
 
@@ -407,10 +413,27 @@ public class TPGUI {
         bookPackage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if( pakki.getBookedDayTour() != null  && pakki.getBookedHotel() != null && pakki.getBookedDayTour() != null && pakki.getPurchaser() != null) {
+                if( true) {
+                    // pakki.getBookedDayTour() != null  && pakki.getBookedHotel() != null && pakki.getBookedDayTour() != null && pakki.getPurchaser() != null
                     // package has been filled and purchaser has registered his info
                     Book booking = new Book(pakki);
-                    booking.bookPackage();
+
+                    boolean[] bookingCheck = booking.bookPackage();
+
+                    if(bookingCheck[0]){
+                        System.out.println("Flight booked!");
+                        // dialog gluggi
+                    }
+                    if(bookingCheck[1]){
+                        System.out.println("Hotel booked!");
+                        // dialog gluggi
+                    }
+                    if(bookingCheck[2]){
+                        System.out.println("Day tour booked!");
+                        // dialog gluggi
+                    }
+
+                    JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "Package booked!" );
                 }
             }
         });
@@ -424,6 +447,7 @@ public class TPGUI {
                 buyer.setEmail(email.getText());
                 buyer.setName(name.getText());
                 buyer.setPhone(phoneNumber.getText());
+                pakki.setPurchaser(buyer);
 
             }
         });
@@ -699,16 +723,12 @@ public class TPGUI {
                 }
 
                 String[] searchDT = {chosenDTName,chosenDTDateBegin, chosenDTDateEnd, chosenDTLocation, chosenMaxPrice};
-                for(String s: searchDT){
-                    System.out.println(s);
-                }
+
                 m.setDayTourSearchObject(new DayTourSearch(searchDT));
                 //DayTourSearch searchParameters = new DayTourSearch(searchDT);
 
                 ArrayList<Trip> dtResults = new ArrayList<>(Arrays.asList(m.getDayTourInfo(m.getDayTourSearchObject())));
-                for(Trip trip : dtResults){
-                    System.out.println(trip.getTripName());
-                }
+
                 // tours that fit search parameters are in dResults
 
                 setDayTourResults(dtResults);
@@ -736,7 +756,6 @@ public class TPGUI {
                     }
                 }
 
-                System.out.println(buyer.getTripNumPeople());
 
             }
         });
@@ -769,6 +788,7 @@ public class TPGUI {
      */
     public void showTripsOnLocation(){
         Set<String>  dayTourNames = new HashSet<>();
+        dayTourNames.add("");
         for(Trip trip : allTrips){
             if(trip.getLocation().equals(chosenDTLocation)){
                 dayTourNames.add(trip.getTripName());
@@ -960,5 +980,21 @@ public class TPGUI {
 
     public void setChosenTrip(Trip chosenTrip) {
         this.chosenTrip = chosenTrip;
+    }
+
+    public JTable getHotelTable() {
+        return hotelTable;
+    }
+
+    public void setHotelTable(JTable hotelTable) {
+        this.hotelTable = hotelTable;
+    }
+
+    public JTable getDtTable() {
+        return dtTable;
+    }
+
+    public void setDtTable(JTable dtTable) {
+        this.dtTable = dtTable;
     }
 }

@@ -28,6 +28,7 @@ public class Book {
         if(p.getBookedDayTour() == null) tripBookingNr = 0;
         else this.tripBookingNr = p.getBookedDayTour().getTripId();
 
+        bookedHotels = new ArrayList<>();
         bookingNr++;
     }
 
@@ -69,6 +70,7 @@ public class Book {
                         Integer.toString(tripBookingNr), packageToBeBooked.getPurchaser().getEmail());
             } catch (ClassNotFoundException e) {
                 // TODO What to do if it fails to book into our DB.
+                System.out.println("Booking failed!");
             }
         }
 
