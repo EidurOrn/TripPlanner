@@ -168,7 +168,7 @@ public class TPGUI {
         allHotelRooms = new HotelSearch().LocationSearch("");
 
 // GUI
-        panelMain.setPreferredSize(new Dimension(750, 800));
+        panelMain.setPreferredSize(new Dimension(1150, 550));
         //revalidate();
     // Flight
         flightPanelValue.setMinimumSize(new Dimension(-1, 20));
