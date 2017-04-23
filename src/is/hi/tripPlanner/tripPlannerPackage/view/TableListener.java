@@ -34,6 +34,10 @@ public class TableListener implements ListSelectionListener {
             mainWindow.setChosenHotel(mainWindow.getHotelResults().get(chosenIndex));
         }
 
+        if(flightHotelTour == 3){
+            mainWindow.setChosenTrip(mainWindow.getDayTourResults().get(chosenIndex));
+        }
+
 
     }
 }
