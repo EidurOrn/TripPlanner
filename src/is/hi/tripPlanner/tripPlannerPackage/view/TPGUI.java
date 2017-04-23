@@ -1,6 +1,7 @@
 package is.hi.tripPlanner.tripPlannerPackage.view;
 
 import is.hi.tripPlanner.dayTourPackage.model.DayTourSearch;
+import is.hi.tripPlanner.dayTourPackage.model.Trip;
 import is.hi.tripPlanner.flightPackage.Flight;
 import is.hi.tripPlanner.flightPackage.FlightSearch;
 import is.hi.tripPlanner.hotelPackage.JFrames.HotelSearch;
@@ -169,7 +170,7 @@ public class TPGUI {
 // GUI
         panelMain.setPreferredSize(new Dimension(750, 800));
         //revalidate();
-        // Flight
+    // Flight
         flightPanelValue.setMinimumSize(new Dimension(-1, 20));
         flightPanelValue.setMaximumSize(new Dimension(-1,60));
         flightPanelTable.setMinimumSize(new Dimension(-1, 400));
@@ -206,7 +207,7 @@ public class TPGUI {
 
 
 
-
+    // Hotel
         hotelTable.setAutoCreateRowSorter(true);
         hotelTable.setFillsViewportHeight(true);
         hotelTable.setPreferredScrollableViewportSize(new Dimension(550, 200));
@@ -251,7 +252,7 @@ public class TPGUI {
 
 
 
-        // DayTour tab
+    // DayTour tab
         DTTable.setAutoCreateRowSorter(true);
         DTTable.setFillsViewportHeight(true);
         DTTable.setPreferredScrollableViewportSize(new Dimension(550, 200));
@@ -265,6 +266,17 @@ public class TPGUI {
         DayTRipTableModel.addColumn("Price");
         DTTable.setModel(DayTRipTableModel);
 
+        // Comboboxes:
+
+        // fetch all trips:
+
+        Trip[] allTrips = m.getDayTourInfo(new DayTourSearch(searchParam));
+        Set<String> allDayTourNames =  new HashSet<>();
+
+        for(Trip trip : allTrips){
+            System.out.println(trip.getTripName());
+            allDayTourNames.add(trip.getTripName());
+        }
 
 
 
@@ -557,6 +569,7 @@ public class TPGUI {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 hotelTableModel.setRowCount(0);
+                hotelResults = allHotelRooms;
                 for(HotelRoom h : allHotelRooms){
                     String[] hotelInfo = {h.getHotelName(), h.getLocation(), "" + h.getPrice(), "" + h.getQuality(), h.getType(), h.getTheme() };
                     hotelTableModel.addRow(hotelInfo);
