@@ -12,6 +12,8 @@ import is.hi.tripPlanner.tripPlannerPackage.storage.Package;
 
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -66,6 +68,7 @@ public class TPGUI {
     // chosen search parameters
     String chosenLocation;
     String chosenDestination;
+    String chosenDate;
 
     /**
      * search results
@@ -75,6 +78,10 @@ public class TPGUI {
      * selected flight, from flightTable
      */
     private Flight chosenFlight;
+
+    ArrayList<String> fra;
+    ArrayList<String> til;
+    ArrayList<String> dates;
 
     DefaultTableModel flightTableModel = new DefaultTableModel();
 
@@ -89,6 +96,9 @@ public class TPGUI {
     private JComboBox hotelStarsCB;
     private JComboBox hotelTypeCB;
     private JComboBox hotelThemeCB;
+    private JTextField nrNightsText;
+    private JLabel hotelThemeLabel;
+    private JButton showAllHotels;
 
     // chosen search parameters
     String chosenHotelName;
@@ -98,18 +108,13 @@ public class TPGUI {
     String chosenHotelType;
     String chosenHotelTheme;
     String chosenHotelStars;
+
     /**
      * list of all hotel rooms
      */
     ArrayList<HotelRoom> allHotelRooms;
-    /**
-     * hotel search results
-     */
-    ArrayList<HotelRoom> hotelResults;
-    /**
-     * selected hotel, from hotelTable
-     */
-    HotelRoom chosenHotel;
+    private ArrayList<HotelRoom> hotelResults;
+    private HotelRoom chosenHotel;
 
 
 
@@ -132,9 +137,9 @@ public class TPGUI {
     private JButton DTSrcBtn;
     private JPanel flightPanelValue;
     private JPanel flightPanelTable;
-    private JTextField nrNightsText;
-    private JLabel hotelThemeLabel;
-    private JButton showAllHotels;
+    private JTextField packagePrice;
+    private JComboBox cbDate;
+
 
     DefaultTableModel DayTRipTableModel = new DefaultTableModel();
 
@@ -159,8 +164,8 @@ public class TPGUI {
         pakki = new Package();
         String[] searchParam = {"", "", "", "", ""};
         m = new MetaSearch(new DayTourSearch(searchParam), new HotelSearch(), new FlightSearch());
-
         allHotelRooms = new HotelSearch().LocationSearch("");
+
 // GUI
         panelMain.setPreferredSize(new Dimension(750, 800));
         //revalidate();
@@ -179,19 +184,24 @@ public class TPGUI {
         flightTable.setModel(flightTableModel);
         flightTable.getSelectionModel().addListSelectionListener(new TableListener(this,1));
 
+        fra = m.getFlightSearchObject().getFra();
         Set<String> allLocations =  new HashSet<>();
-        allLocations.addAll( m.getFlightSearchObject().getFra());
-        System.out.println(allLocations.toString());
+        allLocations.addAll( fra );
         allLocations.remove("test");
-        cbDestination.setModel(new DefaultComboBoxModel(allLocations.toArray()));
+        cbLocation.setModel(new DefaultComboBoxModel(allLocations.toArray()));
+        chosenLocation  = (String) allLocations.toArray()[0];
 
-
+        til = m.getFlightSearchObject().getTil();
         Set<String> allDestinations =  new HashSet<>();
-        allDestinations.addAll( m.getFlightSearchObject().getTil());
-        System.out.println(allLocations.toString());
+        allDestinations.addAll( til);
         allDestinations.remove("test");
-        cbLocation.setModel(new DefaultComboBoxModel(allDestinations.toArray()));
+        cbDestination.setModel(new DefaultComboBoxModel(allDestinations.toArray()));
+        chosenDestination = (String) allDestinations.toArray()[0];
 
+        dates  = m.getFlightSearchObject().getDates();
+        Set<String> allDates =  new HashSet<>();
+        allDates.addAll( dates);
+        cbDate.setModel(new DefaultComboBoxModel(allDates.toArray()));
         // comboboxes have been set up
 
 
@@ -207,6 +217,7 @@ public class TPGUI {
         hotelTableModel.addColumn("Type");
         hotelTableModel.addColumn("Theme");
         hotelTable.setModel(hotelTableModel);
+        hotelTable.getSelectionModel().addListSelectionListener(new TableListener(this,2));
 
 
         Set<String> allHotelNames =  new HashSet<>();
@@ -259,6 +270,26 @@ public class TPGUI {
 
 //// Listeners
 
+        /**
+         * listener for when tabs are changed
+         * puts
+         */
+        tabbedPane2.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent changeEvent) {
+
+                DateFormat format = new SimpleDateFormat("y-MM-d", Locale.ENGLISH);
+                // if switched to Hotel Tab, put date of bookedFlight into check-in date
+                int index =  tabbedPane2.getSelectedIndex();
+                if(index == 1){
+                    if(chosenFlight != null) {
+                        hotelCheckIn.setText(format.format(chosenFlight.getDeparture()));
+                    }
+                }
+
+            }
+        });
+
         // Booking tab listeners
         /**
          * button pressed to view package contents
@@ -269,29 +300,31 @@ public class TPGUI {
                 String flightText = "";
                 String hotelText = "";
                 String dayTourText = "";
-
+                int totalPrice = 0;
                 if( pakki.getBookedFlight() != null) {
                     // assume that if a flight is booked, then it has a location, destination and departure
                      flightText = "Flight from " + pakki.getBookedFlight().getLocation() + " to " + pakki.getBookedFlight().getDestination()
-                            + " on " + pakki.getBookedFlight().getDeparture();
+                            + " on " + pakki.getBookedFlight().getDeparture() + " that costs " + pakki.getBookedFlight().getPrice();
+                     totalPrice += pakki.getBookedFlight().getPrice();
+
                 }
                 if( pakki.getBookedHotel() != null){
-                    hotelText = "Hotelroom at " + pakki.getBookedHotel().getHotelName() + " located in " + pakki.getBookedHotel().getLocation();
+                    hotelText = "Hotelroom at " + pakki.getBookedHotel().getHotelName() + " located in " + pakki.getBookedHotel().getLocation() + " that costs " + pakki.getBookedHotel().getPrice();
+                    totalPrice+=pakki.getBookedHotel().getPrice();
                 }
                 if( pakki.getBookedDayTour() != null) {
                     dayTourText = "Day tour " + pakki.getBookedDayTour().getTripName() + " located in " + pakki.getBookedDayTour().getLocation() + " that costs " + pakki.getBookedDayTour().getPrice();
+                    totalPrice += pakki.getBookedDayTour().getPrice();
                 }
+
 
                 yourFlight.setText(flightText);
                 yourHotel.setText(hotelText);
                 yourDayTour.setText(dayTourText);
+                packagePrice.setText("" + totalPrice);
             }
         });
 
-
-
-
-        // Flight tab listeners
 
         /**
          * books the package into the Trip Planner database and the day tour database (the hotel and daytour programs don't book into the db)
@@ -320,6 +353,20 @@ public class TPGUI {
             }
         });
 
+        // Flight tab listeners
+
+        /**
+         * Combobox that selects date
+         */
+        cbDate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JComboBox cb = (JComboBox)actionEvent.getSource();
+                chosenDate = (String)cb.getSelectedItem();
+            }
+        });
+        cbDate.setSelectedIndex(0);
+
         /** Combobox that selects location
          *
          */
@@ -328,18 +375,25 @@ public class TPGUI {
             public void actionPerformed(ActionEvent actionEvent) {
                 JComboBox cb = (JComboBox)actionEvent.getSource();
                 chosenLocation = (String)cb.getSelectedItem();
+                showDates(chosenLocation, chosenDestination);
+
             }
         });
         cbLocation.setSelectedIndex(0);
-
+        /**
+         * Combobox that selects destination
+         */
         cbDestination.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 JComboBox cb = (JComboBox)actionEvent.getSource();
                 chosenDestination = (String)cb.getSelectedItem();
+                showDates(chosenLocation, chosenDestination);
             }
         });
         cbDestination.setSelectedIndex(0);
+
+
 
         /** button that gets available flights and puts into flightTable
          *
@@ -350,7 +404,7 @@ public class TPGUI {
                 // empty flightTable
                 flightTableModel.setRowCount(0);
                 // get flights
-                 setFlightResults(m.getFlightInfo(chosenLocation, chosenDestination, enterDate.getText()));
+                 setFlightResults(m.getFlightInfo(chosenLocation, chosenDestination, chosenDate));
 
                 // add to flightTable
                 for(Flight flight : getFlightResults()){
@@ -452,22 +506,61 @@ public class TPGUI {
         hotelSearchBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+
                 hotelTableModel.setRowCount(0);
                 // table is empty
                 String checkInDate = hotelCheckIn.getText();
-                if(checkInDate.matches("\\d\\d\\d\\d-\\d\\d-\\d\\d")){
-                    hotelResults = availableRooms(m.getHotelInfo(chosenHotelName, chosenHotelLocation, "", "", chosenHotelType, chosenHotelTheme, chosenHotelStars), Integer.parseInt(nrNightsText.getText()), checkInDate );
-                    // hotelResults contain all results that are available
-                    for(HotelRoom h : hotelResults){
-                        System.out.println(h.getHotelName() + "   " + h.getFromAvailability()   +  "   "  + h.getToAvailability());
-                        System.out.println("\n" + daysLater(h.getFromAvailability(),Integer.parseInt(nrNightsText.getText())) + "\n");
+                String nrOfNights = nrNightsText.getText();
+                int nrNights = 0;
+                if(  checkInDate.matches("\\d\\d\\d\\d-\\d\\d-\\d\\d"))  {
+                    ArrayList<HotelRoom> hResults = m.getHotelInfo(chosenHotelName, chosenHotelLocation, "", "", chosenHotelType, chosenHotelTheme, chosenHotelStars);
+                    // hResults contains hotelrooms that fit search criteria
+
+                    if( nrOfNights.matches("\\d")) {
+                        nrNights = Integer.parseInt(nrOfNights);
                     }
-                    System.out.println("Fromdate: " + checkInDate);
+
+                    setHotelResults(availableRooms(hResults, nrNights, checkInDate));
+                    // hotelResults contain all results that are available
+
+                }else if ((checkInDate.equals("")|| checkInDate.equals("YYYY-DD-MM"))){
+                     setHotelResults(m.getHotelInfo(chosenHotelName, chosenHotelLocation, "", "", chosenHotelType, chosenHotelTheme, chosenHotelStars));
+                    // hResults contains hotelrooms that fit search criteria
+
                 }
 
+                for(HotelRoom h : getHotelResults()){
+                    String[] hotelInfo = {h.getHotelName(), h.getLocation(), "" + h.getPrice(), "" + h.getQuality(), h.getType(), h.getTheme() };
+                    hotelTableModel.addRow(hotelInfo);
+                }
+
+                // hotelResults is displayed in hotelTable
 
 
 
+            }
+        });
+        /**
+         * adds hotel selected in hotelTable to package
+         */
+        hotelBookBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if(chosenHotel != null){
+                    pakki.setBookedHotel(chosenHotel);
+                }
+            }
+        });
+
+
+        showAllHotels.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                hotelTableModel.setRowCount(0);
+                for(HotelRoom h : allHotelRooms){
+                    String[] hotelInfo = {h.getHotelName(), h.getLocation(), "" + h.getPrice(), "" + h.getQuality(), h.getType(), h.getTheme() };
+                    hotelTableModel.addRow(hotelInfo);
+                }
             }
         });
     }
@@ -482,8 +575,33 @@ public class TPGUI {
         frame.setVisible(true);
     }
 
+
+
     /**
-     * returns a list of the HotelRooms in hotelRooms that are available for at least numDays days after fromDate
+     * Shows in cbDate only the dates for which it's flown from location to destination
+     * @param location
+     * @param destination
+     */
+    public void showDates(String location, String destination){
+
+
+        ArrayList<String> validDates = new ArrayList<String>();
+        for (int i = 0; i < fra.size(); i++){
+
+            if (location.equals(fra.get(i)) && destination.equals(til.get(i))){
+                validDates.add(dates.get(i));
+            }
+        }
+
+        // validDates contains the dates when it's flown from location to destination
+
+        cbDate.setModel(new DefaultComboBoxModel( (new HashSet<>(validDates)).toArray() ) );
+
+    }
+
+
+    /**
+     * returns a list of the HotelRooms in hotelRooms that are available from fromDate for at least numDays days
      * @param fromDate "2016-05-30"
      * @param numDays number of days
      */
@@ -604,5 +722,27 @@ public class TPGUI {
 
     public void setChosenFlight(Flight chosenFlight) {
         this.chosenFlight = chosenFlight;
+    }
+
+    /**
+     * selected hotel, from hotelTable
+     */
+    public HotelRoom getChosenHotel() {
+        return chosenHotel;
+    }
+
+    public void setChosenHotel(HotelRoom chosenHotel) {
+        this.chosenHotel = chosenHotel;
+    }
+
+    /**
+     * hotel search results
+     */
+    public ArrayList<HotelRoom> getHotelResults() {
+        return hotelResults;
+    }
+
+    public void setHotelResults(ArrayList<HotelRoom> hotelResults) {
+        this.hotelResults = hotelResults;
     }
 }
