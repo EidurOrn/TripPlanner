@@ -18,9 +18,16 @@ public class Book {
 
     public Book(Package p ) {
         this.packageToBeBooked = p;
-        this.flightBookingNr = p.getBookedFlight().getFlightId();
-        this.hotelBookingNr = p.getBookedHotel().getId();
-        this.tripBookingNr = p.getBookedDayTour().getTripId();
+
+        if(p.getBookedFlight() == null) flightBookingNr = 0;
+        else this.flightBookingNr = p.getBookedFlight().getFlightId();
+
+        if(p.getBookedHotel() == null) hotelBookingNr = 0;
+        else this.hotelBookingNr = p.getBookedHotel().getId();
+
+        if(p.getBookedDayTour() == null) tripBookingNr = 0;
+        else this.tripBookingNr = p.getBookedDayTour().getTripId();
+
         bookingNr++;
     }
 
@@ -37,22 +44,32 @@ public class Book {
 
         // Attempt to book the package content.
         boolean[] bookingSuccess = new boolean[]{
-            bookFlight(packageToBeBooked.getBookedFlight()),
-            bookHotel(packageToBeBooked.getBookedHotel()),
-            bookDayTour(packageToBeBooked.getBookedDayTour())
+                packageToBeBooked.getBookedFlight() == null ? false : bookFlight(packageToBeBooked.getBookedFlight()),
+                packageToBeBooked.getBookedHotel() == null ? false : bookHotel(packageToBeBooked.getBookedHotel()),
+                packageToBeBooked.getBookedDayTour() == null ? false : bookDayTour(packageToBeBooked.getBookedDayTour())
         };
 
-        // Check whether every booking succeeded.
-        for(boolean r : bookingSuccess)
-            if(!r) return bookingSuccess;
+        if(packageToBeBooked.getBookedFlight() != null && packageToBeBooked.getBookedHotel() != null && packageToBeBooked.getBookedDayTour() != null){
+            // Check whether every booking succeeded.
+            for(boolean r : bookingSuccess)
+                if(!r) return bookingSuccess;
+        }
 
-        // Connect to our db and insert the package order.
-        Database d = new Database();
-        try{
-            d.insertBooking(Integer.toString(bookingNr),Integer.toString(hotelBookingNr),Integer.toString(flightBookingNr),
-                    Integer.toString(tripBookingNr),packageToBeBooked.getPurchaser().getEmail());
-        }catch (ClassNotFoundException e){
-            // TODO What to do if it fails to book into our DB.
+
+        if (flightBookingNr != 0 || hotelBookingNr != 0 || tripBookingNr != 0) { // If everything is 0 then the package is empty and thus nothing done.
+            // Checks whether the booking was successful if there was something to book.
+            if(flightBookingNr != 0 && !bookingSuccess[0]) return bookingSuccess;
+            if(hotelBookingNr != 0 && !bookingSuccess[1]) return bookingSuccess;
+            if(tripBookingNr != 0 && !bookingSuccess[2]) return bookingSuccess;
+
+            // Connect to our db and insert the package order.
+            Database d = new Database();
+            try {
+                d.insertBooking(Integer.toString(bookingNr), Integer.toString(hotelBookingNr), Integer.toString(flightBookingNr),
+                        Integer.toString(tripBookingNr), packageToBeBooked.getPurchaser().getEmail());
+            } catch (ClassNotFoundException e) {
+                // TODO What to do if it fails to book into our DB.
+            }
         }
 
         return bookingSuccess;
