@@ -140,6 +140,7 @@ public class TPGUI {
     private JComboBox cbDate;
     private JTextField tripMaxPrice;
     private JLabel tripPrice;
+    private JButton dtShowAll;
 
     Trip[] allTrips;
     private ArrayList<Trip> dayTourResults;
@@ -340,11 +341,23 @@ public class TPGUI {
 
                 if(index == 2){
                     // stilli location sem selected location
-                    String hotelLocation = pakki.getBookedHotel().getLocation();
-                    if(allDayTourLocations.contains(hotelLocation)){
-                        System.out.println(hotelLocation);
-                        DTLocationCB.setSelectedItem(hotelLocation);
+
+                    if(pakki.getBookedHotel() != null){
+                        String hotelLocation = pakki.getBookedHotel().getLocation();
+                        if(allDayTourLocations.contains(hotelLocation)){
+
+                            DTLocationCB.setSelectedItem(hotelLocation);
+                            // only show those trips that are in chosenDTLocation
+                            System.out.println(chosenDTLocation);
+                            // for trips in allTrips,  if tripName is in DTTripCB, if tripLocation is chosenDTLocation, add to model
+
+                            showTripsOnLocation();;
+
+
+                        }
                     }
+
+
 
                     //DTLocationCB.setSelectedIndex(0);
                 }
@@ -652,6 +665,7 @@ public class TPGUI {
             public void actionPerformed(ActionEvent actionEvent) {
                 JComboBox cb = (JComboBox)actionEvent.getSource();
                 chosenDTLocation = (String)cb.getSelectedItem();
+                showTripsOnLocation();
             }
         });
         DTLocationCB.setSelectedIndex(0);
@@ -714,9 +728,28 @@ public class TPGUI {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(chosenTrip != null){
-                    pakki.setBookedDayTour(chosenTrip);
+
+
+                    if((Integer.parseInt(chosenNrOfPeople) < chosenTrip.getMaxPeople()) && (Integer.parseInt(chosenNrOfPeople) > chosenTrip.getMinPeople())) {
+                        pakki.setBookedDayTour(chosenTrip);
+                        buyer.setTripNumPeople(chosenNrOfPeople);
+                    }
                 }
 
+                System.out.println(buyer.getTripNumPeople());
+
+            }
+        });
+        dtShowAll.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                dayTripTableModel.setRowCount(0);
+                dayTourResults = new ArrayList<Trip>(Arrays.asList(allTrips));
+
+                for(Trip t : allTrips){
+                    String[] dayTourInfo = {t.getTripName(), t.getLocation(), t.getDateBegin().toString(), t.getDateEnd().toString(), "" + t.getMinPeople(), "" + t.getMaxPeople(), "" + t.getPrice()};
+                    dayTripTableModel.addRow(dayTourInfo);
+                }
             }
         });
     }
@@ -731,7 +764,18 @@ public class TPGUI {
         frame.setVisible(true);
     }
 
-
+    /**
+     * shows only names of daytours that are on chosenDTLocation
+     */
+    public void showTripsOnLocation(){
+        Set<String>  dayTourNames = new HashSet<>();
+        for(Trip trip : allTrips){
+            if(trip.getLocation().equals(chosenDTLocation)){
+                dayTourNames.add(trip.getTripName());
+            }
+        }
+        DTTripCB.setModel(new DefaultComboBoxModel(dayTourNames.toArray()));
+    }
 
     /**
      * Shows in cbDate only the dates for which it's flown from location to destination

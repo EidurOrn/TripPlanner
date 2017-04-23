@@ -15,6 +15,7 @@ import is.hi.tripPlanner.hotelPackage.Models.HotelRoom;
 public class Main {
     
     public static void setUpDatabase() {
+
         SQLiteJDBC.createHotelRooms();
         SQLiteJDBC.insertIntoHotelRooms(1, "Hotel Bifrost","2017-01-01","2017-12-31",28000 , "double", "Family", 2, "Sudurland");
         SQLiteJDBC.insertIntoHotelRooms(2, "Hotel Ísafjordur","2017-04-04","2017-08-21",34000 , "double", "Family", 3, "Vesturland");
